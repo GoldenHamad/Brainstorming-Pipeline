@@ -1,0 +1,172 @@
+.prompt-card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-5);
+    text-decoration: none;
+    color: inherit;
+}
+
+.prompt-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-3);
+}
+
+.prompt-card-category {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+.category-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--radius-full);
+}
+
+.category-name {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-gray-600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.prompt-card-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-gray-900);
+    margin-bottom: var(--spacing-2);
+    line-height: var(--line-height-tight);
+}
+
+.prompt-card-preview {
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-600);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--spacing-3);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.prompt-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+    margin-bottom: var(--spacing-3);
+}
+
+.tag {
+    display: inline-block;
+    padding: var(--spacing-1) var(--spacing-2);
+    background: var(--color-gray-100);
+    color: var(--color-gray-600);
+    font-size: var(--font-size-xs);
+    border-radius: var(--radius-sm);
+}
+
+.tag-more {
+    background: var(--color-gray-200);
+    color: var(--color-gray-700);
+}
+
+.prompt-card-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+    margin-bottom: var(--spacing-4);
+}
+
+.tool-badge {
+    padding: var(--spacing-1) var(--spacing-2);
+    background: rgba(0, 51, 141, 0.05);
+    color: var(--color-primary);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(0, 51, 141, 0.1);
+}
+
+.prompt-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: var(--spacing-3);
+    border-top: 1px solid var(--color-gray-100);
+    margin-top: auto;
+}
+
+.prompt-card-rating {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+}
+
+.prompt-card-rating .rating-value {
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-gray-800);
+}
+
+.prompt-card-rating .rating-count {
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-500);
+}
+
+.prompt-card-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+}
+
+.view-link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-primary);
+    transition: gap var(--transition-fast);
+}
+
+.prompt-card:hover .view-link {
+    gap: var(--spacing-2);
+}
+
+/* Compact Variant */
+.prompt-card-compact {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-4);
+    text-decoration: none;
+    color: inherit;
+}
+
+.prompt-card-compact-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    margin-bottom: var(--spacing-2);
+}
+
+.prompt-card-compact-title {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-gray-900);
+    margin-bottom: var(--spacing-3);
+    line-height: var(--line-height-tight);
+}
+
+.prompt-card-compact-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+}
+
+.usage-count {
+    font-size: var(--font-size-xs);
+    color: var(--color-gray-500);
+}
