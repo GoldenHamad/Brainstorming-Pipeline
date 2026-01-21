@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Search, Plus, LayoutDashboard, ClipboardCheck, User } from 'lucide-react';
+import { Search, Plus, LayoutDashboard, ClipboardCheck, User, Lightbulb } from 'lucide-react';
 import './Header.css';
 
 export function Header() {
@@ -53,6 +53,13 @@ export function Header() {
                     >
                         <LayoutDashboard size={18} />
                         <span>Analytics</span>
+                    </Link>
+                    <Link
+                        to="/ideas"
+                        className={`nav-link ${location.pathname.startsWith('/ideas') ? 'active' : ''}`}
+                    >
+                        <Lightbulb size={18} />
+                        <span>Ideas</span>
                     </Link>
                 </nav>
 

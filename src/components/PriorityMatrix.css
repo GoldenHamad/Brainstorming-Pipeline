@@ -1,0 +1,217 @@
+.priority-matrix {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+}
+
+.matrix-container {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    grid-template-rows: 1fr 40px;
+    gap: var(--spacing-2);
+}
+
+.axis-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-gray-600);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.y-axis-label {
+    grid-column: 1;
+    grid-row: 1;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+}
+
+.x-axis-label {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.matrix-grid {
+    position: relative;
+    grid-column: 2;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    border: 2px solid var(--color-gray-300);
+    border-radius: var(--radius-lg);
+    min-height: 400px;
+    overflow: hidden;
+}
+
+.quadrant {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.quadrant-label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-gray-500);
+    opacity: 0.6;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.quadrant-calculated-risks {
+    background: rgba(255, 193, 7, 0.08);
+    border-right: 1px dashed var(--color-gray-300);
+    border-bottom: 1px dashed var(--color-gray-300);
+}
+
+.quadrant-likely-wins {
+    background: rgba(40, 167, 69, 0.08);
+    border-bottom: 1px dashed var(--color-gray-300);
+}
+
+.quadrant-avoid {
+    background: rgba(220, 53, 69, 0.05);
+    border-right: 1px dashed var(--color-gray-300);
+}
+
+.quadrant-marginal-gains {
+    background: rgba(108, 117, 125, 0.05);
+}
+
+/* Idea dots */
+.idea-dot {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    transition: all var(--transition-fast);
+    z-index: 10;
+}
+
+.idea-dot:hover {
+    transform: translate(-50%, -50%) scale(1.3);
+    z-index: 20;
+}
+
+.idea-dot.selected {
+    transform: translate(-50%, -50%) scale(1.4);
+    box-shadow: 0 0 0 4px rgba(0, 51, 141, 0.3), 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 25;
+}
+
+.idea-dot-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    padding: var(--spacing-3);
+    background: var(--color-gray-900);
+    color: white;
+    font-size: var(--font-size-xs);
+    border-radius: var(--radius-md);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-fast);
+    margin-bottom: var(--spacing-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+    text-align: center;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.idea-dot-tooltip strong {
+    font-weight: var(--font-weight-semibold);
+    color: white;
+}
+
+.idea-dot-tooltip .tooltip-quadrant {
+    color: var(--color-gray-400);
+}
+
+.idea-dot:hover .idea-dot-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Axis indicators */
+.axis-indicator {
+    position: absolute;
+    font-size: var(--font-size-xs);
+    color: var(--color-gray-400);
+    font-weight: var(--font-weight-medium);
+}
+
+.axis-indicator.x.low-label {
+    bottom: 4px;
+    left: 8px;
+}
+
+.axis-indicator.x.high-label {
+    bottom: 4px;
+    right: 8px;
+}
+
+.axis-indicator.y.low-label {
+    left: 8px;
+    bottom: 8px;
+}
+
+.axis-indicator.y.high-label {
+    left: 8px;
+    top: 8px;
+}
+
+/* Legend */
+.matrix-legend {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-6);
+    padding: var(--spacing-3);
+    background: var(--color-gray-50);
+    border-radius: var(--radius-md);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.legend-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-gray-600);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .matrix-grid {
+        min-height: 300px;
+    }
+
+    .quadrant-label {
+        font-size: var(--font-size-xs);
+    }
+
+    .matrix-legend {
+        flex-wrap: wrap;
+        gap: var(--spacing-3);
+    }
+}

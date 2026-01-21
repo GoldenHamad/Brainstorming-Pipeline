@@ -1,0 +1,115 @@
+.submit-idea-page {
+    padding: var(--spacing-8) 0 var(--spacing-16);
+}
+
+.submit-idea-page .container {
+    max-width: 800px;
+}
+
+.submit-idea-header {
+    margin-bottom: var(--spacing-8);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    background: none;
+    border: none;
+    color: var(--color-gray-600);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    margin-bottom: var(--spacing-4);
+    transition: color var(--transition-fast);
+}
+
+.back-link:hover {
+    color: var(--color-primary);
+}
+
+.header-content {
+    display: flex;
+    gap: var(--spacing-4);
+}
+
+.header-icon {
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.submit-idea-header h1 {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--spacing-2);
+}
+
+.submit-idea-header p {
+    color: var(--color-gray-600);
+}
+
+/* Form */
+.submit-idea-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-6);
+}
+
+.form-section {
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-6);
+}
+
+.form-section h2 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-gray-900);
+    margin-bottom: var(--spacing-5);
+    padding-bottom: var(--spacing-3);
+    border-bottom: 1px solid var(--color-gray-100);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-4);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    margin-bottom: var(--spacing-4);
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-4);
+    padding-top: var(--spacing-4);
+    border-top: 1px solid var(--color-gray-200);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
