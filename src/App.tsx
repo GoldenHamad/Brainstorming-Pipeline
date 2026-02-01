@@ -1,16 +1,20 @@
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import { Header } from './components/Header';
 import { ToastProvider } from './components/Toast';
-import { HomePage } from './pages/HomePage';
+
+// Ideas - Primary Feature
+import { IdeasDashboard } from './pages/IdeasDashboard';
+import { SubmitIdeaPage } from './pages/SubmitIdeaPage';
+import { PipelinePage } from './pages/PipelinePage';
+import { IdeaDetailPage } from './pages/IdeaDetailPage';
+import { IdeasAnalyticsPage } from './pages/IdeasAnalyticsPage';
+
+// Prompts - Resources (Secondary)
+import { PromptLibraryPage } from './pages/PromptLibraryPage';
 import { PromptDetailPage } from './pages/PromptDetailPage';
 import { SubmitPage } from './pages/SubmitPage';
 import { ReviewQueuePage } from './pages/ReviewQueuePage';
 import { AnalyticsPage } from './pages/AnalyticsPage';
-import { IdeasDashboard } from './pages/IdeasDashboard';
-import { SubmitIdeaPage } from './pages/SubmitIdeaPage';
-import { AssessmentQueuePage } from './pages/AssessmentQueuePage';
-import { IdeaDetailPage } from './pages/IdeaDetailPage';
-import { IdeasAnalyticsPage } from './pages/IdeasAnalyticsPage';
 
 function App() {
     return (
@@ -20,16 +24,19 @@ function App() {
                     <Header />
                     <main className="page-wrapper">
                         <Routes>
-                            <Route path="/" element={<HomePage />} />
-                            <Route path="/prompt/:id" element={<PromptDetailPage />} />
-                            <Route path="/submit" element={<SubmitPage />} />
-                            <Route path="/review" element={<ReviewQueuePage />} />
-                            <Route path="/analytics" element={<AnalyticsPage />} />
-                            <Route path="/ideas" element={<IdeasDashboard />} />
-                            <Route path="/ideas/submit" element={<SubmitIdeaPage />} />
-                            <Route path="/ideas/assess" element={<AssessmentQueuePage />} />
-                            <Route path="/ideas/:id" element={<IdeaDetailPage />} />
-                            <Route path="/ideas/analytics" element={<IdeasAnalyticsPage />} />
+                            {/* Ideas - Primary Routes */}
+                            <Route path="/" element={<IdeasDashboard />} />
+                            <Route path="/submit" element={<SubmitIdeaPage />} />
+                            <Route path="/pipeline" element={<PipelinePage />} />
+                            <Route path="/idea/:id" element={<IdeaDetailPage />} />
+                            <Route path="/analytics" element={<IdeasAnalyticsPage />} />
+
+                            {/* Resources - Prompt Library (Secondary) */}
+                            <Route path="/resources/prompts" element={<PromptLibraryPage />} />
+                            <Route path="/resources/prompts/:id" element={<PromptDetailPage />} />
+                            <Route path="/resources/prompts/submit" element={<SubmitPage />} />
+                            <Route path="/resources/prompts/review" element={<ReviewQueuePage />} />
+                            <Route path="/resources/prompts/analytics" element={<AnalyticsPage />} />
                         </Routes>
                     </main>
                 </div>

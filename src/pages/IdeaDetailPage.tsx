@@ -2,18 +2,12 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Clock, User, Cpu, Briefcase, Calendar, Target } from 'lucide-react';
 import { ideaService } from '../services/ideaService';
-import { Idea, valueDimensions, feasibilityDimensions } from '../data/ideas';
+import { Idea, valueDimensions, feasibilityDimensions, ideaStatusInfo } from '../data/ideas';
 import { QuadrantBadge } from '../components/QuadrantBadge';
 import { PriorityMatrix } from '../components/PriorityMatrix';
 import './IdeaDetailPage.css';
 
-const statusLabels: Record<string, { label: string; color: string }> = {
-    submitted: { label: 'Submitted', color: '#6C757D' },
-    under_review: { label: 'Under Review', color: '#FFC107' },
-    assessed: { label: 'Assessed', color: '#28A745' },
-    prioritized: { label: 'Prioritized', color: '#00338D' },
-    archived: { label: 'Archived', color: '#ADB5BD' }
-};
+
 
 const scoreLabels: Record<string, string> = {
     low: 'Low',
@@ -56,22 +50,22 @@ export function IdeaDetailPage() {
             <div className="idea-not-found">
                 <h2>Idea not found</h2>
                 <p>The idea you're looking for doesn't exist.</p>
-                <Link to="/ideas" className="btn btn-primary">
+                <Link to="/" className="btn btn-primary">
                     <ArrowLeft size={18} />
-                    Back to Ideas
+                    Back to Dashboard
                 </Link>
             </div>
         );
     }
 
-    const statusInfo = statusLabels[idea.status];
+    const statusInfo = ideaStatusInfo[idea.status];
 
     return (
         <div className="idea-detail-page">
             <div className="container">
                 {/* Breadcrumb */}
                 <nav className="breadcrumb">
-                    <Link to="/ideas">Ideas</Link>
+                    <Link to="/">Dashboard</Link>
                     <span className="breadcrumb-separator">/</span>
                     <span className="breadcrumb-current">{idea.title}</span>
                 </nav>
@@ -194,8 +188,8 @@ export function IdeaDetailPage() {
                                 <Clock size={32} />
                                 <h3>Pending Assessment</h3>
                                 <p>This idea is awaiting review by the assessment team.</p>
-                                <Link to="/ideas/assess" className="btn btn-primary">
-                                    Go to Assessment Queue
+                                <Link to="/pipeline" className="btn btn-primary">
+                                    Go to Pipeline
                                 </Link>
                             </section>
                         )}
@@ -203,9 +197,9 @@ export function IdeaDetailPage() {
 
                     {/* Sidebar */}
                     <aside className="idea-detail-sidebar">
-                        <Link to="/ideas" className="btn btn-secondary btn-block">
+                        <Link to="/" className="btn btn-secondary btn-block">
                             <ArrowLeft size={18} />
-                            Back to Ideas
+                            Back to Dashboard
                         </Link>
                     </aside>
                 </div>

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Calendar, User, Cpu, Briefcase } from 'lucide-react';
-import { Idea } from '../data/ideas';
+import { Idea, ideaStatusInfo } from '../data/ideas';
 import { QuadrantBadge } from './QuadrantBadge';
 import './IdeaCard.css';
 
@@ -9,19 +9,13 @@ interface IdeaCardProps {
     variant?: 'default' | 'compact';
 }
 
-const statusLabels: Record<string, { label: string; color: string }> = {
-    submitted: { label: 'Submitted', color: '#6C757D' },
-    under_review: { label: 'Under Review', color: '#FFC107' },
-    assessed: { label: 'Assessed', color: '#28A745' },
-    prioritized: { label: 'Prioritized', color: '#00338D' },
-    archived: { label: 'Archived', color: '#ADB5BD' }
-};
+
 
 export function IdeaCard({ idea, variant = 'default' }: IdeaCardProps) {
-    const statusInfo = statusLabels[idea.status];
+    const statusInfo = ideaStatusInfo[idea.status];
 
     return (
-        <Link to={`/ideas/${idea.id}`} className={`idea-card idea-card-${variant}`}>
+        <Link to={`/idea/${idea.id}`} className={`idea-card idea-card-${variant}`}>
             <div className="idea-card-header">
                 <span
                     className="idea-status-badge"

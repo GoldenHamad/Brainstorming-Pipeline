@@ -94,7 +94,7 @@
     color: var(--color-primary);
 }
 
-.status-under_review {
+.status-screening {
     background: rgba(255, 193, 7, 0.15);
     color: #997404;
 }

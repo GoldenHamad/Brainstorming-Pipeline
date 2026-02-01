@@ -96,7 +96,7 @@ export function IdeasAnalyticsPage() {
                 <section className="matrix-section card">
                     <div className="section-header">
                         <h2>Priority Matrix</h2>
-                        <Link to="/ideas" className="view-all-link">
+                        <Link to="/" className="view-all-link">
                             View all ideas <ArrowRight size={16} />
                         </Link>
                     </div>
@@ -120,7 +120,7 @@ export function IdeasAnalyticsPage() {
                                             .filter(i => i.assessment?.quadrant === key)
                                             .slice(0, 3)
                                             .map(idea => (
-                                                <Link key={idea.id} to={`/ideas/${idea.id}`} className="quadrant-idea-link">
+                                                <Link key={idea.id} to={`/idea/${idea.id}`} className="quadrant-idea-link">
                                                     {idea.title}
                                                 </Link>
                                             ))}
@@ -146,7 +146,7 @@ export function IdeasAnalyticsPage() {
                             .sort((a, b) => (b.assessment?.valueScore || 0) - (a.assessment?.valueScore || 0))
                             .slice(0, 5)
                             .map((idea, index) => (
-                                <Link key={idea.id} to={`/ideas/${idea.id}`} className="leaderboard-row">
+                                <Link key={idea.id} to={`/idea/${idea.id}`} className="leaderboard-row">
                                     <span className="rank">#{index + 1}</span>
                                     <span className="idea-name">{idea.title}</span>
                                     <span className="score">{idea.assessment?.valueScore.toFixed(2)}</span>
@@ -210,18 +210,33 @@ export function IdeasAnalyticsPage() {
                         </div>
                         <div className="pipeline-arrow">→</div>
                         <div className="pipeline-stage">
-                            <span className="stage-count">{analytics.byStatus.under_review}</span>
-                            <span className="stage-label">Under Review</span>
+                            <span className="stage-count">{analytics.byStatus.screening}</span>
+                            <span className="stage-label">Screening</span>
                         </div>
                         <div className="pipeline-arrow">→</div>
                         <div className="pipeline-stage">
-                            <span className="stage-count">{analytics.byStatus.assessed}</span>
-                            <span className="stage-label">Assessed</span>
+                            <span className="stage-count">{analytics.byStatus.assessment}</span>
+                            <span className="stage-label">Assessment</span>
+                        </div>
+                        <div className="pipeline-arrow">→</div>
+                        <div className="pipeline-stage">
+                            <span className="stage-count">{analytics.byStatus.prioritized}</span>
+                            <span className="stage-label">Prioritized</span>
+                        </div>
+                        <div className="pipeline-arrow">→</div>
+                        <div className="pipeline-stage">
+                            <span className="stage-count">{analytics.byStatus.development}</span>
+                            <span className="stage-label">Development</span>
+                        </div>
+                        <div className="pipeline-arrow">→</div>
+                        <div className="pipeline-stage">
+                            <span className="stage-count">{analytics.byStatus.pilot}</span>
+                            <span className="stage-label">Pilot</span>
                         </div>
                         <div className="pipeline-arrow">→</div>
                         <div className="pipeline-stage highlight">
-                            <span className="stage-count">{analytics.byStatus.prioritized}</span>
-                            <span className="stage-label">Prioritized</span>
+                            <span className="stage-count">{analytics.byStatus.deployed}</span>
+                            <span className="stage-label">Deployed</span>
                         </div>
                     </div>
                 </section>

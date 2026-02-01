@@ -12,6 +12,7 @@ import {
     IdeasAnalytics,
     IdeaStatus
 } from '../data/ideas';
+import { storage, ideasStorage } from '../utils/storage';
 
 // Score values for calculation
 const scoreValues: Record<ScoreLevel, number> = {
@@ -62,8 +63,24 @@ export function determineQuadrant(valueScore: number, feasibilityScore: number):
     return 'avoid';
 }
 
-// Ideas Store (in-memory for MVP)
-let ideas: Idea[] = [...mockIdeas];
+// Initialize ideas from localStorage or use mock data
+function initializeIdeas(): Idea[] {
+    if (ideasStorage.hasStoredData()) {
+        const storedIdeas = storage.get<Idea[]>(ideasStorage.getKey(), []);
+        return storedIdeas.length > 0 ? storedIdeas : [...mockIdeas];
+    }
+    // First time: use mock data and save to localStorage
+    storage.set(ideasStorage.getKey(), mockIdeas);
+    return [...mockIdeas];
+}
+
+// Persist ideas to localStorage
+function saveIdeas(ideas: Idea[]): void {
+    storage.set(ideasStorage.getKey(), ideas);
+}
+
+// Ideas Store (persisted to localStorage)
+let ideas: Idea[] = initializeIdeas();
 
 export const ideaService = {
     // Get all ideas
@@ -100,6 +117,7 @@ export const ideaService = {
             status: 'submitted'
         };
         ideas = [...ideas, newIdea];
+        saveIdeas(ideas);
         return newIdea;
     },
 
@@ -127,12 +145,13 @@ export const ideaService = {
             if (idea.id === ideaId) {
                 return {
                     ...idea,
-                    status: 'assessed' as IdeaStatus,
+                    status: 'prioritized' as IdeaStatus,
                     assessment
                 };
             }
             return idea;
         });
+        saveIdeas(ideas);
 
         return ideas.find(i => i.id === ideaId)!;
     },
@@ -146,6 +165,7 @@ export const ideaService = {
             }
             return idea;
         });
+        saveIdeas(ideas);
         return ideas.find(i => i.id === id) || null;
     },
 
@@ -157,9 +177,15 @@ export const ideaService = {
 
         const byStatus: Record<IdeaStatus, number> = {
             submitted: 0,
-            under_review: 0,
-            assessed: 0,
+            screening: 0,
+            assessment: 0,
             prioritized: 0,
+            development: 0,
+            pilot: 0,
+            deployed: 0,
+            scaling: 0,
+            on_hold: 0,
+            rejected: 0,
             archived: 0
         };
 

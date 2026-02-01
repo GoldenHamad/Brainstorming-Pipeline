@@ -84,7 +84,7 @@ export function SubmitIdeaPage() {
             });
 
             showToast('Idea submitted successfully! It will be reviewed by the assessment team.', 'success');
-            navigate('/ideas');
+            navigate('/');
         } catch {
             showToast('Failed to submit idea. Please try again.', 'error');
         } finally {

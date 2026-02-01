@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, LayoutGrid, List, Filter } from 'lucide-react';
+import { Plus, LayoutGrid, List, Filter, Lightbulb, GitBranch, BarChart3, TrendingUp, Rocket, Clock, Target } from 'lucide-react';
 import { ideaService } from '../services/ideaService';
-import { Idea, IdeaStatus, Quadrant, quadrantInfo } from '../data/ideas';
+import { Idea, IdeaStatus, Quadrant, quadrantInfo, ideaStatusInfo } from '../data/ideas';
 import { PriorityMatrix } from '../components/PriorityMatrix';
 import { IdeaCard } from '../components/IdeaCard';
 import './IdeasDashboard.css';
@@ -33,122 +33,201 @@ export function IdeasDashboard() {
     });
 
     const assessedIdeas = ideas.filter(i => i.assessment);
-    const pendingIdeas = ideas.filter(i => i.status === 'submitted' || i.status === 'under_review');
+    const pendingIdeas = ideas.filter(i => i.status === 'submitted' || i.status === 'screening');
+    const deployedIdeas = ideas.filter(i => i.status === 'deployed' || i.status === 'scaling');
+    const likelyWins = assessedIdeas.filter(i => i.assessment?.quadrant === 'likely_wins');
 
     return (
         <div className="ideas-dashboard">
+            {/* Hero Section */}
+            <section className="dashboard-hero">
+                <div className="container">
+                    <div className="hero-content">
+                        <div className="hero-text">
+                            <h1>
+                                <Lightbulb size={36} />
+                                Advisory AI Ideas
+                            </h1>
+                            <p>Capture, evaluate, and prioritize AI use cases to drive innovation across the organization.</p>
+                        </div>
+                        <div className="hero-actions">
+                            <Link to="/submit" className="btn btn-primary btn-lg">
+                                <Plus size={20} />
+                                Submit New Idea
+                            </Link>
+                            <Link to="/pipeline" className="btn btn-secondary btn-lg">
+                                <GitBranch size={20} />
+                                View Pipeline
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <div className="container">
-                <header className="ideas-header">
-                    <div className="ideas-header-content">
-                        <h1>AI Use Case Ideas</h1>
-                        <p>Capture, assess, and prioritize AI use cases for KPMG.</p>
+                {/* Quick Stats */}
+                <section className="quick-stats">
+                    <div className="stat-card stat-total">
+                        <div className="stat-icon">
+                            <Lightbulb size={24} />
+                        </div>
+                        <div className="stat-content">
+                            <span className="stat-value">{ideas.length}</span>
+                            <span className="stat-label">Total Ideas</span>
+                        </div>
                     </div>
-                    <Link to="/ideas/submit" className="btn btn-primary">
-                        <Plus size={18} />
-                        Submit Idea
+                    <div className="stat-card stat-pending">
+                        <div className="stat-icon">
+                            <Clock size={24} />
+                        </div>
+                        <div className="stat-content">
+                            <span className="stat-value">{pendingIdeas.length}</span>
+                            <span className="stat-label">Pending Review</span>
+                        </div>
+                    </div>
+                    <div className="stat-card stat-wins">
+                        <div className="stat-icon">
+                            <Target size={24} />
+                        </div>
+                        <div className="stat-content">
+                            <span className="stat-value">{likelyWins.length}</span>
+                            <span className="stat-label">Likely Wins</span>
+                        </div>
+                    </div>
+                    <div className="stat-card stat-deployed">
+                        <div className="stat-icon">
+                            <Rocket size={24} />
+                        </div>
+                        <div className="stat-content">
+                            <span className="stat-value">{deployedIdeas.length}</span>
+                            <span className="stat-label">Deployed</span>
+                        </div>
+                    </div>
+                    <Link to="/analytics" className="stat-card stat-analytics">
+                        <div className="stat-icon">
+                            <BarChart3 size={24} />
+                        </div>
+                        <div className="stat-content">
+                            <span className="stat-value">
+                                <TrendingUp size={20} />
+                            </span>
+                            <span className="stat-label">View Analytics</span>
+                        </div>
                     </Link>
-                </header>
+                </section>
 
-                {/* Stats */}
-                <div className="ideas-stats">
-                    <div className="stat-card">
-                        <span className="stat-value">{ideas.length}</span>
-                        <span className="stat-label">Total Ideas</span>
-                    </div>
-                    <div className="stat-card">
-                        <span className="stat-value">{pendingIdeas.length}</span>
-                        <span className="stat-label">Pending Assessment</span>
-                    </div>
-                    <div className="stat-card stat-likely-wins">
-                        <span className="stat-value">
-                            {assessedIdeas.filter(i => i.assessment?.quadrant === 'likely_wins').length}
-                        </span>
-                        <span className="stat-label">Likely Wins</span>
-                    </div>
-                    <div className="stat-card stat-risks">
-                        <span className="stat-value">
-                            {assessedIdeas.filter(i => i.assessment?.quadrant === 'calculated_risks').length}
-                        </span>
-                        <span className="stat-label">Calculated Risks</span>
-                    </div>
-                </div>
-
-                {/* Controls */}
-                <div className="ideas-controls">
-                    <div className="view-toggle">
-                        <button
-                            className={viewMode === 'matrix' ? 'active' : ''}
-                            onClick={() => setViewMode('matrix')}
-                        >
-                            <LayoutGrid size={18} />
-                            Matrix
-                        </button>
-                        <button
-                            className={viewMode === 'list' ? 'active' : ''}
-                            onClick={() => setViewMode('list')}
-                        >
-                            <List size={18} />
-                            List
-                        </button>
+                {/* Priority Matrix Section */}
+                <section className="matrix-section">
+                    <div className="section-header">
+                        <h2>Priority Matrix</h2>
+                        <p>Ideas positioned by Value vs. Feasibility assessment</p>
                     </div>
 
-                    <div className="filters">
-                        <Filter size={16} />
-                        <select
-                            value={statusFilter}
-                            onChange={(e) => setStatusFilter(e.target.value as IdeaStatus | 'all')}
-                            className="filter-select"
-                        >
-                            <option value="all">All Statuses</option>
-                            <option value="submitted">Submitted</option>
-                            <option value="under_review">Under Review</option>
-                            <option value="assessed">Assessed</option>
-                            <option value="prioritized">Prioritized</option>
-                        </select>
-                        <select
-                            value={quadrantFilter}
-                            onChange={(e) => setQuadrantFilter(e.target.value as Quadrant | 'all')}
-                            className="filter-select"
-                        >
-                            <option value="all">All Quadrants</option>
-                            {Object.entries(quadrantInfo).map(([key, info]) => (
-                                <option key={key} value={key}>{info.label}</option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
+                    {loading ? (
+                        <div className="loading-state">
+                            <div className="loading-spinner"></div>
+                            <p>Loading ideas...</p>
+                        </div>
+                    ) : (
+                        <div className="matrix-wrapper">
+                            <PriorityMatrix ideas={assessedIdeas} />
+                        </div>
+                    )}
 
-                {loading ? (
-                    <div className="loading-state">
-                        <div className="loading-spinner"></div>
-                        <p>Loading ideas...</p>
+                    {/* Quadrant Summary */}
+                    <div className="quadrant-summary">
+                        {(Object.entries(quadrantInfo) as [Quadrant, typeof quadrantInfo[Quadrant]][]).map(([key, info]) => (
+                            <div
+                                key={key}
+                                className="quadrant-card"
+                                style={{ borderLeftColor: info.color }}
+                            >
+                                <span className="quadrant-count" style={{ color: info.color }}>
+                                    {assessedIdeas.filter(i => i.assessment?.quadrant === key).length}
+                                </span>
+                                <span className="quadrant-name">{info.label}</span>
+                            </div>
+                        ))}
                     </div>
-                ) : viewMode === 'matrix' ? (
-                    <div className="matrix-view">
-                        <PriorityMatrix ideas={filteredIdeas} />
-                        <div className="assessed-ideas-list">
-                            <h3>Assessed Ideas ({assessedIdeas.length})</h3>
-                            <div className="ideas-grid">
-                                {assessedIdeas.map(idea => (
-                                    <IdeaCard key={idea.id} idea={idea} variant="compact" />
-                                ))}
+                </section>
+
+                {/* Ideas List Section */}
+                <section className="ideas-list-section">
+                    <div className="section-header">
+                        <h2>All Ideas</h2>
+
+                        {/* Controls */}
+                        <div className="ideas-controls">
+                            <div className="view-toggle">
+                                <button
+                                    className={viewMode === 'matrix' ? 'active' : ''}
+                                    onClick={() => setViewMode('matrix')}
+                                >
+                                    <LayoutGrid size={18} />
+                                </button>
+                                <button
+                                    className={viewMode === 'list' ? 'active' : ''}
+                                    onClick={() => setViewMode('list')}
+                                >
+                                    <List size={18} />
+                                </button>
+                            </div>
+
+                            <div className="filters">
+                                <Filter size={16} />
+                                <select
+                                    value={statusFilter}
+                                    onChange={(e) => setStatusFilter(e.target.value as IdeaStatus | 'all')}
+                                    className="filter-select"
+                                >
+                                    <option value="all">All Statuses</option>
+                                    {Object.entries(ideaStatusInfo)
+                                        .filter(([_, info]) => info.order <= 8)
+                                        .sort((a, b) => a[1].order - b[1].order)
+                                        .map(([key, info]) => (
+                                            <option key={key} value={key}>{info.label}</option>
+                                        ))
+                                    }
+                                </select>
+                                <select
+                                    value={quadrantFilter}
+                                    onChange={(e) => setQuadrantFilter(e.target.value as Quadrant | 'all')}
+                                    className="filter-select"
+                                >
+                                    <option value="all">All Quadrants</option>
+                                    {Object.entries(quadrantInfo).map(([key, info]) => (
+                                        <option key={key} value={key}>{info.label}</option>
+                                    ))}
+                                </select>
                             </div>
                         </div>
                     </div>
-                ) : (
-                    <div className="list-view">
-                        <div className="ideas-grid">
+
+                    {loading ? (
+                        <div className="loading-state">
+                            <div className="loading-spinner"></div>
+                            <p>Loading ideas...</p>
+                        </div>
+                    ) : (
+                        <div className={`ideas-grid ${viewMode === 'list' ? 'list-view' : ''}`}>
                             {filteredIdeas.map(idea => (
-                                <IdeaCard key={idea.id} idea={idea} />
+                                <IdeaCard key={idea.id} idea={idea} variant={viewMode === 'list' ? 'compact' : 'default'} />
                             ))}
                         </div>
-                        {filteredIdeas.length === 0 && (
-                            <div className="empty-state">
-                                <p>No ideas match your filters.</p>
-                            </div>
-                        )}
-                    </div>
-                )}
+                    )}
+
+                    {!loading && filteredIdeas.length === 0 && (
+                        <div className="empty-state">
+                            <Lightbulb size={48} />
+                            <h3>No ideas found</h3>
+                            <p>No ideas match your current filters. Try adjusting the filters or submit a new idea.</p>
+                            <Link to="/submit" className="btn btn-primary">
+                                <Plus size={18} />
+                                Submit Idea
+                            </Link>
+                        </div>
+                    )}
+                </section>
             </div>
         </div>
     );

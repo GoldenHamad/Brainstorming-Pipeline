@@ -24,8 +24,8 @@ export function AssessmentQueuePage() {
     const fetchPendingIdeas = async () => {
         setLoading(true);
         const submitted = await ideaService.getIdeasByStatus('submitted');
-        const underReview = await ideaService.getIdeasByStatus('under_review');
-        setPendingIdeas([...submitted, ...underReview]);
+        const screening = await ideaService.getIdeasByStatus('screening');
+        setPendingIdeas([...submitted, ...screening]);
         setLoading(false);
     };
 
@@ -33,9 +33,9 @@ export function AssessmentQueuePage() {
         setSelectedIdea(idea);
         setScores({});
         setRationales({});
-        // Mark as under review
+        // Mark as screening
         if (idea.status === 'submitted') {
-            await ideaService.updateIdeaStatus(idea.id, 'under_review');
+            await ideaService.updateIdeaStatus(idea.id, 'screening');
             fetchPendingIdeas();
         }
     };
@@ -129,7 +129,7 @@ export function AssessmentQueuePage() {
                                 >
                                     <div className="idea-queue-header">
                                         <span className={`status-badge status-${idea.status}`}>
-                                            {idea.status === 'submitted' ? 'New' : 'In Review'}
+                                            {idea.status === 'submitted' ? 'New' : 'Screening'}
                                         </span>
                                         <span className="idea-date">
                                             <Calendar size={12} />

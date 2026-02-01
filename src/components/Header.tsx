@@ -1,11 +1,26 @@
+import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, Plus, LayoutDashboard, ClipboardCheck, User, Lightbulb } from 'lucide-react';
+import { LayoutDashboard, Plus, GitBranch, BarChart3, BookOpen, User, ChevronDown } from 'lucide-react';
 import './Header.css';
 
 export function Header() {
     const location = useLocation();
+    const [resourcesOpen, setResourcesOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     const isActive = (path: string) => location.pathname === path;
+    const isResourcesActive = () => location.pathname.startsWith('/resources');
+
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setResourcesOpen(false);
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
 
     return (
         <header className="header">
@@ -20,8 +35,8 @@ export function Header() {
                         </svg>
                     </div>
                     <div className="logo-text">
-                        <span className="logo-title">KPMG</span>
-                        <span className="logo-subtitle">Prompt Datastore</span>
+                        <span className="logo-title">Advisory</span>
+                        <span className="logo-subtitle">AI Ideas</span>
                     </div>
                 </Link>
 
@@ -30,37 +45,67 @@ export function Header() {
                         to="/"
                         className={`nav-link ${isActive('/') ? 'active' : ''}`}
                     >
-                        <Search size={18} />
-                        <span>Browse</span>
+                        <LayoutDashboard size={18} />
+                        <span>Dashboard</span>
                     </Link>
                     <Link
                         to="/submit"
                         className={`nav-link ${isActive('/submit') ? 'active' : ''}`}
                     >
                         <Plus size={18} />
-                        <span>Submit</span>
+                        <span>Submit Idea</span>
                     </Link>
                     <Link
-                        to="/review"
-                        className={`nav-link ${isActive('/review') ? 'active' : ''}`}
+                        to="/pipeline"
+                        className={`nav-link ${isActive('/pipeline') ? 'active' : ''}`}
                     >
-                        <ClipboardCheck size={18} />
-                        <span>Review</span>
+                        <GitBranch size={18} />
+                        <span>Pipeline</span>
                     </Link>
                     <Link
                         to="/analytics"
                         className={`nav-link ${isActive('/analytics') ? 'active' : ''}`}
                     >
-                        <LayoutDashboard size={18} />
+                        <BarChart3 size={18} />
                         <span>Analytics</span>
                     </Link>
-                    <Link
-                        to="/ideas"
-                        className={`nav-link ${location.pathname.startsWith('/ideas') ? 'active' : ''}`}
-                    >
-                        <Lightbulb size={18} />
-                        <span>Ideas</span>
-                    </Link>
+
+                    {/* Resources Dropdown */}
+                    <div className="nav-dropdown" ref={dropdownRef}>
+                        <button
+                            className={`nav-link nav-dropdown-trigger ${isResourcesActive() ? 'active' : ''}`}
+                            onClick={() => setResourcesOpen(!resourcesOpen)}
+                        >
+                            <BookOpen size={18} />
+                            <span>Resources</span>
+                            <ChevronDown size={14} className={`dropdown-arrow ${resourcesOpen ? 'open' : ''}`} />
+                        </button>
+                        {resourcesOpen && (
+                            <div className="nav-dropdown-menu">
+                                <Link
+                                    to="/resources/prompts"
+                                    className="dropdown-item"
+                                    onClick={() => setResourcesOpen(false)}
+                                >
+                                    Prompt Library
+                                </Link>
+                                <Link
+                                    to="/resources/prompts/submit"
+                                    className="dropdown-item"
+                                    onClick={() => setResourcesOpen(false)}
+                                >
+                                    Submit Prompt
+                                </Link>
+                                <Link
+                                    to="/resources/prompts/review"
+                                    className="dropdown-item"
+                                    onClick={() => setResourcesOpen(false)}
+                                >
+                                    Review Queue
+                                </Link>
+                            </div>
+                        )}
+                    </div>
                 </nav>
 
                 <div className="header-actions">

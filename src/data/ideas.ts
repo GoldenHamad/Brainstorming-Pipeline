@@ -2,7 +2,88 @@
 
 export type ScoreLevel = 'low' | 'medium' | 'high';
 
-export type IdeaStatus = 'submitted' | 'under_review' | 'assessed' | 'prioritized' | 'archived';
+export type IdeaStatus =
+    | 'submitted'      // 1. Ideation - Raw idea captured
+    | 'screening'      // 2. Screening - Initial review for viability
+    | 'assessment'     // 3. Assessment - Detailed value/feasibility scoring
+    | 'prioritized'    // 4. Prioritization - Ranked against other ideas
+    | 'development'    // 5. Development - Building MVP/prototype
+    | 'pilot'          // 6. Pilot - Testing with limited users
+    | 'deployed'       // 7. Deployment - Full production rollout
+    | 'scaling'        // 8. Scaling - Optimization and expansion
+    | 'on_hold'        // Paused for resources/timing
+    | 'rejected'       // Did not pass a gate
+    | 'archived';      // Completed or deprecated
+
+// Status display info for UI
+export const ideaStatusInfo: Record<IdeaStatus, { label: string; color: string; description: string; order: number }> = {
+    submitted: {
+        label: 'Submitted',
+        color: '#6C757D',
+        description: 'Raw idea captured, awaiting initial review',
+        order: 1
+    },
+    screening: {
+        label: 'Screening',
+        color: '#17A2B8',
+        description: 'Initial review for strategic alignment and viability',
+        order: 2
+    },
+    assessment: {
+        label: 'Assessment',
+        color: '#483698',
+        description: 'Detailed value and feasibility scoring in progress',
+        order: 3
+    },
+    prioritized: {
+        label: 'Prioritized',
+        color: '#00A3A1',
+        description: 'Ranked and selected for implementation',
+        order: 4
+    },
+    development: {
+        label: 'Development',
+        color: '#FFC107',
+        description: 'Building MVP or prototype solution',
+        order: 5
+    },
+    pilot: {
+        label: 'Pilot',
+        color: '#FF6B35',
+        description: 'Testing with limited users to validate',
+        order: 6
+    },
+    deployed: {
+        label: 'Deployed',
+        color: '#28A745',
+        description: 'Full production rollout complete',
+        order: 7
+    },
+    scaling: {
+        label: 'Scaling',
+        color: '#00338D',
+        description: 'Optimization and organizational expansion',
+        order: 8
+    },
+    on_hold: {
+        label: 'On Hold',
+        color: '#ADB5BD',
+        description: 'Paused due to resources or timing',
+        order: 99
+    },
+    rejected: {
+        label: 'Rejected',
+        color: '#DC3545',
+        description: 'Did not pass a stage gate',
+        order: 100
+    },
+    archived: {
+        label: 'Archived',
+        color: '#343A40',
+        description: 'Completed lifecycle or deprecated',
+        order: 101
+    }
+};
 
 export type Quadrant = 'likely_wins' | 'calculated_risks' | 'marginal_gains' | 'avoid';
 
@@ -160,7 +241,7 @@ export const mockIdeas: Idea[] = [
         submitterName: 'Sarah Chen',
         submitterEmail: 'sarah.chen@kpmg.com',
         createdAt: '2026-01-15T09:00:00Z',
-        status: 'assessed',
+        status: 'prioritized',
         assessment: {
             ideaId: 'IDEA-001',
             businessGrowth: 'medium',
@@ -191,7 +272,7 @@ export const mockIdeas: Idea[] = [
         submitterName: 'Michael Roberts',
         submitterEmail: 'michael.roberts@kpmg.com',
         createdAt: '2026-01-14T11:30:00Z',
-        status: 'assessed',
+        status: 'prioritized',
         assessment: {
             ideaId: 'IDEA-002',
             businessGrowth: 'high',
@@ -222,7 +303,7 @@ export const mockIdeas: Idea[] = [
         submitterName: 'Jennifer Park',
         submitterEmail: 'jennifer.park@kpmg.com',
         createdAt: '2026-01-13T08:45:00Z',
-        status: 'assessed',
+        status: 'prioritized',
         assessment: {
             ideaId: 'IDEA-003',
             businessGrowth: 'high',
@@ -253,7 +334,7 @@ export const mockIdeas: Idea[] = [
         submitterName: 'David Thompson',
         submitterEmail: 'david.thompson@kpmg.com',
         createdAt: '2026-01-12T14:20:00Z',
-        status: 'assessed',
+        status: 'prioritized',
         assessment: {
             ideaId: 'IDEA-004',
             businessGrowth: 'low',
@@ -284,7 +365,7 @@ export const mockIdeas: Idea[] = [
         submitterName: 'Lisa Wang',
         submitterEmail: 'lisa.wang@kpmg.com',
         createdAt: '2026-01-11T10:00:00Z',
-        status: 'assessed',
+        status: 'prioritized',
         assessment: {
             ideaId: 'IDEA-005',
             businessGrowth: 'high',
@@ -326,7 +407,7 @@ export const mockIdeas: Idea[] = [
         submitterName: 'Amanda Foster',
         submitterEmail: 'amanda.foster@kpmg.com',
         createdAt: '2026-01-19T15:00:00Z',
-        status: 'under_review'
+        status: 'screening'
     },
     {
         id: 'IDEA-008',
