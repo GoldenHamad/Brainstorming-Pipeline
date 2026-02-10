@@ -1,0 +1,727 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<style>
+    @page { size: A4; margin: 2.5cm 2.5cm 2.5cm 2.5cm; }
+    body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #333333; line-height: 1.5; }
+    h1 { font-size: 22pt; color: #00338D; margin-top: 0; margin-bottom: 6pt; font-weight: bold; }
+    h2 { font-size: 16pt; color: #00338D; margin-top: 18pt; margin-bottom: 8pt; border-bottom: 2px solid #00338D; padding-bottom: 4pt; }
+    h3 { font-size: 13pt; color: #483698; margin-top: 14pt; margin-bottom: 6pt; }
+    h4 { font-size: 11pt; color: #00A3A1; margin-top: 10pt; margin-bottom: 4pt; font-weight: bold; }
+    p { margin: 0 0 8pt 0; }
+    table { border-collapse: collapse; width: 100%; margin: 8pt 0 12pt 0; font-size: 10pt; }
+    th { background-color: #00338D; color: white; padding: 6pt 8pt; text-align: left; font-weight: bold; border: 1px solid #00338D; }
+    td { padding: 5pt 8pt; border: 1px solid #CCCCCC; vertical-align: top; }
+    tr:nth-child(even) td { background-color: #F5F7FA; }
+    .subtitle { font-size: 13pt; color: #666666; margin-bottom: 4pt; }
+    .tag-green { background-color: #D4EDDA; color: #155724; padding: 2pt 6pt; font-size: 9pt; font-weight: bold; }
+    .tag-yellow { background-color: #FFF3CD; color: #856404; padding: 2pt 6pt; font-size: 9pt; font-weight: bold; }
+    .tag-red { background-color: #F8D7DA; color: #721C24; padding: 2pt 6pt; font-size: 9pt; font-weight: bold; }
+    .tag-blue { background-color: #D1ECF1; color: #0C5460; padding: 2pt 6pt; font-size: 9pt; font-weight: bold; }
+    .callout { background-color: #E8F0FE; border-left: 4px solid #00338D; padding: 8pt 12pt; margin: 10pt 0; }
+    .callout-green { background-color: #E8F5E9; border-left: 4px solid #28A745; padding: 8pt 12pt; margin: 10pt 0; }
+    .winner { background-color: #D4EDDA; font-weight: bold; }
+    ul { margin: 4pt 0 8pt 0; padding-left: 20pt; }
+    li { margin-bottom: 3pt; }
+    .verdict { font-size: 12pt; font-weight: bold; color: #00338D; }
+</style>
+</head>
+<body>
+
+<h1>Power Apps vs Power Pages</h1>
+<p class="subtitle">Platform Comparison for the Advisory AI Ideas Application</p>
+<p style="font-size: 10pt; color: #888888;">Prepared: February 2026 &nbsp;|&nbsp; Application: Advisory AI Ideas &amp; Prompt Library</p>
+
+<br/>
+
+<!-- ==================== SECTION 1 ==================== -->
+<h2>1. Executive Summary</h2>
+
+<p>This document compares two Microsoft Power Platform options for migrating the <b>Advisory AI Ideas</b> React/TypeScript application: <b>Power Apps (Canvas App)</b> and <b>Power Pages</b>. Each platform has different strengths depending on your priorities around design fidelity, development speed, governance, and user experience.</p>
+
+<table>
+<tr>
+    <th style="width:25%;">Criteria</th>
+    <th style="width:37%;">Power Apps (Canvas App)</th>
+    <th style="width:38%;">Power Pages</th>
+</tr>
+<tr>
+    <td><b>Best for</b></td>
+    <td>Internal teams, fast low-code delivery, tight Microsoft 365 integration</td>
+    <td>Pixel-perfect design, external-facing portals, full HTML/CSS/JS control</td>
+</tr>
+<tr>
+    <td><b>Estimated timeline</b></td>
+    <td>3 &ndash; 5 days (AI-assisted)</td>
+    <td>4 &ndash; 7 days (AI-assisted)</td>
+</tr>
+<tr>
+    <td><b>Design fidelity</b></td>
+    <td>~70&ndash;80% match to current UI</td>
+    <td>~95&ndash;100% match to current UI</td>
+</tr>
+<tr>
+    <td><b>Licensing cost</b></td>
+    <td>Included with most Microsoft 365 E3/E5 plans</td>
+    <td>Separate Power Pages license required</td>
+</tr>
+</table>
+
+<div class="callout">
+<b>Bottom line:</b> Choose <b>Power Apps</b> if the audience is internal KPMG staff and speed matters most. Choose <b>Power Pages</b> if keeping the exact current interface design is the top priority or if external users will access the platform.
+</div>
+
+<!-- ==================== SECTION 2 ==================== -->
+<h2>2. Application Overview</h2>
+
+<p>The Advisory AI Ideas platform is a React 18 + TypeScript single-page application with two modules:</p>
+
+<table>
+<tr>
+    <th style="width:20%;">Module</th>
+    <th style="width:35%;">Features</th>
+    <th style="width:45%;">Key Technical Elements</th>
+</tr>
+<tr>
+    <td><b>AI Ideas Pipeline</b></td>
+    <td>Submit ideas, weighted value/feasibility scoring, quadrant matrix, 11-stage pipeline, analytics dashboard</td>
+    <td>Weighted scoring (Value: 20/20/30/30, Feasibility: 50/30/20), threshold-based quadrant assignment (2.0 cutoff), CRUD operations via localStorage</td>
+</tr>
+<tr>
+    <td><b>Prompt Library</b></td>
+    <td>16 curated prompts, multi-criteria search, ratings, usage tracking, submission &amp; approval workflow, analytics</td>
+    <td>Category-based filtering, running average ratings, copy tracking, approval queue, 6 categories &times; 3 complexity levels &times; 5 AI tools</td>
+</tr>
+</table>
+
+<p><b>Current stack:</b> React 18 &bull; TypeScript &bull; React Router (HashRouter, 10 routes) &bull; localStorage (no backend/API) &bull; 10 components &bull; 10 pages</p>
+
+<!-- ==================== SECTION 3 ==================== -->
+<h2>3. Platform Overviews</h2>
+
+<h3>3.1 Power Apps (Canvas App)</h3>
+<p>A <b>low-code</b> app builder within Microsoft Power Platform. You design screens by dragging and arranging controls on a canvas, and write logic in <b>Power Fx</b> (a formula language similar to Excel). Apps run inside the Power Apps player on web, mobile, and Teams.</p>
+<ul>
+    <li>Drag-and-drop screen builder with 200+ built-in controls</li>
+    <li>Native Dataverse connector &mdash; no API coding needed</li>
+    <li>Power Fx formulas replace TypeScript business logic</li>
+    <li>Copilot in Power Apps can generate screens from natural-language prompts</li>
+    <li>Built-in user authentication via Azure AD</li>
+</ul>
+
+<h3>3.2 Power Pages</h3>
+<p>A <b>low-code website platform</b> (formerly Power Apps Portals) for building data-driven web sites connected to Dataverse. You get a visual Design Studio <i>plus</i> full access to inject custom <b>HTML, CSS, and JavaScript</b>, so you can replicate the existing React interface nearly pixel-for-pixel.</p>
+<ul>
+    <li>Full HTML/CSS/JS editing within the portal framework</li>
+    <li>Liquid templates for server-side data binding to Dataverse</li>
+    <li>Web API for client-side CRUD against Dataverse tables</li>
+    <li>Built-in authentication for both internal (Azure AD) and external users</li>
+    <li>Copilot in Power Pages can generate page layouts and forms</li>
+</ul>
+
+<!-- ==================== SECTION 4 ==================== -->
+<h2>4. Head-to-Head Comparison</h2>
+
+<h3>4.1 Design &amp; UI Fidelity</h3>
+
+<table>
+<tr>
+    <th style="width:28%;">UI Element</th>
+    <th style="width:36%;">Power Apps</th>
+    <th style="width:36%;">Power Pages</th>
+</tr>
+<tr>
+    <td>KPMG brand colours &amp; fonts</td>
+    <td><span class="tag-yellow">Partial</span> &mdash; Custom theme possible but limited to control palette</td>
+    <td class="winner"><span class="tag-green">Full</span> &mdash; Direct CSS control, exact hex values &amp; font imports</td>
+</tr>
+<tr>
+    <td>Priority Matrix (quadrant scatter plot)</td>
+    <td><span class="tag-yellow">Workaround</span> &mdash; Embed Power BI visual or use HTML text control</td>
+    <td class="winner"><span class="tag-green">Native</span> &mdash; Use Chart.js or any JS charting library directly</td>
+</tr>
+<tr>
+    <td>Idea Cards with status badges</td>
+    <td><span class="tag-green">Good</span> &mdash; Gallery control with conditional formatting</td>
+    <td class="winner"><span class="tag-green">Exact</span> &mdash; Reuse existing React component HTML/CSS</td>
+</tr>
+<tr>
+    <td>Pipeline Kanban board (11 stages)</td>
+    <td><span class="tag-red">Limited</span> &mdash; No native Kanban; must simulate with galleries</td>
+    <td class="winner"><span class="tag-green">Full</span> &mdash; Implement with HTML/CSS/JS or a JS Kanban library</td>
+</tr>
+<tr>
+    <td>Multi-filter search panel</td>
+    <td><span class="tag-green">Good</span> &mdash; Combo boxes &amp; dropdowns with Filter()/Search()</td>
+    <td class="winner"><span class="tag-green">Exact</span> &mdash; Reuse existing FilterPanel component logic</td>
+</tr>
+<tr>
+    <td>Rating widget (star input)</td>
+    <td><span class="tag-yellow">Workaround</span> &mdash; Custom icon-button row</td>
+    <td class="winner"><span class="tag-green">Exact</span> &mdash; Standard HTML/JS star rating</td>
+</tr>
+<tr>
+    <td>Responsive layout</td>
+    <td><span class="tag-yellow">Manual</span> &mdash; Separate phone/tablet layouts or manual responsive formulas</td>
+    <td class="winner"><span class="tag-green">Native</span> &mdash; Standard CSS media queries</td>
+</tr>
+<tr>
+    <td>Analytics charts &amp; graphs</td>
+    <td><span class="tag-green">Good</span> &mdash; Built-in charts or embed Power BI</td>
+    <td><span class="tag-green">Good</span> &mdash; Any JS chart library (Chart.js, Recharts)</td>
+</tr>
+</table>
+
+<p class="verdict">Design winner: Power Pages &mdash; near-100% fidelity to the current React interface.</p>
+
+<h3>4.2 Data Layer &amp; Backend</h3>
+
+<table>
+<tr>
+    <th style="width:28%;">Capability</th>
+    <th style="width:36%;">Power Apps</th>
+    <th style="width:36%;">Power Pages</th>
+</tr>
+<tr>
+    <td>Dataverse integration</td>
+    <td class="winner"><span class="tag-green">Native</span> &mdash; Direct table binding, no code</td>
+    <td><span class="tag-green">Good</span> &mdash; Liquid templates + Web API</td>
+</tr>
+<tr>
+    <td>Ideas table CRUD</td>
+    <td class="winner"><span class="tag-green">Built-in</span> &mdash; Patch(), SubmitForm(), Remove()</td>
+    <td><span class="tag-green">Good</span> &mdash; Web API calls (fetch-based)</td>
+</tr>
+<tr>
+    <td>Weighted scoring logic</td>
+    <td class="winner"><span class="tag-green">Native</span> &mdash; Power Fx calculated columns or formulas</td>
+    <td><span class="tag-green">Good</span> &mdash; JavaScript or Dataverse calculated fields</td>
+</tr>
+<tr>
+    <td>Approval workflow</td>
+    <td class="winner"><span class="tag-green">Seamless</span> &mdash; Power Automate triggers directly from app</td>
+    <td><span class="tag-green">Good</span> &mdash; Power Automate via HTTP trigger or Dataverse trigger</td>
+</tr>
+<tr>
+    <td>Offline support</td>
+    <td class="winner"><span class="tag-green">Built-in</span> &mdash; Canvas Apps can work offline</td>
+    <td><span class="tag-red">None</span> &mdash; Requires internet</td>
+</tr>
+<tr>
+    <td>Data migration (mock data)</td>
+    <td><span class="tag-green">Easy</span> &mdash; Import via Excel/CSV into Dataverse</td>
+    <td><span class="tag-green">Easy</span> &mdash; Same Dataverse import</td>
+</tr>
+</table>
+
+<p class="verdict">Data layer winner: Power Apps &mdash; tighter Dataverse integration with zero-code bindings.</p>
+
+<h3>4.3 Business Logic Translation</h3>
+
+<p>The application contains two critical calculation engines. Here is how each platform handles them:</p>
+
+<h4>Weighted Value Score (from ideaService.ts)</h4>
+<table>
+<tr>
+    <th style="width:15%;">Platform</th>
+    <th>Implementation</th>
+</tr>
+<tr>
+    <td><b>Power Apps</b></td>
+    <td><code style="font-size:9pt;">Set(valueScore, ScoreMap(businessGrowth)*0.20 + ScoreMap(costEfficiency)*0.20 + ScoreMap(businessResilience)*0.30 + ScoreMap(businessAgility)*0.30)</code><br/>Uses Power Fx formula directly in the assessment form screen. ScoreMap is a Switch() that converts low/medium/high &rarr; 1/2/3.</td>
+</tr>
+<tr>
+    <td><b>Power Pages</b></td>
+    <td>Option A: Reuse the exact TypeScript <code>calculateValueScore()</code> function in a <code>&lt;script&gt;</code> block on the page.<br/>Option B: Define as a Dataverse calculated column so scoring is server-side.</td>
+</tr>
+</table>
+
+<h4>Quadrant Determination (threshold = 2.0)</h4>
+<table>
+<tr>
+    <th style="width:15%;">Platform</th>
+    <th>Implementation</th>
+</tr>
+<tr>
+    <td><b>Power Apps</b></td>
+    <td><code style="font-size:9pt;">If(valueScore>=2 And feasScore>=2, "likely_wins", valueScore>=2 And feasScore&lt;2, "calculated_risks", valueScore&lt;2 And feasScore>=2, "marginal_gains", "avoid")</code></td>
+</tr>
+<tr>
+    <td><b>Power Pages</b></td>
+    <td>Reuse the existing <code>determineQuadrant()</code> JavaScript function as-is, or compute via Dataverse business rule.</td>
+</tr>
+</table>
+
+<h3>4.4 Development Speed &amp; Effort</h3>
+
+<table>
+<tr>
+    <th style="width:30%;">Task</th>
+    <th style="width:35%;">Power Apps</th>
+    <th style="width:35%;">Power Pages</th>
+</tr>
+<tr>
+    <td>Dataverse tables setup (Ideas, Assessments, Prompts, Ratings)</td>
+    <td>0.5 day</td>
+    <td>0.5 day (shared Dataverse)</td>
+</tr>
+<tr>
+    <td>Ideas module (Dashboard, Submit, Detail, Pipeline, Analytics)</td>
+    <td class="winner">1 &ndash; 1.5 days</td>
+    <td>2 &ndash; 2.5 days</td>
+</tr>
+<tr>
+    <td>Prompts module (Library, Detail, Submit, Review, Analytics)</td>
+    <td class="winner">1 &ndash; 1.5 days</td>
+    <td>1.5 &ndash; 2 days</td>
+</tr>
+<tr>
+    <td>Scoring logic &amp; workflows</td>
+    <td>0.5 day</td>
+    <td>0.5 day</td>
+</tr>
+<tr>
+    <td>Design polish &amp; UI matching</td>
+    <td>0.5 &ndash; 1 day</td>
+    <td class="winner">0.5 day (reuse existing CSS)</td>
+</tr>
+<tr>
+    <td>Testing &amp; refinement</td>
+    <td>0.5 day</td>
+    <td>0.5 day</td>
+</tr>
+<tr>
+    <td style="font-weight:bold;">Total estimated</td>
+    <td style="font-weight:bold;">3 &ndash; 5 days</td>
+    <td style="font-weight:bold;">4 &ndash; 7 days</td>
+</tr>
+</table>
+
+<p class="verdict">Speed winner: Power Apps &mdash; low-code controls mean less manual coding.</p>
+
+<h3>4.5 Governance, Security &amp; Licensing</h3>
+
+<table>
+<tr>
+    <th style="width:28%;">Factor</th>
+    <th style="width:36%;">Power Apps</th>
+    <th style="width:36%;">Power Pages</th>
+</tr>
+<tr>
+    <td>Authentication</td>
+    <td class="winner">Automatic Azure AD &mdash; zero config</td>
+    <td>Azure AD (internal) + local/B2C (external) &mdash; requires setup</td>
+</tr>
+<tr>
+    <td>Row-level security</td>
+    <td><span class="tag-green">Dataverse security roles</span></td>
+    <td><span class="tag-green">Dataverse security roles + table permissions</span></td>
+</tr>
+<tr>
+    <td>DLP &amp; compliance</td>
+    <td class="winner">Full Power Platform DLP policies apply</td>
+    <td>DLP policies apply + additional web security headers needed</td>
+</tr>
+<tr>
+    <td>Licensing</td>
+    <td class="winner">Often included in M365 E3/E5 (for Dataverse-based apps)</td>
+    <td>Separate Power Pages license (~$200/site/month for authenticated users)</td>
+</tr>
+<tr>
+    <td>Mobile access</td>
+    <td class="winner">Dedicated Power Apps mobile app + Teams embed</td>
+    <td>Responsive website &mdash; works in any browser</td>
+</tr>
+<tr>
+    <td>External user access</td>
+    <td><span class="tag-red">Not designed for external</span></td>
+    <td class="winner"><span class="tag-green">Built for external portals</span></td>
+</tr>
+</table>
+
+<p class="verdict">Governance winner: Power Apps for internal use; Power Pages if external access is needed.</p>
+
+<!-- ==================== SECTION 5 ==================== -->
+<h2>5. Feature-by-Feature Migration Map</h2>
+
+<p>Each current feature is rated for migration difficulty on both platforms.</p>
+
+<table>
+<tr>
+    <th style="width:28%;">Feature (Current React)</th>
+    <th style="width:12%;">Screens</th>
+    <th style="width:30%;">Power Apps Approach</th>
+    <th style="width:30%;">Power Pages Approach</th>
+</tr>
+<tr>
+    <td>Ideas Dashboard</td>
+    <td>1</td>
+    <td><span class="tag-green">Easy</span> Gallery + cards</td>
+    <td><span class="tag-green">Easy</span> Liquid list + HTML cards</td>
+</tr>
+<tr>
+    <td>Submit Idea Form</td>
+    <td>1</td>
+    <td><span class="tag-green">Easy</span> Edit form + Patch()</td>
+    <td><span class="tag-green">Easy</span> Basic form (entity form)</td>
+</tr>
+<tr>
+    <td>Idea Detail + Assessment</td>
+    <td>1</td>
+    <td><span class="tag-green">Easy</span> Display form + scoring panel</td>
+    <td><span class="tag-green">Easy</span> Web template + JS scoring</td>
+</tr>
+<tr>
+    <td>Pipeline Kanban (11 stages)</td>
+    <td>1</td>
+    <td><span class="tag-red">Hard</span> Multiple filtered galleries side-by-side</td>
+    <td><span class="tag-green">Easy</span> HTML/CSS/JS Kanban board</td>
+</tr>
+<tr>
+    <td>Priority Matrix (scatter quadrant)</td>
+    <td>1</td>
+    <td><span class="tag-yellow">Medium</span> Embedded Power BI visual</td>
+    <td><span class="tag-green">Easy</span> Chart.js scatter plot</td>
+</tr>
+<tr>
+    <td>Ideas Analytics</td>
+    <td>1</td>
+    <td><span class="tag-green">Easy</span> Built-in charts or Power BI</td>
+    <td><span class="tag-green">Easy</span> Chart.js dashboards</td>
+</tr>
+<tr>
+    <td>Prompt Library (search + filter)</td>
+    <td>1</td>
+    <td><span class="tag-green">Easy</span> Gallery + Filter()/Search()</td>
+    <td><span class="tag-green">Easy</span> Liquid list + JS filtering</td>
+</tr>
+<tr>
+    <td>Prompt Detail + Rating</td>
+    <td>1</td>
+    <td><span class="tag-yellow">Medium</span> Custom star-rating row</td>
+    <td><span class="tag-green">Easy</span> HTML star widget</td>
+</tr>
+<tr>
+    <td>Submit Prompt Form</td>
+    <td>1</td>
+    <td><span class="tag-green">Easy</span> Edit form + multi-select</td>
+    <td><span class="tag-green">Easy</span> Basic form</td>
+</tr>
+<tr>
+    <td>Review Queue (approve/reject)</td>
+    <td>1</td>
+    <td><span class="tag-green">Easy</span> Gallery + status buttons + Power Automate</td>
+    <td><span class="tag-yellow">Medium</span> Custom list + Web API status updates</td>
+</tr>
+<tr>
+    <td>Prompt Analytics</td>
+    <td>1</td>
+    <td><span class="tag-green">Easy</span> Charts or Power BI</td>
+    <td><span class="tag-green">Easy</span> Chart.js</td>
+</tr>
+<tr>
+    <td>Navigation / Header</td>
+    <td>&mdash;</td>
+    <td><span class="tag-green">Easy</span> Built-in tab/screen navigation</td>
+    <td><span class="tag-green">Easy</span> Standard web nav bar</td>
+</tr>
+<tr>
+    <td>Toast notifications</td>
+    <td>&mdash;</td>
+    <td><span class="tag-yellow">Medium</span> Notify() function (limited styling)</td>
+    <td><span class="tag-green">Easy</span> Reuse existing Toast component CSS/JS</td>
+</tr>
+</table>
+
+<div class="callout">
+<b>Migration difficulty summary:</b> Power Apps has 9 Easy, 3 Medium, 1 Hard. Power Pages has 12 Easy, 1 Medium, 0 Hard.
+</div>
+
+<!-- ==================== SECTION 6 ==================== -->
+<h2>6. Dataverse Schema (Shared by Both Platforms)</h2>
+
+<p>Regardless of which platform you choose, the Dataverse backend is the same. Here are the required tables:</p>
+
+<table>
+<tr>
+    <th>Table Name</th>
+    <th>Key Columns</th>
+    <th>Notes</th>
+</tr>
+<tr>
+    <td><b>AI_Idea</b></td>
+    <td>IdeaId (PK), Title, Description, AICapabilityArea (Choice), BusinessFunction (Choice), ExpectedBenefits, SubmitterName, SubmitterEmail, Status (Choice: 11 values), CreatedAt</td>
+    <td>Main ideas table. Status choice set mirrors the 11 IdeaStatus values.</td>
+</tr>
+<tr>
+    <td><b>AI_IdeaAssessment</b></td>
+    <td>AssessmentId (PK), IdeaId (FK), BusinessGrowth/CostEfficiency/BusinessResilience/BusinessAgility (Choice: low/medium/high), TechnicalFeasibility/InternalReadiness/ExternalReadiness (Choice), ValueScore (Calculated), FeasibilityScore (Calculated), Quadrant (Calculated), AssessedBy, AssessedAt</td>
+    <td>1:1 relationship with AI_Idea. Calculated columns handle scoring.</td>
+</tr>
+<tr>
+    <td><b>AI_Prompt</b></td>
+    <td>PromptId (PK), Title, Category (Choice: 6 values), PromptText, OutputFormat (Choice), ComplexityLevel (Choice), BestPractices, Owner, Tags, AITools (Multi-select), Version, UsageCount, Rating, RatingCount, Status (Choice: 5 values)</td>
+    <td>Main prompts table. Tags stored as comma-separated or related table.</td>
+</tr>
+<tr>
+    <td><b>AI_PromptRating</b></td>
+    <td>RatingId (PK), PromptId (FK), UserId, Rating (1&ndash;5), Feedback, CreatedAt</td>
+    <td>Supports running average calculation on AI_Prompt.Rating.</td>
+</tr>
+</table>
+
+<!-- ==================== SECTION 7 ==================== -->
+<h2>7. AI-Assisted Workflow for Each Platform</h2>
+
+<h3>7.1 Power Apps &mdash; AI-Accelerated Build (3&ndash;5 Days)</h3>
+
+<table>
+<tr>
+    <th style="width:10%;">Day</th>
+    <th style="width:25%;">Task</th>
+    <th style="width:35%;">AI Tool &amp; Prompt</th>
+    <th style="width:30%;">Output</th>
+</tr>
+<tr>
+    <td><b>1</b></td>
+    <td>Dataverse tables + Canvas App shell</td>
+    <td>Copilot: <i>&ldquo;Create a Canvas App with screens for Ideas Dashboard, Submit Idea, Idea Detail, Pipeline, and Analytics connected to Dataverse&rdquo;</i></td>
+    <td>5 auto-generated screens with basic Dataverse bindings</td>
+</tr>
+<tr>
+    <td><b>2</b></td>
+    <td>Ideas module polish + scoring logic</td>
+    <td>Copilot: Generate gallery layouts &amp; form controls. Manually add Power Fx scoring formulas.</td>
+    <td>Functional Ideas module with scoring &amp; quadrant assignment</td>
+</tr>
+<tr>
+    <td><b>3</b></td>
+    <td>Prompts module</td>
+    <td>Copilot: <i>&ldquo;Add screens for Prompt Library, Prompt Detail, Submit Prompt, Review Queue, and Prompt Analytics&rdquo;</i></td>
+    <td>Functional Prompts module with search/filter, rating, and review</td>
+</tr>
+<tr>
+    <td><b>4</b></td>
+    <td>Workflows + analytics</td>
+    <td>Copilot in Power Automate: <i>&ldquo;When a prompt is submitted to Dataverse, notify the review team and set status to pending&rdquo;</i></td>
+    <td>Approval flows, notification emails, Power BI or in-app charts</td>
+</tr>
+<tr>
+    <td><b>5</b></td>
+    <td>Theme, testing, deployment</td>
+    <td>Manual: Apply KPMG theme, import mock data, UAT testing</td>
+    <td>Production-ready Canvas App published to environment</td>
+</tr>
+</table>
+
+<h3>7.2 Power Pages &mdash; AI-Accelerated Build (4&ndash;7 Days)</h3>
+
+<table>
+<tr>
+    <th style="width:10%;">Day</th>
+    <th style="width:25%;">Task</th>
+    <th style="width:35%;">AI Tool &amp; Prompt</th>
+    <th style="width:30%;">Output</th>
+</tr>
+<tr>
+    <td><b>1</b></td>
+    <td>Dataverse tables + Power Pages site</td>
+    <td>Copilot: <i>&ldquo;Create a Power Pages site for managing AI idea submissions with a dashboard and detail pages&rdquo;</i></td>
+    <td>Site scaffold with Dataverse-connected pages</td>
+</tr>
+<tr>
+    <td><b>2&ndash;3</b></td>
+    <td>Ideas module &mdash; convert React to Power Pages</td>
+    <td>Claude/ChatGPT: <i>&ldquo;Convert this React component to vanilla HTML/CSS/JS that calls the Dataverse Web API. Keep the same visual design.&rdquo;</i> (paste each component)</td>
+    <td>5 custom web templates with scoring JS, quadrant chart, pipeline board</td>
+</tr>
+<tr>
+    <td><b>4&ndash;5</b></td>
+    <td>Prompts module &mdash; convert React to Power Pages</td>
+    <td>Claude/ChatGPT: same conversion approach for Prompt Library, Detail, Submit, Review, Analytics pages</td>
+    <td>5 custom web templates with filtering, rating widget, approval UI</td>
+</tr>
+<tr>
+    <td><b>6</b></td>
+    <td>Workflows + integration</td>
+    <td>Copilot in Power Automate for approval flows; configure table permissions and web roles</td>
+    <td>Working approval workflow, correct security model</td>
+</tr>
+<tr>
+    <td><b>7</b></td>
+    <td>Testing, polish, deployment</td>
+    <td>Manual: cross-browser testing, responsive checks, import mock data</td>
+    <td>Production-ready Power Pages site</td>
+</tr>
+</table>
+
+<!-- ==================== SECTION 8 ==================== -->
+<h2>8. Pros and Cons Summary</h2>
+
+<h3>8.1 Power Apps (Canvas App)</h3>
+
+<table>
+<tr>
+    <th style="width:50%; background-color:#28A745;">Pros</th>
+    <th style="width:50%; background-color:#DC3545;">Cons</th>
+</tr>
+<tr>
+    <td>
+        <ul>
+            <li>Fastest path to a working app (3&ndash;5 days)</li>
+            <li>No coding required &mdash; Power Fx formulas only</li>
+            <li>Copilot generates screens and logic automatically</li>
+            <li>Native Dataverse binding &mdash; zero API code</li>
+            <li>Seamless Power Automate integration for workflows</li>
+            <li>Usually included in existing Microsoft 365 licenses</li>
+            <li>Mobile app + Teams embed out of the box</li>
+            <li>Offline capability for field users</li>
+        </ul>
+    </td>
+    <td>
+        <ul>
+            <li>Design is ~70&ndash;80% match &mdash; constrained by control library</li>
+            <li>No native Kanban control for the 11-stage pipeline</li>
+            <li>Scatter-plot quadrant matrix requires Power BI embed</li>
+            <li>Custom CSS not supported &mdash; limited theming options</li>
+            <li>Not suitable for external (non-Azure AD) users</li>
+            <li>Performance can degrade with complex galleries (&gt;500 records)</li>
+            <li>Responsive design requires manual layout management</li>
+        </ul>
+    </td>
+</tr>
+</table>
+
+<h3>8.2 Power Pages</h3>
+
+<table>
+<tr>
+    <th style="width:50%; background-color:#28A745;">Pros</th>
+    <th style="width:50%; background-color:#DC3545;">Cons</th>
+</tr>
+<tr>
+    <td>
+        <ul>
+            <li>~95&ndash;100% design fidelity &mdash; full HTML/CSS/JS control</li>
+            <li>Existing React CSS and logic can be directly reused</li>
+            <li>Chart.js / any JS library for quadrant matrix &amp; analytics</li>
+            <li>Kanban board implemented natively with drag-and-drop JS</li>
+            <li>Standard web experience &mdash; no special player needed</li>
+            <li>Supports both internal (Azure AD) and external users</li>
+            <li>Responsive design via standard CSS media queries</li>
+            <li>Copilot for Power Pages assists with layout generation</li>
+        </ul>
+    </td>
+    <td>
+        <ul>
+            <li>Longer build time (4&ndash;7 days) &mdash; more manual coding</li>
+            <li>Requires JavaScript/HTML skills (not purely low-code)</li>
+            <li>Separate Power Pages license ($200+/site/month)</li>
+            <li>Dataverse access requires Web API calls or Liquid &mdash; more setup</li>
+            <li>No offline capability</li>
+            <li>No native mobile app &mdash; browser-only experience</li>
+            <li>Table permissions and web roles add configuration complexity</li>
+        </ul>
+    </td>
+</tr>
+</table>
+
+<!-- ==================== SECTION 9 ==================== -->
+<h2>9. Decision Matrix</h2>
+
+<p>Score each criterion 1&ndash;5 based on your priorities, then multiply by weight to find your best fit.</p>
+
+<table>
+<tr>
+    <th style="width:28%;">Criterion</th>
+    <th style="width:12%;">Weight</th>
+    <th style="width:15%;">Power Apps Score</th>
+    <th style="width:15%;">Power Pages Score</th>
+    <th style="width:15%;">PA Weighted</th>
+    <th style="width:15%;">PP Weighted</th>
+</tr>
+<tr>
+    <td>Design fidelity (match current UI)</td>
+    <td>30%</td>
+    <td>3</td>
+    <td>5</td>
+    <td>0.9</td>
+    <td>1.5</td>
+</tr>
+<tr>
+    <td>Development speed</td>
+    <td>25%</td>
+    <td>5</td>
+    <td>3</td>
+    <td>1.25</td>
+    <td>0.75</td>
+</tr>
+<tr>
+    <td>Licensing / cost</td>
+    <td>15%</td>
+    <td>5</td>
+    <td>2</td>
+    <td>0.75</td>
+    <td>0.30</td>
+</tr>
+<tr>
+    <td>Maintenance simplicity</td>
+    <td>15%</td>
+    <td>5</td>
+    <td>3</td>
+    <td>0.75</td>
+    <td>0.45</td>
+</tr>
+<tr>
+    <td>External user access</td>
+    <td>10%</td>
+    <td>1</td>
+    <td>5</td>
+    <td>0.10</td>
+    <td>0.50</td>
+</tr>
+<tr>
+    <td>Mobile experience</td>
+    <td>5%</td>
+    <td>5</td>
+    <td>3</td>
+    <td>0.25</td>
+    <td>0.15</td>
+</tr>
+<tr style="font-weight: bold; background-color: #E8F0FE;">
+    <td><b>TOTAL</b></td>
+    <td><b>100%</b></td>
+    <td>&mdash;</td>
+    <td>&mdash;</td>
+    <td><b>4.00</b></td>
+    <td><b>3.65</b></td>
+</tr>
+</table>
+
+<div class="callout">
+<b>Note:</b> These scores assume an <b>internal-only</b> audience. If external user access is critical (weight increases from 10% to 30%), Power Pages overtakes Power Apps. Adjust weights to match your actual priorities.
+</div>
+
+<!-- ==================== SECTION 10 ==================== -->
+<h2>10. Recommendation</h2>
+
+<div class="callout-green">
+
+<h3>If the app is for internal KPMG users only &rarr; Power Apps (Canvas App)</h3>
+<p>Power Apps delivers a functional app in 3&ndash;5 days with minimal coding. The design won't be pixel-perfect, but it will be close enough for internal use. You save on licensing costs, get native Teams integration, and benefit from the simplest maintenance model. The weighted scoring and approval workflows translate directly to Power Fx and Power Automate.</p>
+
+<h3>If design fidelity or external access is required &rarr; Power Pages</h3>
+<p>Power Pages lets you reuse the existing React CSS and JavaScript almost as-is, achieving near-identical design. It's the only option if external stakeholders or clients need access. Budget 4&ndash;7 days and the additional license cost. The trade-off is worthwhile when the visual experience and external reach are business-critical.</p>
+
+<h3>Hybrid option: Start with Power Apps, extend with Power Pages later</h3>
+<p>Since both platforms share the same Dataverse backend, you can launch quickly with a Canvas App for internal teams, then stand up a Power Pages portal on the same data for external-facing needs. This "start fast, extend later" approach minimizes upfront cost and timeline while keeping the door open for design-perfect external access.</p>
+
+</div>
+
+<br/>
+<p style="text-align:center; font-size:10pt; color:#888888;">&mdash; End of Document &mdash;</p>
+
+</body>
+</html>
