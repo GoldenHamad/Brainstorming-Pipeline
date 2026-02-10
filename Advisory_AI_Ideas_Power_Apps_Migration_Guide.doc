@@ -1,0 +1,178 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>Advisory AI Ideas - Power Apps Migration Guide</title>
+<style>
+    @page { size: A4; margin: 0.8in; }
+    body { font-family: Calibri, Arial, sans-serif; font-size: 10pt; line-height: 1.4; color: #333; }
+    h1 { font-size: 18pt; color: #00338D; border-bottom: 2px solid #00338D; padding-bottom: 4px; margin-top: 20px; margin-bottom: 8px; }
+    h2 { font-size: 13pt; color: #483698; margin-top: 14px; margin-bottom: 6px; }
+    table { border-collapse: collapse; width: 100%; margin: 6px 0 12px 0; font-size: 9pt; }
+    th { background-color: #00338D; color: white; padding: 5px 8px; text-align: left; }
+    td { border: 1px solid #CCC; padding: 4px 8px; vertical-align: top; }
+    tr:nth-child(even) { background-color: #F5F7FA; }
+    ul, ol { margin: 4px 0; padding-left: 20px; }
+    li { margin-bottom: 2px; }
+    code { font-family: Consolas, monospace; font-size: 9pt; background: #F0F0F0; padding: 1px 3px; }
+    .formula { font-family: Consolas, monospace; font-size: 9pt; background: #F5F7FA; padding: 6px 10px; margin: 6px 0; border: 1px solid #DDD; }
+    .note { background: #EEF2FF; border-left: 3px solid #00338D; padding: 6px 10px; margin: 8px 0; font-size: 9pt; }
+    .yes { color: #28A745; font-weight: bold; }
+    .partial { color: #E6A000; font-weight: bold; }
+    .rebuild { color: #FF6B35; font-weight: bold; }
+    .no { color: #999; font-weight: bold; }
+    p { margin: 4px 0; }
+</style>
+</head>
+<body>
+
+<div style="text-align:center; padding-top:40px; padding-bottom:30px;">
+    <h1 style="font-size:28pt; border:none; text-align:center;">Advisory AI Ideas</h1>
+    <p style="font-size:16pt; color:#483698;">Power Apps Migration Guide</p>
+    <p style="font-size:10pt; color:#666; margin-top:16px;">KPMG Advisory &mdash; February 2026</p>
+</div>
+
+<!-- ==================== SECTION 1 ==================== -->
+<h1>1. What This Repository Is</h1>
+<p><b>Advisory AI Ideas</b> is a React/TypeScript single-page application for managing AI innovation ideas. It has two features:</p>
+<ul>
+    <li><b>Ideas Pipeline</b> &mdash; Collect, assess (weighted Value vs. Feasibility scoring), and track AI use case ideas through an 11-stage lifecycle (Submitted &rarr; Screening &rarr; Assessment &rarr; Prioritized &rarr; Development &rarr; Pilot &rarr; Deployed &rarr; Scaling, plus On Hold/Rejected/Archived). Ideas are plotted on a 2&times;2 Priority Matrix.</li>
+    <li><b>Prompt Library</b> &mdash; Browse, search, rate, copy, and submit reusable AI prompts with an admin review/approval workflow.</li>
+</ul>
+<p><b>Tech stack:</b> React 18, TypeScript, Vite, React Router, Lucide icons, custom CSS. <b>No backend</b> &mdash; all data lives in browser localStorage. Deployed to GitHub Pages. 10 routes, 10 page components, 10 reusable components, 2 service files, 2 data/type files.</p>
+
+<!-- ==================== SECTION 2 ==================== -->
+<h1>2. Component Transferability to Power Apps</h1>
+<p>Every file assessed as: <span class="yes">DIRECT MAP</span> (native equivalent exists) | <span class="partial">PARTIAL</span> (concept transfers, needs adaptation) | <span class="rebuild">REBUILD</span> (must recreate natively) | <span class="no">NOT NEEDED</span> (platform handles it).</p>
+
+<h2>Data &amp; Services</h2>
+<table>
+    <tr><th>File</th><th>What It Does</th><th>Status</th><th>Power Apps Equivalent</th></tr>
+    <tr><td>data/ideas.ts</td><td>Types, statuses (11), quadrants (4), dimensions with weights, 8 mock ideas</td><td><span class="yes">DIRECT MAP</span></td><td>Dataverse tables + Choice columns + seed data</td></tr>
+    <tr><td>data/prompts.ts</td><td>Types, categories (6), 16 sample prompts, pending submissions, analytics data</td><td><span class="yes">DIRECT MAP</span></td><td>Dataverse tables + Choice columns + seed data</td></tr>
+    <tr><td>services/ideaService.ts</td><td>CRUD, weighted scoring (Value: 20/20/30/30; Feasibility: 50/25/25), quadrant logic, analytics, search</td><td><span class="partial">PARTIAL</span></td><td>CRUD &rarr; Dataverse native; Scoring &rarr; Power Fx formulas (see Section 4); Analytics &rarr; Power BI; Search &rarr; <code>Filter()/Search()</code></td></tr>
+    <tr><td>services/promptService.ts</td><td>CRUD, multi-criteria filter, usage tracking, rating average, approve/reject workflow, analytics</td><td><span class="partial">PARTIAL</span></td><td>CRUD &rarr; Dataverse; Workflow &rarr; Power Automate Approvals; Rating &rarr; Power Fx <code>Patch()</code>; Analytics &rarr; Power BI</td></tr>
+    <tr><td>utils/storage.ts</td><td>localStorage wrapper, export/import JSON</td><td><span class="no">NOT NEEDED</span></td><td>Dataverse handles all persistence</td></tr>
+</table>
+
+<h2>UI Components</h2>
+<table>
+    <tr><th>Component</th><th>What It Does</th><th>Status</th><th>Power Apps Equivalent</th></tr>
+    <tr><td>Header</td><td>Navigation bar with logo, 5 links, dropdown menu</td><td><span class="no">NOT NEEDED</span></td><td>Built-in app navigation; or Component Library for custom header</td></tr>
+    <tr><td>IdeaCard</td><td>Idea summary card with status badge, scores, meta</td><td><span class="rebuild">REBUILD</span></td><td>Gallery control with custom card layout, <code>If()</code> for color-coded badges</td></tr>
+    <tr><td>PromptCard</td><td>Prompt preview with category, rating, tags, copy button</td><td><span class="rebuild">REBUILD</span></td><td>Gallery control with custom template; <code>Copy()</code> for clipboard</td></tr>
+    <tr><td>PriorityMatrix</td><td>Interactive 2&times;2 scatter plot of ideas by Value vs Feasibility</td><td><span class="rebuild">REBUILD</span></td><td><b>Power BI embedded scatter chart</b> (Power Apps has no native scatter plot)</td></tr>
+    <tr><td>ScoreCard</td><td>Assessment form: 7 dimensions with Low/Med/High radios, weights, tooltips</td><td><span class="rebuild">REBUILD</span></td><td>Edit Form with Radio controls per dimension, Tooltip property</td></tr>
+    <tr><td>RatingWidget</td><td>5-star rating display/input with hover, half-star, interactive mode</td><td><span class="rebuild">REBUILD</span></td><td>Component Library: 5 Star Icon controls with <code>OnSelect</code></td></tr>
+    <tr><td>FilterPanel</td><td>Sidebar with collapsible checkbox/radio filter sections</td><td><span class="rebuild">REBUILD</span></td><td>Container with Checkbox/Radio controls; collections for state</td></tr>
+    <tr><td>SearchBar</td><td>Search with autocomplete suggestions, keyboard nav</td><td><span class="partial">PARTIAL</span></td><td>TextInput + Gallery for suggestions; no keyboard nav support</td></tr>
+    <tr><td>QuadrantBadge</td><td>Color-coded quadrant label</td><td><span class="yes">DIRECT MAP</span></td><td>Label with <code>Switch()</code> on Fill/Color properties</td></tr>
+    <tr><td>Toast</td><td>Auto-dismiss notification system (success/error/warning/info)</td><td><span class="yes">DIRECT MAP</span></td><td><code>Notify("Message", NotificationType.Success)</code> &mdash; one line</td></tr>
+</table>
+
+<h2>Pages</h2>
+<table>
+    <tr><th>Page</th><th>What It Does</th><th>Status</th><th>Power Apps Equivalent</th></tr>
+    <tr><td>IdeasDashboard</td><td>Hero, 5 stat cards, Priority Matrix, filterable ideas grid</td><td><span class="rebuild">REBUILD</span></td><td>Screen with Labels (<code>CountRows</code>), Power BI tile, Gallery + Dropdowns</td></tr>
+    <tr><td>SubmitIdeaPage</td><td>7-field form with validation</td><td><span class="yes">DIRECT MAP</span></td><td>Edit Form connected to Ideas table; <code>SubmitForm()</code></td></tr>
+    <tr><td>PipelinePage</td><td>Kanban board (7 columns), advance/hold/reject actions</td><td><span class="rebuild">REBUILD</span></td><td>Horizontal Container of Galleries; <code>Patch()</code> for status changes</td></tr>
+    <tr><td>IdeaDetailPage</td><td>Full idea view with scorecard, mini matrix, assessment breakdown</td><td><span class="rebuild">REBUILD</span></td><td>Display Form + Labels for scores + Power BI for matrix</td></tr>
+    <tr><td>IdeasAnalyticsPage</td><td>KPIs, matrix, quadrant distribution, leaderboard, bar charts</td><td><span class="rebuild">REBUILD</span></td><td><b>Power BI embedded report</b> (best approach for all charts)</td></tr>
+    <tr><td>PromptLibraryPage</td><td>Search, category filter, prompt cards grid, copy functionality</td><td><span class="rebuild">REBUILD</span></td><td>Screen with TextInput, Dropdown, Gallery; <code>Filter()/Search()</code></td></tr>
+    <tr><td>PromptDetailPage</td><td>Full prompt view, copy-to-clipboard, interactive rating, feedback</td><td><span class="rebuild">REBUILD</span></td><td>Display Form + HTML Text + Copy() + star rating component</td></tr>
+    <tr><td>SubmitPage</td><td>12-field prompt submission form with validation</td><td><span class="yes">DIRECT MAP</span></td><td>Edit Form connected to Prompts table</td></tr>
+    <tr><td>ReviewQueuePage</td><td>Master-detail: pending submissions list + approve/reject panel</td><td><span class="partial">PARTIAL</span></td><td>Gallery + Form pattern; or <b>Power Automate Approvals</b> for workflow</td></tr>
+    <tr><td>AnalyticsPage</td><td>KPIs, usage trends, category distribution, top 10 leaderboard</td><td><span class="rebuild">REBUILD</span></td><td><b>Power BI embedded report</b></td></tr>
+</table>
+
+<!-- ==================== SECTION 3 ==================== -->
+<h1>3. Recommended Approach: Power Apps Canvas App</h1>
+
+<div class="note"><b>Recommendation:</b> Build a <b>Canvas App</b> + <b>Dataverse</b> + <b>Power Automate</b> + <b>Power BI</b>. This replicates the interface while adding multi-user support, Azure AD auth, approval workflows, and embedded analytics.</div>
+
+<h2>Phase 1: Dataverse Tables (Week 1)</h2>
+<p>Create 4 tables in <b>make.powerapps.com &rarr; Tables</b>:</p>
+<ul>
+    <li><b>Ideas</b> &mdash; IdeaId (autonumber), Title, Description, AICapabilityArea (Choice, 8 opts), BusinessFunction (Choice, 11 opts), ExpectedBenefits, SubmitterName, SubmitterEmail, Status (Choice, 11 opts), CreatedAt</li>
+    <li><b>IdeaAssessments</b> &mdash; Idea (Lookup), 7 dimension columns (Choice: Low/Med/High), ValueScore (Decimal, calculated), FeasibilityScore (Decimal, calculated), Quadrant (Choice, 4 opts), AssessedBy, AssessedAt, 7 Rationale text columns</li>
+    <li><b>Prompts</b> &mdash; PromptId (autonumber), Title, Category (Choice, 6 opts), PromptText, OutputFormat (Choice, 7 opts), ComplexityLevel (Choice, 3 opts), AITools (Multi-Select Choice, 5 opts), Owner, Tags, UsageCount, Rating, RatingCount, Status (Choice, 5 opts), SubmitterName, SubmitterEmail, ExampleInput, ExampleOutput, BestPractices, Version</li>
+    <li><b>PromptRatings</b> &mdash; Prompt (Lookup), User (Lookup), Rating (1-5), Feedback</li>
+</ul>
+
+<h2>Phase 2: Canvas App Screens (Weeks 2-3)</h2>
+<p>Create a Canvas App (tablet layout). Build 10 screens mapping 1:1 to the original pages:</p>
+<ol>
+    <li><b>Dashboard</b> &mdash; Stat Labels using <code>CountRows(Filter(Ideas, ...))</code>, Power BI tile for matrix, Gallery for ideas with Dropdown filters</li>
+    <li><b>Submit Idea</b> &mdash; Edit Form connected to Ideas table; dropdowns auto-populate from Choice columns; validate with <code>IsBlank()</code>/<code>Len()</code>; default Status="Submitted"</li>
+    <li><b>Pipeline</b> &mdash; Horizontal Container with 7 inner Galleries (one per stage); Advance via <code>Patch(Ideas, ThisItem, {Status: "NextStage"})</code>; Hold/Reject buttons similarly</li>
+    <li><b>Idea Detail</b> &mdash; Display Form + score Labels with <code>Switch()</code> color formatting + Power BI mini-matrix</li>
+    <li><b>Ideas Analytics</b> &mdash; Embedded Power BI report (scatter chart, bar charts, KPIs, leaderboard)</li>
+    <li><b>Prompt Library</b> &mdash; TextInput search + Dropdown filter + Gallery with <code>Filter(Prompts, Status="Approved" And ...)</code></li>
+    <li><b>Prompt Detail</b> &mdash; Display Form + HTML Text for prompt + <code>Copy()</code> button + star rating component</li>
+    <li><b>Submit Prompt</b> &mdash; Edit Form connected to Prompts; default Status="Pending"</li>
+    <li><b>Review Queue</b> &mdash; Gallery (left) + Display Form (right); Approve/Reject via <code>Patch()</code>; or use Power Automate Approvals</li>
+    <li><b>Prompt Analytics</b> &mdash; Embedded Power BI report</li>
+</ol>
+
+<h2>Phase 3: Business Logic &amp; Automation (Week 3)</h2>
+<p><b>Power Automate flows:</b></p>
+<ul>
+    <li><b>Assessment Scoring</b> &mdash; On IdeaAssessment created: calculate scores, determine quadrant, update Idea status to "Prioritized"</li>
+    <li><b>Prompt Approval</b> &mdash; On Prompt created with Status=Pending: route approval to Category Owner via Teams/email; auto-update status</li>
+    <li><b>Rating Aggregation</b> &mdash; On PromptRating created: recalculate running average on parent Prompt</li>
+    <li><b>Notifications</b> &mdash; On Idea submitted or pipeline stage change: email stakeholders</li>
+</ul>
+
+<h2>Phase 4: Power BI Reports (Week 4)</h2>
+<p>Create a Power BI report connected to Dataverse with two pages: <b>Ideas Portfolio</b> (KPIs, scatter matrix, bar charts by function/capability, pipeline funnel) and <b>Prompt Analytics</b> (usage trends, category distribution, top 10 leaderboard). Embed in Canvas App via the Power BI tile control.</p>
+
+<!-- ==================== SECTION 4 ==================== -->
+<h1>4. Scoring Logic in Power Fx</h1>
+<p>Direct translation of <code>ideaService.ts</code> scoring formulas:</p>
+
+<div class="formula">
+// Value Score (weights: Growth 20%, Cost 20%, Resilience 30%, Agility 30%)<br>
+Set(varValueScore,<br>
+&nbsp;&nbsp;Switch(frmAssess.BusinessGrowth, "Low",1, "Medium",2, "High",3, 0) * 0.20 +<br>
+&nbsp;&nbsp;Switch(frmAssess.CostEfficiency, "Low",1, "Medium",2, "High",3, 0) * 0.20 +<br>
+&nbsp;&nbsp;Switch(frmAssess.BusinessResilience, "Low",1, "Medium",2, "High",3, 0) * 0.30 +<br>
+&nbsp;&nbsp;Switch(frmAssess.BusinessAgility, "Low",1, "Medium",2, "High",3, 0) * 0.30<br>
+)
+</div>
+<div class="formula">
+// Feasibility Score (weights: Technical 50%, Internal 25%, External 25%)<br>
+Set(varFeasibilityScore,<br>
+&nbsp;&nbsp;Switch(frmAssess.TechnicalFeasibility, "Low",1, "Medium",2, "High",3, 0) * 0.50 +<br>
+&nbsp;&nbsp;Switch(frmAssess.InternalReadiness, "Low",1, "Medium",2, "High",3, 0) * 0.25 +<br>
+&nbsp;&nbsp;Switch(frmAssess.ExternalReadiness, "Low",1, "Medium",2, "High",3, 0) * 0.25<br>
+)
+</div>
+<div class="formula">
+// Quadrant (threshold = 2.0 for both axes)<br>
+Set(varQuadrant, If(<br>
+&nbsp;&nbsp;varValueScore >= 2 And varFeasibilityScore >= 2, "Likely Wins",<br>
+&nbsp;&nbsp;varValueScore >= 2 And varFeasibilityScore &lt; 2, "Calculated Risks",<br>
+&nbsp;&nbsp;varValueScore &lt; 2 And varFeasibilityScore >= 2, "Marginal Gains",<br>
+&nbsp;&nbsp;"Avoid"<br>
+))
+</div>
+
+<!-- ==================== SECTION 5 ==================== -->
+<h1>5. Summary</h1>
+<table>
+    <tr><th>Category</th><th>Total</th><th style="color:#28A745">Direct Map</th><th style="color:#E6A000">Partial</th><th style="color:#FF6B35">Rebuild</th><th style="color:#999">Not Needed</th></tr>
+    <tr><td>Data Models</td><td>2</td><td>2</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>Services</td><td>2</td><td>0</td><td>2</td><td>0</td><td>0</td></tr>
+    <tr><td>Components</td><td>10</td><td>2</td><td>1</td><td>5</td><td>2</td></tr>
+    <tr><td>Pages</td><td>10</td><td>2</td><td>1</td><td>7</td><td>0</td></tr>
+    <tr><td>Utilities</td><td>5</td><td>0</td><td>2</td><td>0</td><td>3</td></tr>
+    <tr><td><b>Total</b></td><td><b>29</b></td><td><b>6</b></td><td><b>6</b></td><td><b>12</b></td><td><b>5</b></td></tr>
+</table>
+
+<div class="note">
+<b>Bottom Line:</b> Data models and scoring logic transfer directly. Forms (Submit Idea, Submit Prompt) map 1:1 to Power Apps Edit Forms. The 7 screens that need rebuilding are straightforward Canvas App patterns (Gallery + Form + Filters). The Priority Matrix and analytics pages are best handled by <b>Power BI embedded</b>. Use <b>Power Automate</b> for the prompt approval workflow and automated scoring. Total estimated effort: <b>4-5 weeks</b> for a Power Platform developer.
+</div>
+
+</body>
+</html>
