@@ -3,540 +3,573 @@ xmlns:w="urn:schemas-microsoft-com:office:word"
 xmlns="http://www.w3.org/TR/REC-html40">
 <head>
 <meta charset="utf-8">
-<title>Advisory AI Ideas - Rapid Power Apps Migration Guide</title>
 <style>
-    @page { size: A4; margin: 0.75in; }
-    body { font-family: Calibri, Arial, sans-serif; font-size: 10pt; line-height: 1.4; color: #333; }
-    h1 { font-size: 18pt; color: #00338D; border-bottom: 2px solid #00338D; padding-bottom: 4px; margin-top: 22px; margin-bottom: 8px; }
-    h1:first-of-type { margin-top: 0; }
-    h2 { font-size: 13pt; color: #483698; margin-top: 14px; margin-bottom: 6px; }
-    h3 { font-size: 11pt; color: #00338D; margin-top: 10px; margin-bottom: 4px; }
-    table { border-collapse: collapse; width: 100%; margin: 6px 0 12px 0; font-size: 9pt; }
-    th { background-color: #00338D; color: white; padding: 5px 8px; text-align: left; }
-    td { border: 1px solid #CCC; padding: 4px 8px; vertical-align: top; }
-    tr:nth-child(even) { background-color: #F5F7FA; }
-    ul, ol { margin: 4px 0; padding-left: 20px; }
-    li { margin-bottom: 3px; }
-    code { font-family: Consolas, monospace; font-size: 9pt; background: #F0F0F0; padding: 1px 3px; }
-    .formula { font-family: Consolas, monospace; font-size: 9pt; background: #F5F7FA; padding: 6px 10px; margin: 6px 0; border: 1px solid #DDD; line-height: 1.5; }
-    .note { background: #EEF2FF; border-left: 3px solid #00338D; padding: 6px 10px; margin: 8px 0; font-size: 9.5pt; }
-    .warn { background: #FFF8E1; border-left: 3px solid #FFC107; padding: 6px 10px; margin: 8px 0; font-size: 9.5pt; }
-    .green { background: #F0FFF0; border-left: 3px solid #28A745; padding: 6px 10px; margin: 8px 0; font-size: 9.5pt; }
-    .yes { color: #28A745; font-weight: bold; }
-    .partial { color: #E6A000; font-weight: bold; }
-    .rebuild { color: #FF6B35; font-weight: bold; }
-    .no { color: #999; font-weight: bold; }
-    p { margin: 4px 0; }
-    .vs-table td:nth-child(1) { font-weight: bold; width: 25%; }
-    .tag-a { background: #00338D; color: white; padding: 2px 8px; font-size: 8pt; font-weight: bold; border-radius: 3px; }
-    .tag-b { background: #483698; color: white; padding: 2px 8px; font-size: 8pt; font-weight: bold; border-radius: 3px; }
+    @page { size: A4; margin: 2.5cm 2.5cm 2.5cm 2.5cm; }
+    body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; color: #333333; line-height: 1.5; }
+    h1 { font-size: 22pt; color: #00338D; margin-top: 0; margin-bottom: 6pt; font-weight: bold; }
+    h2 { font-size: 16pt; color: #00338D; margin-top: 18pt; margin-bottom: 8pt; border-bottom: 2px solid #00338D; padding-bottom: 4pt; }
+    h3 { font-size: 13pt; color: #483698; margin-top: 14pt; margin-bottom: 6pt; }
+    h4 { font-size: 11pt; color: #00A3A1; margin-top: 10pt; margin-bottom: 4pt; font-weight: bold; }
+    p { margin: 0 0 8pt 0; }
+    table { border-collapse: collapse; width: 100%; margin: 8pt 0 12pt 0; font-size: 10pt; }
+    th { background-color: #00338D; color: white; padding: 6pt 8pt; text-align: left; font-weight: bold; border: 1px solid #00338D; }
+    td { padding: 5pt 8pt; border: 1px solid #CCCCCC; vertical-align: top; }
+    tr:nth-child(even) td { background-color: #F5F7FA; }
+    .subtitle { font-size: 13pt; color: #666666; margin-bottom: 4pt; }
+    .tag-green { background-color: #D4EDDA; color: #155724; padding: 2pt 6pt; font-size: 9pt; font-weight: bold; }
+    .tag-yellow { background-color: #FFF3CD; color: #856404; padding: 2pt 6pt; font-size: 9pt; font-weight: bold; }
+    .tag-red { background-color: #F8D7DA; color: #721C24; padding: 2pt 6pt; font-size: 9pt; font-weight: bold; }
+    .callout { background-color: #E8F0FE; border-left: 4px solid #00338D; padding: 8pt 12pt; margin: 10pt 0; }
+    .callout-green { background-color: #E8F5E9; border-left: 4px solid #28A745; padding: 8pt 12pt; margin: 10pt 0; }
+    ul { margin: 4pt 0 8pt 0; padding-left: 20pt; }
+    li { margin-bottom: 3pt; }
+    code { font-family: Consolas, monospace; font-size: 9.5pt; background-color: #F0F0F0; padding: 1pt 4pt; }
 </style>
 </head>
 <body>
 
-<!-- ============================================================ -->
-<!-- COVER -->
-<!-- ============================================================ -->
-<div style="text-align:center; padding-top:60px; padding-bottom:40px;">
-    <h1 style="font-size:30pt; border:none; text-align:center;">Advisory AI Ideas</h1>
-    <p style="font-size:17pt; color:#483698; margin-top:6px;">Rapid Power Apps Migration Guide</p>
-    <p style="font-size:11pt; color:#555; margin-top:20px;">
-        Two AI-Accelerated Methodologies for the Fastest Path to Production
-    </p>
-    <p style="font-size:10pt; color:#999; margin-top:40px;">KPMG Advisory &mdash; February 2026</p>
+<h1>Advisory AI Ideas &mdash; Power Apps Migration Guide</h1>
+<p class="subtitle">AI-Built Canvas App Methodology</p>
+<p style="font-size: 10pt; color: #888888;">Prepared: February 2026 &nbsp;|&nbsp; Estimated Delivery: 3 &ndash; 5 Days</p>
+
+<br/>
+
+<!-- ==================== SECTION 1 ==================== -->
+<h2>1. Executive Summary</h2>
+
+<p>This guide provides a step-by-step plan to migrate the <b>Advisory AI Ideas</b> React/TypeScript application into a <b>Microsoft Power Apps Canvas App</b> backed by <b>Dataverse</b>. We will use <b>Copilot in Power Apps</b> and <b>AI code-generation tools</b> (Claude, ChatGPT) to accelerate every step, targeting a working app in <b>3 to 5 business days</b>.</p>
+
+<div class="callout">
+<b>Why Canvas App?</b> The application serves internal KPMG Advisory staff. Power Apps Canvas App delivers the fastest path to production with zero custom backend code, native Azure AD authentication, seamless Power Automate integration, and licensing typically included in existing Microsoft 365 E3/E5 plans.
 </div>
 
-<!-- ============================================================ -->
-<!-- SECTION 1 -->
-<!-- ============================================================ -->
-<h1>1. What This Repository Is</h1>
-<p><b>Advisory AI Ideas</b> is a React/TypeScript single-page application for managing AI innovation ideas across KPMG Advisory. It has two feature areas:</p>
-<ul>
-    <li><b>Ideas Pipeline (Primary)</b> &mdash; Collect AI use case ideas, assess them with a weighted Value vs. Feasibility scoring framework (7 dimensions), plot them on a 2&times;2 Priority Matrix (Likely Wins / Calculated Risks / Marginal Gains / Avoid), and track them through an 11-stage innovation lifecycle (Submitted &rarr; Screening &rarr; Assessment &rarr; Prioritized &rarr; Development &rarr; Pilot &rarr; Deployed &rarr; Scaling, plus On Hold / Rejected / Archived).</li>
-    <li><b>Prompt Library (Secondary)</b> &mdash; Browse, search, filter, rate, and copy curated AI prompts. Includes submission and admin review/approval workflows, usage tracking, and analytics.</li>
-</ul>
+<p><b>What you get:</b> A fully functional internal app with idea submission, weighted scoring, quadrant prioritisation, pipeline tracking, analytics dashboards, a prompt library with ratings, and an approval workflow &mdash; all connected to Dataverse for enterprise-grade data persistence.</p>
 
-<h2>Current Tech Stack</h2>
+<!-- ==================== SECTION 2 ==================== -->
+<h2>2. Application Overview</h2>
+
+<p>The current application is a React 18 + TypeScript single-page app with two modules:</p>
+
 <table>
-    <tr><th>Layer</th><th>Technology</th><th>Key Detail</th></tr>
-    <tr><td>Frontend</td><td>React 18 + TypeScript</td><td>10 pages, 10 reusable components</td></tr>
-    <tr><td>Styling</td><td>Custom CSS (no framework)</td><td>21 CSS files with KPMG brand colors</td></tr>
-    <tr><td>Routing</td><td>React Router DOM (HashRouter)</td><td>10 routes across 2 feature areas</td></tr>
-    <tr><td>Data</td><td>Browser localStorage</td><td>No backend, no database, single-user only</td></tr>
-    <tr><td>Business Logic</td><td>2 TypeScript service files</td><td>Weighted scoring, CRUD, search, analytics</td></tr>
-    <tr><td>Deployment</td><td>GitHub Pages</td><td>Static hosting via GitHub Actions CI/CD</td></tr>
+<tr>
+    <th style="width:18%;">Module</th>
+    <th style="width:32%;">Features</th>
+    <th style="width:50%;">Key Technical Details</th>
+</tr>
+<tr>
+    <td><b>AI Ideas Pipeline</b></td>
+    <td>Submit ideas, weighted value/feasibility scoring, quadrant matrix, 11-stage pipeline, analytics dashboard</td>
+    <td>Value Score = Growth&times;0.20 + Cost&times;0.20 + Resilience&times;0.30 + Agility&times;0.30<br/>Feasibility Score = Technical&times;0.50 + Internal&times;0.30 + External&times;0.20<br/>Quadrant threshold = 2.0 (low/medium/high &rarr; 1/2/3)<br/>11 status values, 8 AI capability areas, 11 business functions</td>
+</tr>
+<tr>
+    <td><b>Prompt Library</b></td>
+    <td>16 curated prompts, multi-criteria search &amp; filter, star ratings, copy tracking, submission &amp; approval workflow, analytics</td>
+    <td>6 categories, 3 complexity levels, 5 AI tools, 7 output formats, 5 statuses<br/>Running-average rating calculation, usage counter, approval queue with approve/reject</td>
+</tr>
 </table>
 
-<p><b>The core problem:</b> This app has no real backend, no multi-user support, no authentication, and no workflow automation. Moving to Power Apps solves all of these while preserving the application's functionality.</p>
+<p><b>Current stack:</b> React 18 &bull; TypeScript &bull; React Router (HashRouter, 10 routes) &bull; localStorage (no backend) &bull; 10 reusable components &bull; 10 page views</p>
 
-<!-- ============================================================ -->
-<!-- SECTION 2 -->
-<!-- ============================================================ -->
-<h1>2. Component Transferability Assessment</h1>
+<!-- ==================== SECTION 3 ==================== -->
+<h2>3. Component Migration Map</h2>
 
-<p>Every file in the repo assessed for Power Apps compatibility:</p>
-<div class="note">
-    <span class="yes">DIRECT MAP</span> = Native Power Apps equivalent exists &nbsp;|&nbsp;
-    <span class="partial">PARTIAL</span> = Concept transfers, needs adaptation &nbsp;|&nbsp;
-    <span class="rebuild">REBUILD</span> = Must recreate natively &nbsp;|&nbsp;
-    <span class="no">NOT NEEDED</span> = Platform handles it automatically
+<p>Every file in the current repo maps to a Power Apps equivalent. The table below shows each source file, what it becomes in the Canvas App, and the migration difficulty.</p>
+
+<h3>3.1 Data &amp; Services &rarr; Dataverse + Power Fx</h3>
+
+<table>
+<tr>
+    <th style="width:28%;">Source File</th>
+    <th style="width:42%;">Power Apps Equivalent</th>
+    <th style="width:15%;">Difficulty</th>
+    <th style="width:15%;">AI-Assisted?</th>
+</tr>
+<tr>
+    <td><code>data/ideas.ts</code><br/>(types, enums, mock data)</td>
+    <td>Dataverse table <b>AI_Idea</b> with Choice columns for Status (11 values), AICapabilityArea (8), BusinessFunction (11). Mock data imported via Excel.</td>
+    <td><span class="tag-green">Easy</span></td>
+    <td>Yes &mdash; Copilot</td>
+</tr>
+<tr>
+    <td><code>data/prompts.ts</code><br/>(types, 16 sample prompts)</td>
+    <td>Dataverse table <b>AI_Prompt</b> with Choice columns for Category (6), ComplexityLevel (3), AITools (multi-select, 5), OutputFormat (7), Status (5). Sample data via Excel.</td>
+    <td><span class="tag-green">Easy</span></td>
+    <td>Yes &mdash; Copilot</td>
+</tr>
+<tr>
+    <td><code>services/ideaService.ts</code><br/>(CRUD, scoring, analytics)</td>
+    <td>CRUD &rarr; <code>Patch()</code>, <code>Remove()</code>, <code>SubmitForm()</code>. Scoring &rarr; Power Fx formulas. Analytics &rarr; <code>CountRows()</code>, <code>GroupBy()</code>, chart controls.</td>
+    <td><span class="tag-green">Easy</span></td>
+    <td>Yes &mdash; Claude/ChatGPT for formula conversion</td>
+</tr>
+<tr>
+    <td><code>services/promptService.ts</code><br/>(search, rating, approval)</td>
+    <td>Search &rarr; <code>Filter()</code> + <code>Search()</code>. Rating &rarr; <code>Patch()</code> with running average formula. Approval &rarr; Power Automate flow.</td>
+    <td><span class="tag-green">Easy</span></td>
+    <td>Yes &mdash; Claude/ChatGPT</td>
+</tr>
+<tr>
+    <td><code>utils/storage.ts</code><br/>(localStorage wrapper)</td>
+    <td><b>Eliminated entirely.</b> Dataverse replaces localStorage. No migration needed.</td>
+    <td><span class="tag-green">N/A</span></td>
+    <td>&mdash;</td>
+</tr>
+</table>
+
+<h3>3.2 Pages &rarr; Canvas App Screens</h3>
+
+<table>
+<tr>
+    <th style="width:28%;">Source Page</th>
+    <th style="width:42%;">Canvas App Screen</th>
+    <th style="width:15%;">Difficulty</th>
+    <th style="width:15%;">AI-Assisted?</th>
+</tr>
+<tr>
+    <td><code>IdeasDashboard</code></td>
+    <td><b>Ideas Home Screen</b> &mdash; Gallery control showing idea cards, status filter dropdown, search bar, summary stats at top.</td>
+    <td><span class="tag-green">Easy</span></td>
+    <td>Yes &mdash; Copilot generates gallery</td>
+</tr>
+<tr>
+    <td><code>SubmitIdeaPage</code></td>
+    <td><b>Submit Idea Screen</b> &mdash; Edit Form connected to AI_Idea table. Dropdowns for capability area &amp; business function. <code>SubmitForm()</code> on save.</td>
+    <td><span class="tag-green">Easy</span></td>
+    <td>Yes &mdash; Copilot generates form</td>
+</tr>
+<tr>
+    <td><code>IdeaDetailPage</code></td>
+    <td><b>Idea Detail Screen</b> &mdash; Display Form for idea fields + assessment panel with score sliders and computed scores. Navigate from gallery <code>OnSelect</code>.</td>
+    <td><span class="tag-green">Easy</span></td>
+    <td>Yes &mdash; Copilot</td>
+</tr>
+<tr>
+    <td><code>PipelinePage</code></td>
+    <td><b>Pipeline Screen</b> &mdash; Horizontal scrollable layout with one filtered Gallery per status column (11 statuses). Drag-and-drop not native, but status update via button/dropdown.</td>
+    <td><span class="tag-yellow">Medium</span></td>
+    <td>Partial &mdash; layout is manual</td>
+</tr>
+<tr>
+    <td><code>IdeasAnalyticsPage</code></td>
+    <td><b>Ideas Analytics Screen</b> &mdash; Built-in Chart controls (bar, pie, column) bound to Dataverse. Alternatively embed a Power BI tile.</td>
+    <td><span class="tag-green">Easy</span></td>
+    <td>Yes &mdash; Copilot</td>
+</tr>
+<tr>
+    <td><code>PromptLibraryPage</code></td>
+    <td><b>Prompt Library Screen</b> &mdash; Gallery with search bar + category/complexity/tool filter dropdowns. <code>Filter()</code> &amp; <code>Search()</code> in Items property.</td>
+    <td><span class="tag-green">Easy</span></td>
+    <td>Yes &mdash; Copilot</td>
+</tr>
+<tr>
+    <td><code>PromptDetailPage</code></td>
+    <td><b>Prompt Detail Screen</b> &mdash; Display Form with prompt text, metadata, and a star-rating row (5 icon buttons with conditional fill).</td>
+    <td><span class="tag-yellow">Medium</span></td>
+    <td>Partial &mdash; rating widget is manual</td>
+</tr>
+<tr>
+    <td><code>SubmitPage</code></td>
+    <td><b>Submit Prompt Screen</b> &mdash; Edit Form connected to AI_Prompt. Multi-select combo box for AI Tools. <code>SubmitForm()</code> sets status to "pending".</td>
+    <td><span class="tag-green">Easy</span></td>
+    <td>Yes &mdash; Copilot</td>
+</tr>
+<tr>
+    <td><code>ReviewQueuePage</code></td>
+    <td><b>Review Queue Screen</b> &mdash; Gallery filtered to status = "pending". Approve/Reject buttons trigger <code>Patch()</code> to update status + Power Automate notification.</td>
+    <td><span class="tag-green">Easy</span></td>
+    <td>Yes &mdash; Copilot</td>
+</tr>
+<tr>
+    <td><code>AnalyticsPage</code></td>
+    <td><b>Prompt Analytics Screen</b> &mdash; Chart controls for usage, ratings, category distribution. Summary labels for totals.</td>
+    <td><span class="tag-green">Easy</span></td>
+    <td>Yes &mdash; Copilot</td>
+</tr>
+</table>
+
+<h3>3.3 Components &rarr; Canvas App Controls</h3>
+
+<table>
+<tr>
+    <th style="width:28%;">React Component</th>
+    <th style="width:50%;">Canvas App Control</th>
+    <th style="width:22%;">Difficulty</th>
+</tr>
+<tr><td><code>Header</code></td><td>Top rectangle + label + navigation icons (shared across all screens via component library)</td><td><span class="tag-green">Easy</span></td></tr>
+<tr><td><code>IdeaCard</code></td><td>Gallery item template with labels, status badge (Button with conditional Fill), capability tag</td><td><span class="tag-green">Easy</span></td></tr>
+<tr><td><code>PromptCard</code></td><td>Gallery item template with title, category badge, rating stars, usage count label</td><td><span class="tag-green">Easy</span></td></tr>
+<tr><td><code>PriorityMatrix</code></td><td>Embedded Power BI scatter chart visual, or HTML Text control with chart rendering</td><td><span class="tag-yellow">Medium</span></td></tr>
+<tr><td><code>ScoreCard</code></td><td>Container with labels and progress-bar rectangles (Width set by score percentage)</td><td><span class="tag-green">Easy</span></td></tr>
+<tr><td><code>RatingWidget</code></td><td>5 star Icon controls with <code>OnSelect: Set(userRating, N)</code> and conditional <code>Color</code> fill</td><td><span class="tag-yellow">Medium</span></td></tr>
+<tr><td><code>FilterPanel</code></td><td>ComboBox controls for each filter dimension + Apply/Clear buttons</td><td><span class="tag-green">Easy</span></td></tr>
+<tr><td><code>SearchBar</code></td><td>TextInput control bound to a variable used in gallery's <code>Filter()</code>/<code>Search()</code></td><td><span class="tag-green">Easy</span></td></tr>
+<tr><td><code>QuadrantBadge</code></td><td>Button control with <code>Fill: Switch(quadrant, "likely_wins", Green, ...)</code></td><td><span class="tag-green">Easy</span></td></tr>
+<tr><td><code>Toast</code></td><td><code>Notify("Message", NotificationType.Success)</code> function call</td><td><span class="tag-green">Easy</span></td></tr>
+</table>
+
+<div class="callout">
+<b>Summary:</b> 8 Easy screens, 2 Medium screens, 0 Hard screens. 8 Easy components, 2 Medium components.
 </div>
 
+<!-- ==================== SECTION 4 ==================== -->
+<h2>4. Dataverse Schema</h2>
+
+<p>Four Dataverse tables replace localStorage. Create these on Day 1.</p>
+
+<h3>4.1 AI_Idea</h3>
 <table>
-    <tr><th>File / Component</th><th>Purpose</th><th>Status</th><th>Power Apps Equivalent</th></tr>
-    <tr><td colspan="4" style="background:#00338D; color:white; font-weight:bold;">Data &amp; Services</td></tr>
-    <tr><td>data/ideas.ts</td><td>Types, 11 statuses, 4 quadrants, scoring dimensions &amp; weights, mock data</td><td><span class="yes">DIRECT MAP</span></td><td>Dataverse tables + Choice columns</td></tr>
-    <tr><td>data/prompts.ts</td><td>Types, 6 categories, 16 prompts, submissions, analytics data</td><td><span class="yes">DIRECT MAP</span></td><td>Dataverse tables + Choice columns</td></tr>
-    <tr><td>services/ideaService.ts</td><td>CRUD, weighted scoring (20/20/30/30 + 50/25/25), quadrant logic, search</td><td><span class="partial">PARTIAL</span></td><td>Dataverse + Power Fx + Power Automate</td></tr>
-    <tr><td>services/promptService.ts</td><td>CRUD, filtering, usage tracking, rating, approve/reject, analytics</td><td><span class="partial">PARTIAL</span></td><td>Dataverse + Power Fx + Power Automate Approvals</td></tr>
-    <tr><td>utils/storage.ts</td><td>localStorage wrapper, export/import</td><td><span class="no">NOT NEEDED</span></td><td>Dataverse handles persistence</td></tr>
-
-    <tr><td colspan="4" style="background:#00338D; color:white; font-weight:bold;">UI Components</td></tr>
-    <tr><td>Header</td><td>Nav bar, logo, dropdown menu</td><td><span class="no">NOT NEEDED</span></td><td>Built-in navigation / Component Library</td></tr>
-    <tr><td>IdeaCard</td><td>Idea summary with status badge, scores, meta</td><td><span class="rebuild">REBUILD</span></td><td>Gallery with custom card layout</td></tr>
-    <tr><td>PromptCard</td><td>Prompt preview with category, rating, copy button</td><td><span class="rebuild">REBUILD</span></td><td>Gallery with custom template</td></tr>
-    <tr><td>PriorityMatrix</td><td>Interactive 2&times;2 scatter plot</td><td><span class="rebuild">REBUILD</span></td><td>Power BI embedded scatter chart</td></tr>
-    <tr><td>ScoreCard</td><td>7-dimension assessment form with radios &amp; tooltips</td><td><span class="rebuild">REBUILD</span></td><td>Edit Form with Radio controls</td></tr>
-    <tr><td>RatingWidget</td><td>5-star interactive rating</td><td><span class="rebuild">REBUILD</span></td><td>Component Library (5 Star Icons)</td></tr>
-    <tr><td>FilterPanel</td><td>Collapsible checkbox/radio filter sidebar</td><td><span class="rebuild">REBUILD</span></td><td>Container with Checkbox/Radio controls</td></tr>
-    <tr><td>SearchBar</td><td>Search with autocomplete suggestions</td><td><span class="partial">PARTIAL</span></td><td>TextInput + Gallery (no keyboard nav)</td></tr>
-    <tr><td>QuadrantBadge</td><td>Color-coded quadrant label</td><td><span class="yes">DIRECT MAP</span></td><td>Label with Switch() on Fill/Color</td></tr>
-    <tr><td>Toast</td><td>Auto-dismiss notifications</td><td><span class="yes">DIRECT MAP</span></td><td>Notify() &mdash; one line replacement</td></tr>
-
-    <tr><td colspan="4" style="background:#00338D; color:white; font-weight:bold;">Pages</td></tr>
-    <tr><td>IdeasDashboard</td><td>Stats, Priority Matrix, filterable ideas grid</td><td><span class="rebuild">REBUILD</span></td><td>Screen + Labels + Power BI + Gallery</td></tr>
-    <tr><td>SubmitIdeaPage</td><td>7-field idea submission form</td><td><span class="yes">DIRECT MAP</span></td><td>Edit Form + SubmitForm()</td></tr>
-    <tr><td>PipelinePage</td><td>7-column Kanban with advance/hold/reject</td><td><span class="rebuild">REBUILD</span></td><td>Horizontal Gallery of Galleries + Patch()</td></tr>
-    <tr><td>IdeaDetailPage</td><td>Full idea view with scorecard &amp; matrix</td><td><span class="rebuild">REBUILD</span></td><td>Display Form + Labels + Power BI</td></tr>
-    <tr><td>IdeasAnalyticsPage</td><td>KPIs, charts, leaderboard, breakdowns</td><td><span class="rebuild">REBUILD</span></td><td>Power BI embedded report</td></tr>
-    <tr><td>PromptLibraryPage</td><td>Search, filter, prompt cards grid</td><td><span class="rebuild">REBUILD</span></td><td>Screen + TextInput + Gallery + Filter()</td></tr>
-    <tr><td>PromptDetailPage</td><td>Full prompt view, copy, rating, feedback</td><td><span class="rebuild">REBUILD</span></td><td>Display Form + HTML Text + Copy()</td></tr>
-    <tr><td>SubmitPage</td><td>12-field prompt submission form</td><td><span class="yes">DIRECT MAP</span></td><td>Edit Form + SubmitForm()</td></tr>
-    <tr><td>ReviewQueuePage</td><td>Master-detail approve/reject panel</td><td><span class="partial">PARTIAL</span></td><td>Gallery + Form + Power Automate Approvals</td></tr>
-    <tr><td>AnalyticsPage</td><td>KPIs, usage trends, leaderboard</td><td><span class="rebuild">REBUILD</span></td><td>Power BI embedded report</td></tr>
+<tr><th>Column</th><th>Type</th><th>Notes</th></tr>
+<tr><td>IdeaId</td><td>Autonumber (PK)</td><td>Format: IDEA-{00000}</td></tr>
+<tr><td>Title</td><td>Text (200)</td><td>Required</td></tr>
+<tr><td>Description</td><td>Multiline Text</td><td>Required</td></tr>
+<tr><td>AICapabilityArea</td><td>Choice (8 values)</td><td>Generative AI, ML, NLP, Computer Vision, RPA, Predictive Analytics, Conversational AI, Document Intelligence</td></tr>
+<tr><td>BusinessFunction</td><td>Choice (11 values)</td><td>Audit, Tax, Advisory, Deal Advisory, IT, Operations, HR, Finance, Marketing, Legal, Risk &amp; Compliance</td></tr>
+<tr><td>ExpectedBenefits</td><td>Multiline Text</td><td></td></tr>
+<tr><td>SubmitterName</td><td>Text (100)</td><td></td></tr>
+<tr><td>SubmitterEmail</td><td>Text (200)</td><td></td></tr>
+<tr><td>Status</td><td>Choice (11 values)</td><td>Submitted, Screening, Assessment, Prioritized, Development, Pilot, Deployed, Scaling, On Hold, Rejected, Archived</td></tr>
+<tr><td>CreatedAt</td><td>Date/Time</td><td>Default: Now()</td></tr>
 </table>
 
-<h2>Transferability Summary</h2>
+<h3>4.2 AI_IdeaAssessment</h3>
 <table>
-    <tr><th>Category</th><th>Total</th><th style="color:#28A745">Direct Map</th><th style="color:#E6A000">Partial</th><th style="color:#FF6B35">Rebuild</th><th style="color:#999">Not Needed</th></tr>
-    <tr><td>Data &amp; Services</td><td>5</td><td>2</td><td>2</td><td>0</td><td>1</td></tr>
-    <tr><td>Components</td><td>10</td><td>2</td><td>1</td><td>5</td><td>2</td></tr>
-    <tr><td>Pages</td><td>10</td><td>2</td><td>1</td><td>7</td><td>0</td></tr>
-    <tr><td>Infrastructure</td><td>4</td><td>0</td><td>2</td><td>0</td><td>2</td></tr>
-    <tr><td><b>Total</b></td><td><b>29</b></td><td><b>6</b></td><td><b>6</b></td><td><b>12</b></td><td><b>5</b></td></tr>
+<tr><th>Column</th><th>Type</th><th>Notes</th></tr>
+<tr><td>AssessmentId</td><td>Autonumber (PK)</td><td></td></tr>
+<tr><td>IdeaId</td><td>Lookup &rarr; AI_Idea</td><td>1:1 relationship</td></tr>
+<tr><td>BusinessGrowth / CostEfficiency / BusinessResilience / BusinessAgility</td><td>Choice (low, medium, high)</td><td>4 value dimension columns</td></tr>
+<tr><td>TechnicalFeasibility / InternalReadiness / ExternalReadiness</td><td>Choice (low, medium, high)</td><td>3 feasibility dimension columns</td></tr>
+<tr><td>ValueScore</td><td>Decimal</td><td>Calculated via Power Fx or Dataverse calculated column</td></tr>
+<tr><td>FeasibilityScore</td><td>Decimal</td><td>Calculated</td></tr>
+<tr><td>Quadrant</td><td>Choice (4 values)</td><td>Likely Wins, Calculated Risks, Marginal Gains, Avoid</td></tr>
+<tr><td>AssessedBy / AssessedAt</td><td>Text / Date-Time</td><td></td></tr>
 </table>
 
-<!-- ============================================================ -->
-<!-- SECTION 3 -->
-<!-- ============================================================ -->
-<h1>3. Two Rapid Methodologies</h1>
-
-<p>Both methodologies use AI to dramatically compress timelines. The key difference is <b>where the code runs</b>.</p>
-
-<table class="vs-table">
-    <tr><th style="width:25%">Criteria</th><th style="width:37%"><span class="tag-a">METHOD A</span> AI-Built Canvas App</th><th style="width:37%"><span class="tag-b">METHOD B</span> AI-Converted React in PCF</th></tr>
-    <tr><td>What You Build</td><td>Native Power Apps Canvas App from scratch, using AI (Copilot in Power Apps) to generate screens</td><td>Package existing React components as PCF (Power Apps Component Framework) controls, using AI (Claude/Copilot) to rewrite service layer</td></tr>
-    <tr><td>AI Role</td><td>Copilot generates screens, forms, galleries from natural language. AI generates Power Fx formulas, Power Automate flows, Power BI reports.</td><td>AI rewrites ideaService.ts &amp; promptService.ts to call Dataverse Web API. AI generates PCF manifests &amp; build configs. React UI stays identical.</td></tr>
-    <tr><td>Design Fidelity</td><td>~85-90% (Power Apps controls approximate the design)</td><td>~99% (exact same React + CSS)</td></tr>
-    <tr><td>Speed</td><td><b>3-5 days</b></td><td><b>2-3 days</b></td></tr>
-    <tr><td>Skill Required</td><td>Power Platform basics + AI prompting</td><td>TypeScript/React + npm + PCF CLI</td></tr>
-    <tr><td>Maintenance</td><td>Low-code (anyone can edit in Power Apps Studio)</td><td>Code-first (needs React developers)</td></tr>
-    <tr><td>Microsoft Integration</td><td>Full (Teams, Outlook, Power Automate, Power BI, Copilot)</td><td>Full (runs inside Power Apps, connects to Dataverse)</td></tr>
-    <tr><td>Best For</td><td>Teams without React developers; long-term low-code ownership</td><td>Teams with React developers; pixel-perfect design required</td></tr>
-</table>
-
-<!-- ============================================================ -->
-<!-- SECTION 4: METHOD A -->
-<!-- ============================================================ -->
-<h1>4. <span class="tag-a">METHOD A</span> &mdash; AI-Built Canvas App (3-5 Days)</h1>
-
-<p>Use <b>Copilot in Power Apps</b> and AI code assistants to generate the entire app from natural language descriptions, guided by the existing codebase as a spec.</p>
-
-<h2>Day 1: Dataverse + AI-Generated Schemas</h2>
-
-<h3>Step 1: Generate Table Definitions with AI</h3>
-<p>Feed the TypeScript interfaces from <code>data/ideas.ts</code> and <code>data/prompts.ts</code> to an AI assistant (Claude, Copilot, ChatGPT) with this prompt:</p>
-<div class="formula">
-"Here are my TypeScript interfaces for an Ideas and Prompts application.<br>
-Generate Dataverse table definitions with column names, types, and Choice<br>
-option sets. Include all enum values with their color codes. Output as a<br>
-step-by-step guide I can follow in make.powerapps.com."<br><br>
-[Paste the contents of data/ideas.ts and data/prompts.ts]
-</div>
-<p>This produces ready-to-execute Dataverse setup instructions in minutes instead of designing schemas from scratch.</p>
-
-<h3>Step 2: Create 4 Tables</h3>
-<p>In <b>make.powerapps.com &rarr; Tables</b>, create from the AI output:</p>
-<ul>
-    <li><b>Ideas</b> &mdash; IdeaId (autonumber IDEA-{00000}), Title, Description, AICapabilityArea (Choice: 8 opts), BusinessFunction (Choice: 11 opts), ExpectedBenefits, SubmitterName, SubmitterEmail, Status (Choice: 11 opts with color codes), CreatedAt</li>
-    <li><b>IdeaAssessments</b> &mdash; Idea (Lookup), 7 dimension Choices (Low/Med/High), ValueScore (Decimal), FeasibilityScore (Decimal), Quadrant (Choice: 4 opts), AssessedBy, AssessedAt, 7 Rationale text fields</li>
-    <li><b>Prompts</b> &mdash; PromptId (autonumber), Title, Category (Choice: 6 opts), PromptText, OutputFormat (Choice: 7 opts), ComplexityLevel (Choice: 3 opts), AITools (Multi-Select Choice: 5 opts), Owner, Tags, UsageCount, Rating, RatingCount, Status (Choice: 5 opts), SubmitterName, SubmitterEmail, ExampleInput, ExampleOutput, BestPractices, Version</li>
-    <li><b>PromptRatings</b> &mdash; Prompt (Lookup), User (Lookup), Rating (1-5), Feedback</li>
-</ul>
-
-<h3>Step 3: Seed Data with AI</h3>
-<p>Ask AI to convert the mock data arrays from <code>data/ideas.ts</code> (8 ideas) and <code>data/prompts.ts</code> (16 prompts) into a CSV or Excel format. Import directly into Dataverse via <b>Get Data &rarr; Import from Excel</b>.</p>
-
-<h2>Day 2-3: AI-Generated Screens</h2>
-
-<h3>Step 4: Use Copilot to Generate Each Screen</h3>
-<p>In Power Apps Studio, use <b>Copilot</b> (the AI assistant built into Power Apps) to generate screens from natural language. For each screen, provide a description based on the original page. Examples:</p>
-
+<h3>4.3 AI_Prompt</h3>
 <table>
-    <tr><th>Screen</th><th>Copilot Prompt to Use</th><th>Then Manually Adjust</th></tr>
-    <tr>
-        <td>Dashboard</td>
-        <td><i>"Create a dashboard screen with 4 stat cards showing Total Ideas, Pending Review, Likely Wins, and Deployed counts from the Ideas table. Add a gallery below showing all ideas as cards with status badges, title, capability area, and business function. Include two dropdown filters for Status and Quadrant."</i></td>
-        <td>Add Power BI tile for Priority Matrix. Adjust card colors to match KPMG brand (#00338D, #483698, #00A3A1).</td>
-    </tr>
-    <tr>
-        <td>Submit Idea</td>
-        <td><i>"Create a form screen to submit a new record to the Ideas table. Include fields for Title, Description (multiline, min 50 chars), AI Capability Area dropdown, Business Function dropdown, Expected Benefits, Submitter Name, and Submitter Email. Add validation and a submit button."</i></td>
-        <td>Add character count hint for Description. Set default Status = "Submitted".</td>
-    </tr>
-    <tr>
-        <td>Pipeline</td>
-        <td><i>"Create a Kanban board screen showing ideas in 7 columns: Submitted, Screening, Assessment, Prioritized, Development, Pilot, Deployed. Each column should show a gallery of idea cards filtered by that status. Each card should have Advance, Hold, and Reject buttons."</i></td>
-        <td>Wire Advance button to Patch() with next status. Add color-coded column headers. Add On Hold / Rejected sections below.</td>
-    </tr>
-    <tr>
-        <td>Idea Detail</td>
-        <td><i>"Create a detail screen showing a selected Idea with its title, status badge, description, capability area, business function, submitter, and date. If the idea has an assessment, show the 7 dimension scores (Low/Medium/High) with Value Score and Feasibility Score totals."</i></td>
-        <td>Add Power BI tile for mini-matrix. Add color formatting for score badges via Switch().</td>
-    </tr>
-    <tr>
-        <td>Prompt Library</td>
-        <td><i>"Create a library screen with a search bar and category dropdown filter. Show approved prompts from the Prompts table in a card gallery with category badge, title, preview text (first 150 chars), rating stars, and a Copy button."</i></td>
-        <td>Wire Copy button to Copy(ThisItem.PromptText). Add category card buttons above gallery.</td>
-    </tr>
-    <tr>
-        <td>Submit Prompt</td>
-        <td><i>"Create a submission form for the Prompts table with fields for Title, Category, Prompt Text (multiline), Output Format, Complexity Level, AI Tools (multi-select checkboxes), Owner, Tags, Example Input, Example Output, Best Practices, Submitter Name, and Submitter Email."</i></td>
-        <td>Set default Status = "Pending". Add validation rules.</td>
-    </tr>
-    <tr>
-        <td>Review Queue</td>
-        <td><i>"Create a master-detail screen. Left side: gallery of prompts with Status = Pending, showing title, category, submitter, and date. Right side: display form showing the selected prompt's full details with Approve and Reject buttons."</i></td>
-        <td>Add rejection feedback popup. Wire Approve/Reject to Patch().</td>
-    </tr>
+<tr><th>Column</th><th>Type</th><th>Notes</th></tr>
+<tr><td>PromptId</td><td>Autonumber (PK)</td><td>Format: P{000}</td></tr>
+<tr><td>Title</td><td>Text (200)</td><td></td></tr>
+<tr><td>Category</td><td>Choice (6 values)</td><td>Client Deliverables, Internal Productivity, Research &amp; Analysis, Data &amp; Finance, Creative &amp; Marketing, Technical</td></tr>
+<tr><td>PromptText</td><td>Multiline Text</td><td></td></tr>
+<tr><td>OutputFormat</td><td>Choice (7 values)</td><td></td></tr>
+<tr><td>ComplexityLevel</td><td>Choice (3 values)</td><td>Beginner, Intermediate, Expert</td></tr>
+<tr><td>AITools</td><td>Multi-select Choice (5)</td><td>ChatGPT, Microsoft Copilot, Google Gemini, Claude, Internal AI</td></tr>
+<tr><td>Tags</td><td>Text (500)</td><td>Comma-separated</td></tr>
+<tr><td>UsageCount / Rating / RatingCount</td><td>Whole Number / Decimal / Whole Number</td><td></td></tr>
+<tr><td>Status</td><td>Choice (5 values)</td><td>Draft, Pending, Approved, Rejected, Archived</td></tr>
 </table>
 
-<div class="green">
-    <b>AI Speed Gain:</b> Copilot generates ~70% of each screen's controls and data connections in seconds. You spend the remaining time on layout polish, brand colors, and wiring custom logic. This turns a multi-week manual build into 2 days.
-</div>
+<h3>4.4 AI_PromptRating</h3>
+<table>
+<tr><th>Column</th><th>Type</th><th>Notes</th></tr>
+<tr><td>RatingId</td><td>Autonumber (PK)</td><td></td></tr>
+<tr><td>PromptId</td><td>Lookup &rarr; AI_Prompt</td><td></td></tr>
+<tr><td>Rating</td><td>Whole Number (1&ndash;5)</td><td></td></tr>
+<tr><td>Feedback</td><td>Multiline Text</td><td>Optional</td></tr>
+<tr><td>CreatedBy / CreatedAt</td><td>User / Date-Time</td><td></td></tr>
+</table>
 
-<h3>Step 5: AI-Generate Power Fx Formulas</h3>
-<p>For any complex formula, ask AI to translate directly from the TypeScript source. Feed it the scoring functions from <code>ideaService.ts</code>:</p>
-<div class="formula">
-// Prompt to AI:<br>
-"Convert this TypeScript to Power Fx for Power Apps:<br>
-calculateValueScore: businessGrowth*0.20 + costEfficiency*0.20 +<br>
-businessResilience*0.30 + businessAgility*0.30<br>
-where low=1, medium=2, high=3"<br><br>
-// AI Output (ready to paste):<br>
-Set(varValueScore,<br>
-&nbsp;&nbsp;Switch(radBusinessGrowth.Selected.Value, "Low",1, "Medium",2, "High",3, 0) * 0.20 +<br>
-&nbsp;&nbsp;Switch(radCostEfficiency.Selected.Value, "Low",1, "Medium",2, "High",3, 0) * 0.20 +<br>
-&nbsp;&nbsp;Switch(radBusinessResilience.Selected.Value, "Low",1, "Medium",2, "High",3, 0) * 0.30 +<br>
-&nbsp;&nbsp;Switch(radBusinessAgility.Selected.Value, "Low",1, "Medium",2, "High",3, 0) * 0.30<br>
+<!-- ==================== SECTION 5 ==================== -->
+<h2>5. Business Logic in Power Fx</h2>
+
+<p>The two critical scoring engines translate directly to Power Fx formulas.</p>
+
+<h3>5.1 Value Score Calculation</h3>
+<p>Used on the Idea Detail Screen when an assessor submits scores:</p>
+<div class="callout">
+<code>
+Set(scoreMap, {low: 1, medium: 2, high: 3});<br/><br/>
+Set(valueScore,<br/>
+&nbsp;&nbsp;Switch(ddBusinessGrowth.Selected.Value, "low",1,"medium",2,"high",3) * 0.20 +<br/>
+&nbsp;&nbsp;Switch(ddCostEfficiency.Selected.Value, "low",1,"medium",2,"high",3) * 0.20 +<br/>
+&nbsp;&nbsp;Switch(ddBusinessResilience.Selected.Value, "low",1,"medium",2,"high",3) * 0.30 +<br/>
+&nbsp;&nbsp;Switch(ddBusinessAgility.Selected.Value, "low",1,"medium",2,"high",3) * 0.30<br/>
 )
+</code>
 </div>
-<div class="formula">
-Set(varFeasibilityScore,<br>
-&nbsp;&nbsp;Switch(radTechnicalFeasibility.Selected.Value, "Low",1, "Medium",2, "High",3, 0) * 0.50 +<br>
-&nbsp;&nbsp;Switch(radInternalReadiness.Selected.Value, "Low",1, "Medium",2, "High",3, 0) * 0.25 +<br>
-&nbsp;&nbsp;Switch(radExternalReadiness.Selected.Value, "Low",1, "Medium",2, "High",3, 0) * 0.25<br>
+
+<h3>5.2 Feasibility Score Calculation</h3>
+<div class="callout">
+<code>
+Set(feasibilityScore,<br/>
+&nbsp;&nbsp;Switch(ddTechnicalFeasibility.Selected.Value, "low",1,"medium",2,"high",3) * 0.50 +<br/>
+&nbsp;&nbsp;Switch(ddInternalReadiness.Selected.Value, "low",1,"medium",2,"high",3) * 0.30 +<br/>
+&nbsp;&nbsp;Switch(ddExternalReadiness.Selected.Value, "low",1,"medium",2,"high",3) * 0.20<br/>
 )
-</div>
-<div class="formula">
-Set(varQuadrant, If(<br>
-&nbsp;&nbsp;varValueScore >= 2 And varFeasibilityScore >= 2, "Likely Wins",<br>
-&nbsp;&nbsp;varValueScore >= 2 And varFeasibilityScore &lt; 2, "Calculated Risks",<br>
-&nbsp;&nbsp;varValueScore &lt; 2 And varFeasibilityScore >= 2, "Marginal Gains",<br>
-&nbsp;&nbsp;"Avoid"<br>
-))
+</code>
 </div>
 
-<h2>Day 4: Power Automate + Power BI</h2>
+<h3>5.3 Quadrant Determination</h3>
+<div class="callout">
+<code>
+Set(quadrant,<br/>
+&nbsp;&nbsp;If(valueScore >= 2 And feasibilityScore >= 2, "Likely Wins",<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;valueScore >= 2 And feasibilityScore &lt; 2, "Calculated Risks",<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;valueScore &lt; 2 And feasibilityScore >= 2, "Marginal Gains",<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;"Avoid")<br/>
+)
+</code>
+</div>
 
-<h3>Step 6: AI-Generate Power Automate Flows</h3>
-<p>Use Copilot in Power Automate or describe flows to AI for JSON definitions:</p>
+<h3>5.4 Submit Assessment (Patch)</h3>
+<div class="callout">
+<code>
+Patch(AI_IdeaAssessment, Defaults(AI_IdeaAssessment),<br/>
+&nbsp;&nbsp;{<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;IdeaId: selectedIdea,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;BusinessGrowth: ddBusinessGrowth.Selected,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;CostEfficiency: ddCostEfficiency.Selected,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;BusinessResilience: ddBusinessResilience.Selected,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;BusinessAgility: ddBusinessAgility.Selected,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;TechnicalFeasibility: ddTechnicalFeasibility.Selected,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;InternalReadiness: ddInternalReadiness.Selected,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;ExternalReadiness: ddExternalReadiness.Selected,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;ValueScore: valueScore,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;FeasibilityScore: feasibilityScore,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;Quadrant: {Value: quadrant},<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;AssessedBy: User().FullName,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;AssessedAt: Now()<br/>
+&nbsp;&nbsp;}<br/>
+);<br/>
+Patch(AI_Idea, selectedIdea, {Status: {Value: "Prioritized"}});<br/>
+Notify("Assessment submitted successfully", NotificationType.Success);
+</code>
+</div>
+
+<h3>5.5 Prompt Rating (Running Average)</h3>
+<div class="callout">
+<code>
+// Record rating<br/>
+Patch(AI_PromptRating, Defaults(AI_PromptRating),<br/>
+&nbsp;&nbsp;{PromptId: selectedPrompt, Rating: userRating}<br/>
+);<br/><br/>
+// Update running average on prompt<br/>
+With({<br/>
+&nbsp;&nbsp;newTotal: selectedPrompt.Rating * selectedPrompt.RatingCount + userRating,<br/>
+&nbsp;&nbsp;newCount: selectedPrompt.RatingCount + 1<br/>
+},<br/>
+&nbsp;&nbsp;Patch(AI_Prompt, selectedPrompt,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;{Rating: Round(newTotal / newCount, 1), RatingCount: newCount}<br/>
+&nbsp;&nbsp;)<br/>
+);
+</code>
+</div>
+
+<!-- ==================== SECTION 6 ==================== -->
+<h2>6. Power Automate Workflows</h2>
+
+<p>Three automated flows replace the manual logic in the React services.</p>
+
 <table>
-    <tr><th>Flow</th><th>Trigger</th><th>What It Does</th></tr>
-    <tr><td>Assessment Scoring</td><td>Row added to IdeaAssessments</td><td>Calculate ValueScore, FeasibilityScore, Quadrant; update row; set Idea status to "Prioritized"</td></tr>
-    <tr><td>Prompt Approval</td><td>Row added to Prompts with Status=Pending</td><td>Start Approval &rarr; route to Category Owner &rarr; update Status to Approved/Rejected</td></tr>
-    <tr><td>Rating Aggregation</td><td>Row added to PromptRatings</td><td>Recalculate running average on parent Prompt record</td></tr>
-    <tr><td>Stage Change Notification</td><td>Idea Status modified</td><td>Send Teams/email notification to stakeholders</td></tr>
+<tr>
+    <th style="width:25%;">Flow Name</th>
+    <th style="width:20%;">Trigger</th>
+    <th style="width:55%;">Actions</th>
+</tr>
+<tr>
+    <td><b>New Idea Notification</b></td>
+    <td>Dataverse: When a row is added to AI_Idea</td>
+    <td>1. Get submitter details<br/>2. Send confirmation email to submitter<br/>3. Send Teams notification to review team channel<br/>4. Update Status to "Screening"</td>
+</tr>
+<tr>
+    <td><b>Prompt Approval Workflow</b></td>
+    <td>Dataverse: When Status on AI_Prompt changes to "Pending"</td>
+    <td>1. Start an Approval (Approve/Reject)<br/>2. If approved &rarr; update Status to "Approved", notify submitter<br/>3. If rejected &rarr; update Status to "Rejected", send feedback to submitter</td>
+</tr>
+<tr>
+    <td><b>Weekly Analytics Digest</b></td>
+    <td>Recurrence: Every Monday at 9:00 AM</td>
+    <td>1. Count new ideas this week<br/>2. Count prompt copies this week<br/>3. Get top-rated prompts<br/>4. Send summary email to stakeholders</td>
+</tr>
 </table>
 
-<h3>Step 7: Power BI Report (AI-Assisted)</h3>
-<p>Use <b>Copilot in Power BI</b> to generate visuals. Connect to Dataverse, then prompt:</p>
+<!-- ==================== SECTION 7 ==================== -->
+<h2>7. Day-by-Day Build Plan</h2>
+
+<table>
+<tr>
+    <th style="width:8%;">Day</th>
+    <th style="width:22%;">Focus</th>
+    <th style="width:35%;">Tasks</th>
+    <th style="width:35%;">AI Accelerator</th>
+</tr>
+<tr>
+    <td><b>1</b></td>
+    <td>Foundation</td>
+    <td>
+        &bull; Create Dataverse tables (AI_Idea, AI_IdeaAssessment, AI_Prompt, AI_PromptRating)<br/>
+        &bull; Define all Choice columns and relationships<br/>
+        &bull; Import mock data from Excel (8 ideas, 16 prompts)<br/>
+        &bull; Create Canvas App shell with navigation
+    </td>
+    <td>
+        Copilot: <i>"Create a Canvas App connected to my AI_Idea and AI_Prompt Dataverse tables with a home screen and navigation"</i><br/><br/>
+        Claude: <i>"Convert these TypeScript types to a Dataverse table definition with Choice columns: [paste ideas.ts types]"</i>
+    </td>
+</tr>
+<tr>
+    <td><b>2</b></td>
+    <td>Ideas Module</td>
+    <td>
+        &bull; Ideas Dashboard screen (gallery + filters)<br/>
+        &bull; Submit Idea screen (edit form)<br/>
+        &bull; Idea Detail screen (display form + assessment panel)<br/>
+        &bull; Add scoring formulas (Section 5)
+    </td>
+    <td>
+        Copilot: <i>"Add a gallery screen showing all AI_Ideas with title, status badge, capability area, and business function"</i><br/><br/>
+        Copilot: <i>"Create a form screen to submit new ideas to the AI_Idea table"</i>
+    </td>
+</tr>
+<tr>
+    <td><b>3</b></td>
+    <td>Ideas Module (cont.) + Prompts Module</td>
+    <td>
+        &bull; Pipeline screen (status columns)<br/>
+        &bull; Ideas Analytics screen (charts)<br/>
+        &bull; Prompt Library screen (gallery + search/filter)<br/>
+        &bull; Prompt Detail screen (display + rating widget)
+    </td>
+    <td>
+        Copilot: <i>"Add a chart screen showing ideas count by status, by quadrant, and by business function"</i><br/><br/>
+        Copilot: <i>"Create a gallery screen for AI_Prompt with search and category filter"</i>
+    </td>
+</tr>
+<tr>
+    <td><b>4</b></td>
+    <td>Prompts Module (cont.) + Workflows</td>
+    <td>
+        &bull; Submit Prompt screen (edit form)<br/>
+        &bull; Review Queue screen (pending list + approve/reject)<br/>
+        &bull; Prompt Analytics screen (charts)<br/>
+        &bull; Power Automate flows (Section 6)<br/>
+        &bull; Priority Matrix &mdash; embed Power BI visual or HTML chart
+    </td>
+    <td>
+        Copilot in Power Automate: <i>"When a new prompt submission has status Pending, start an approval and update the record based on the outcome"</i>
+    </td>
+</tr>
+<tr>
+    <td><b>5</b></td>
+    <td>Polish &amp; Deploy</td>
+    <td>
+        &bull; Apply KPMG theme (blue #00338D, purple #483698, teal #00A3A1)<br/>
+        &bull; Add conditional formatting for status colours and quadrant badges<br/>
+        &bull; Test all screens, forms, and workflows end-to-end<br/>
+        &bull; Configure security roles (Submitter, Assessor, Admin)<br/>
+        &bull; Publish and share with pilot user group
+    </td>
+    <td>
+        Claude: <i>"Generate a Power Apps theme JSON with primary=#00338D, secondary=#483698, accent=#00A3A1"</i>
+    </td>
+</tr>
+</table>
+
+<!-- ==================== SECTION 8 ==================== -->
+<h2>8. AI Prompt Templates</h2>
+
+<p>Use these prompts with Claude or ChatGPT to generate Power Fx formulas and screen configurations.</p>
+
+<h4>Prompt 1 &mdash; Dataverse Table Definitions</h4>
+<div class="callout">
+<i>"I have the following TypeScript interfaces for an AI idea management system. Convert them into Microsoft Dataverse table definitions with appropriate column types, Choice values, and relationships. Use the exact values from the source code for all enums."</i><br/>
+[Paste <code>ideas.ts</code> types + <code>prompts.ts</code> types]
+</div>
+
+<h4>Prompt 2 &mdash; Gallery Item Template</h4>
+<div class="callout">
+<i>"Generate a Power Apps Canvas App gallery item template for displaying AI ideas. Each card should show: Title (bold), Status badge with colour-coded background, AI Capability Area tag, Business Function, and Created Date. The status colours are: Submitted=#6C757D, Screening=#17A2B8, Assessment=#483698, Prioritized=#00A3A1, Development=#FFC107, Pilot=#FF6B35, Deployed=#28A745, Scaling=#00338D, On Hold=#ADB5BD, Rejected=#DC3545, Archived=#343A40."</i>
+</div>
+
+<h4>Prompt 3 &mdash; Filter Logic</h4>
+<div class="callout">
+<i>"Write a Power Fx formula for a gallery's Items property that filters the AI_Prompt Dataverse table by: a search text input (matching Title and Tags), a Category dropdown, a ComplexityLevel dropdown, and an AITools combo box. Any filter that is blank should be ignored."</i>
+</div>
+
+<h4>Prompt 4 &mdash; Power Automate Flow Definition</h4>
+<div class="callout">
+<i>"Design a Power Automate flow that triggers when a new row is added to the AI_Prompt Dataverse table with Status = Pending. The flow should: start an approval to a group of reviewers, wait for the response, update the Status to Approved or Rejected, and send an email notification to the submitter with the outcome and any feedback."</i>
+</div>
+
+<!-- ==================== SECTION 9 ==================== -->
+<h2>9. Known Limitations &amp; Workarounds</h2>
+
+<table>
+<tr>
+    <th style="width:28%;">Limitation</th>
+    <th style="width:35%;">Impact</th>
+    <th style="width:37%;">Workaround</th>
+</tr>
+<tr>
+    <td>No native Kanban control</td>
+    <td>Pipeline screen won't have drag-and-drop between stages</td>
+    <td>Use side-by-side filtered galleries with a Status dropdown per card, or use a PCF Kanban community control</td>
+</tr>
+<tr>
+    <td>No native scatter-plot chart</td>
+    <td>Priority Matrix quadrant view not available as built-in chart</td>
+    <td>Embed a Power BI scatter visual, or use an HTML Text control with a lightweight chart library</td>
+</tr>
+<tr>
+    <td>Limited custom CSS</td>
+    <td>Design will be ~70&ndash;80% match, not pixel-perfect</td>
+    <td>Use KPMG brand colours in theme, conditional formatting for badges. Accept minor layout differences for internal tool.</td>
+</tr>
+<tr>
+    <td>Star rating not built-in</td>
+    <td>Prompt rating requires manual implementation</td>
+    <td>Row of 5 Star icon controls with <code>OnSelect</code> and conditional <code>Color</code> property</td>
+</tr>
+<tr>
+    <td>Responsive design is manual</td>
+    <td>Separate phone/tablet/desktop layouts needed</td>
+    <td>Build for desktop first (primary use case). Add phone layout later if needed.</td>
+</tr>
+</table>
+
+<!-- ==================== SECTION 10 ==================== -->
+<h2>10. Deployment Checklist</h2>
+
+<div class="callout-green">
+<h3>Pre-Launch Checklist</h3>
+
+<p><b>Dataverse</b></p>
 <ul>
-    <li><i>"Create a scatter chart with FeasibilityScore on X-axis, ValueScore on Y-axis, colored by Quadrant, with idea Title as tooltip"</i></li>
-    <li><i>"Create a bar chart showing count of ideas by BusinessFunction"</i></li>
-    <li><i>"Create a funnel chart showing count of ideas by Status in pipeline order"</i></li>
-    <li><i>"Show KPI cards for total ideas, assessed ideas, and likely wins count"</i></li>
+    <li>&#9744; All 4 tables created with correct columns and relationships</li>
+    <li>&#9744; Choice columns populated with all enum values from source code</li>
+    <li>&#9744; Mock data imported and verified (8 ideas, 16 prompts)</li>
+    <li>&#9744; Security roles defined: Submitter (create ideas/prompts), Assessor (assess ideas), Admin (full access + review queue)</li>
 </ul>
-<p>Embed into Canvas App via the Power BI tile control.</p>
 
-<h2>Day 5: Polish &amp; Deploy</h2>
+<p><b>Canvas App</b></p>
 <ul>
-    <li>Apply KPMG brand colors (Primary: #00338D, Secondary: #483698, Accent: #00A3A1) via Power Apps Theme JSON</li>
-    <li>Test all CRUD operations, scoring, approval workflow</li>
-    <li>Configure Dataverse security roles (Submitter, Assessor, Admin)</li>
-    <li>Publish to Power Platform environment</li>
-    <li>Optionally: add to Microsoft Teams as a tab</li>
+    <li>&#9744; All 10 screens built and functional</li>
+    <li>&#9744; Scoring formulas tested with known inputs (verify: IDEA-001 should score Value=2.6, Feasibility=2.6, Quadrant=Likely Wins)</li>
+    <li>&#9744; Gallery filters working for both Ideas and Prompts modules</li>
+    <li>&#9744; Star rating widget updating running average correctly</li>
+    <li>&#9744; Copy-to-clipboard incrementing usage count</li>
+    <li>&#9744; KPMG theme applied (colours, header, navigation)</li>
+    <li>&#9744; Navigation between all screens tested</li>
 </ul>
 
-<!-- ============================================================ -->
-<!-- SECTION 5: METHOD B -->
-<!-- ============================================================ -->
-<h1>5. <span class="tag-b">METHOD B</span> &mdash; AI-Converted React in PCF (2-3 Days)</h1>
-
-<p>Keep the <b>exact existing React UI</b> and package it as Power Apps Component Framework (PCF) controls. Use AI to rewrite only the data layer (2 service files) to call Dataverse instead of localStorage.</p>
-
-<h2>Day 1: Dataverse Setup + AI Rewrites Service Layer</h2>
-
-<h3>Step 1: Create Dataverse Tables</h3>
-<p>Same as Method A Day 1 (Steps 1-3). Use AI to generate schemas from TypeScript interfaces and import seed data.</p>
-
-<h3>Step 2: AI Rewrites the 2 Service Files</h3>
-<p>This is the critical AI-accelerated step. Feed the entire contents of <code>ideaService.ts</code> and <code>promptService.ts</code> to an AI assistant with this prompt:</p>
-
-<div class="formula">
-"Rewrite this TypeScript service to call the Dataverse Web API instead of<br>
-localStorage. Keep the exact same function signatures and return types so<br>
-nothing else in the app breaks. Use the Dataverse REST endpoint format:<br>
-/api/data/v9.2/[tablename]. Replace the simulated delay() calls with<br>
-actual fetch() calls. Use the table/column names I provide below.<br><br>
-Table mapping:<br>
-- Ideas -> cr_ideas (cr_ideaid, cr_title, cr_description, ...)<br>
-- IdeaAssessments -> cr_ideaassessments<br>
-- Prompts -> cr_prompts<br>
-- PromptRatings -> cr_promptratings<br><br>
-[Paste full ideaService.ts and promptService.ts]"
-</div>
-
-<div class="green">
-    <b>AI Speed Gain:</b> AI rewrites both service files (~450 lines total) in under 2 minutes. The rest of the codebase (all 20 component/page files, all 21 CSS files, App.tsx) remains <b>completely untouched</b>. This is the fastest path to an identical UI.
-</div>
-
-<h3>Step 3: AI Generates Auth Helper</h3>
-<p>Ask AI to generate a small auth utility that acquires a Dataverse access token using MSAL.js (Microsoft Authentication Library), so the API calls are authenticated against Azure AD.</p>
-
-<h2>Day 2: Package as PCF Controls</h2>
-
-<h3>Step 4: AI Generates PCF Scaffolding</h3>
-<p>Use AI to generate the PCF manifest and wrapper. Prompt:</p>
-<div class="formula">
-"Generate a Power Apps Component Framework (PCF) control manifest and<br>
-index.ts wrapper for a React application. The control should:<br>
-- Render the React App component into a container div<br>
-- Accept a 'dataSource' property (bound to Dataverse)<br>
-- Bundle all CSS and React dependencies<br>
-- Use pac pcf init --framework react"
-</div>
-
-<h3>Step 5: Build &amp; Package</h3>
-<div class="formula">
-// Initialize PCF project (one-time):<br>
-pac pcf init --namespace AdvisoryAI --name IdeasApp --template field --framework react<br><br>
-// Copy existing src/ files into the PCF project<br>
-// Build:<br>
-npm run build<br><br>
-// Package as solution:<br>
-pac solution init --publisher-name KPMG --publisher-prefix kpmg<br>
-pac solution add-reference --path ./AdvisoryAI<br>
-msbuild /t:build /restore
-</div>
-
-<h3>Step 6: Deploy to Power Apps</h3>
-<ol>
-    <li>Import the solution (.zip) into your Power Platform environment via <b>make.powerapps.com &rarr; Solutions &rarr; Import</b></li>
-    <li>Create a Canvas App or Model-Driven App</li>
-    <li>Add the PCF control to a screen &mdash; it renders the full React application inside Power Apps</li>
-    <li>The React app now reads/writes from Dataverse instead of localStorage</li>
-</ol>
-
-<h2>Day 3: Flows + Polish</h2>
-
-<h3>Step 7: Add Power Automate Flows</h3>
-<p>Same flows as Method A (Assessment Scoring, Prompt Approval, Rating Aggregation, Notifications). These run server-side independent of the React frontend.</p>
-
-<h3>Step 8: Test &amp; Deploy</h3>
+<p><b>Power Automate</b></p>
 <ul>
-    <li>Test all CRUD operations against Dataverse</li>
-    <li>Verify scoring calculations produce same results as original</li>
-    <li>Test approval workflow end-to-end</li>
-    <li>Configure security roles</li>
-    <li>Publish to production environment</li>
+    <li>&#9744; New Idea Notification flow tested end-to-end</li>
+    <li>&#9744; Prompt Approval Workflow tested (approve + reject paths)</li>
+    <li>&#9744; Weekly Analytics Digest flow scheduled and verified</li>
 </ul>
 
-<!-- ============================================================ -->
-<!-- SECTION 6: COMPARISON -->
-<!-- ============================================================ -->
-<h1>6. Head-to-Head Comparison</h1>
-
-<table class="vs-table">
-    <tr><th>Factor</th><th><span class="tag-a">METHOD A</span> AI-Built Canvas App</th><th><span class="tag-b">METHOD B</span> React in PCF</th></tr>
-    <tr><td>Total Time</td><td>3-5 days</td><td><b>2-3 days</b></td></tr>
-    <tr><td>Lines of Code Written</td><td>~0 (AI generates Power Fx + low-code)</td><td>~100 (AI rewrites 2 service files + PCF wrapper)</td></tr>
-    <tr><td>Files Changed from Repo</td><td>0 (completely new app)</td><td>3 files (2 services + 1 new auth utility)</td></tr>
-    <tr><td>Design Match</td><td>~85-90%</td><td><b>~99%</b></td></tr>
-    <tr><td>AI Tools Used</td><td>Copilot in Power Apps, Power Automate, Power BI</td><td>Claude/ChatGPT for code rewrite, PCF scaffolding</td></tr>
-    <tr><td>Dataverse</td><td>Yes</td><td>Yes</td></tr>
-    <tr><td>Power Automate</td><td>Yes</td><td>Yes</td></tr>
-    <tr><td>Power BI</td><td>Embedded natively</td><td>Can embed, or keep existing React charts</td></tr>
-    <tr><td>Mobile App</td><td>Built-in (Power Apps mobile)</td><td>Responsive (existing CSS)</td></tr>
-    <tr><td>Teams Integration</td><td>One-click add as Teams tab</td><td>One-click add as Teams tab</td></tr>
-    <tr><td>Future Maintenance</td><td><b>Low-code</b> (citizen developers)</td><td>Code-first (React developers)</td></tr>
-    <tr><td>Offline Support</td><td>Power Apps offline mode</td><td>Limited</td></tr>
-    <tr><td>Priority Matrix Visual</td><td>Power BI scatter chart (interactive)</td><td>Existing React PriorityMatrix component (identical)</td></tr>
-    <tr><td>Risk</td><td>Low (proven platform patterns)</td><td>Medium (PCF packaging complexity)</td></tr>
-</table>
-
-<!-- ============================================================ -->
-<!-- SECTION 7: DECISION GUIDE -->
-<!-- ============================================================ -->
-<h1>7. Which Method to Choose</h1>
-
-<div class="green">
-    <b>Choose <span class="tag-a">METHOD A</span> (AI-Built Canvas App) if:</b>
-    <ul style="margin-top:4px;">
-        <li>Your team will maintain this in Power Apps long-term (low-code ownership)</li>
-        <li>You want the deepest Microsoft 365 integration (Teams tabs, Outlook actions, SharePoint connectors)</li>
-        <li>You don't have React/TypeScript developers available for ongoing maintenance</li>
-        <li>An ~85-90% design match is acceptable</li>
-        <li>You want Power BI visuals instead of custom React charts</li>
-    </ul>
+<p><b>Go Live</b></p>
+<ul>
+    <li>&#9744; App published to production environment</li>
+    <li>&#9744; App shared with pilot user group via security group</li>
+    <li>&#9744; App pinned in Teams (optional)</li>
+    <li>&#9744; Quick-start guide shared with users</li>
+</ul>
 </div>
 
-<div class="note">
-    <b>Choose <span class="tag-b">METHOD B</span> (React in PCF) if:</b>
-    <ul style="margin-top:4px;">
-        <li>The <b>exact same pixel-perfect UI</b> is a hard requirement</li>
-        <li>You have React/TypeScript developers on the team</li>
-        <li>You want the absolute fastest delivery (2-3 days)</li>
-        <li>You want to reuse the existing interactive Priority Matrix scatter plot without rebuilding in Power BI</li>
-        <li>The team is comfortable with code-first maintenance</li>
-    </ul>
-</div>
-
-<div class="warn">
-    <b>Both methods share:</b> Dataverse for data storage, Azure AD for authentication, Power Automate for workflow automation (approvals, scoring, notifications), and deployment as a Power Platform solution. The difference is purely in the frontend layer.
-</div>
-
-<!-- ============================================================ -->
-<!-- SECTION 8: QUICK-START CHECKLIST -->
-<!-- ============================================================ -->
-<h1>8. Quick-Start Checklist</h1>
-
-<h2>Prerequisites (Both Methods)</h2>
-<table>
-    <tr><th>#</th><th>Item</th><th>Where</th></tr>
-    <tr><td>1</td><td>Power Platform environment with Dataverse provisioned</td><td>admin.powerplatform.microsoft.com</td></tr>
-    <tr><td>2</td><td>Power Apps per-user or per-app license</td><td>Microsoft 365 admin center</td></tr>
-    <tr><td>3</td><td>Power BI Pro license (for embedded reports)</td><td>Microsoft 365 admin center</td></tr>
-    <tr><td>4</td><td>Azure AD app registration (for Method B API auth)</td><td>portal.azure.com &rarr; App Registrations</td></tr>
-    <tr><td>5</td><td>This repository cloned locally</td><td>git clone</td></tr>
-</table>
-
-<h2><span class="tag-a">METHOD A</span> Day-by-Day Checklist</h2>
-<table>
-    <tr><th>Day</th><th>Tasks</th><th>AI Tool</th></tr>
-    <tr><td>1</td><td>Feed TypeScript types to AI &rarr; get Dataverse schema. Create 4 tables. Import seed data from CSV.</td><td>Claude / ChatGPT</td></tr>
-    <tr><td>2</td><td>Generate 5 screens with Copilot: Dashboard, Submit Idea, Pipeline, Idea Detail, Prompt Library.</td><td>Copilot in Power Apps</td></tr>
-    <tr><td>3</td><td>Generate 5 screens: Prompt Detail, Submit Prompt, Review Queue, Ideas Analytics, Prompt Analytics. Wire Power Fx scoring formulas.</td><td>Copilot in Power Apps + Claude</td></tr>
-    <tr><td>4</td><td>Create 4 Power Automate flows (scoring, approval, rating, notifications). Build Power BI report with 2 pages. Embed in app.</td><td>Copilot in Power Automate + Power BI</td></tr>
-    <tr><td>5</td><td>Apply KPMG theme. Security roles. Test end-to-end. Publish. Add to Teams.</td><td>Manual</td></tr>
-</table>
-
-<h2><span class="tag-b">METHOD B</span> Day-by-Day Checklist</h2>
-<table>
-    <tr><th>Day</th><th>Tasks</th><th>AI Tool</th></tr>
-    <tr><td>1</td><td>Create 4 Dataverse tables (same as Method A). AI rewrites ideaService.ts + promptService.ts for Dataverse Web API. AI generates MSAL auth helper. Test API calls locally.</td><td>Claude / ChatGPT</td></tr>
-    <tr><td>2</td><td>AI generates PCF manifest + wrapper. Copy React src into PCF project. Build &amp; package solution ZIP. Import into Power Platform. Create Power Automate flows.</td><td>Claude + PCF CLI</td></tr>
-    <tr><td>3</td><td>Test all functionality against Dataverse. Configure security. Publish. Add to Teams.</td><td>Manual</td></tr>
-</table>
-
-<!-- ============================================================ -->
-<!-- SECTION 9 -->
-<!-- ============================================================ -->
-<h1>9. AI Prompt Templates (Ready to Use)</h1>
-
-<p>Copy-paste these prompts into your AI tool of choice to accelerate each step:</p>
-
-<h3>Prompt 1: Generate Dataverse Schema</h3>
-<div class="formula" style="font-size:8.5pt;">
-"I have a React/TypeScript app with these data models. Convert them into<br>
-Microsoft Dataverse table definitions. For each table, list: table name,<br>
-display name, each column (name, type, required, default, choice values<br>
-with hex color codes). Also list relationships between tables.<br><br>
-[Paste contents of data/ideas.ts and data/prompts.ts]"
-</div>
-
-<h3>Prompt 2: Rewrite Services for Dataverse API (Method B)</h3>
-<div class="formula" style="font-size:8.5pt;">
-"Rewrite these two TypeScript service files to use the Microsoft Dataverse<br>
-Web API (REST, /api/data/v9.2/) instead of localStorage. Requirements:<br>
-- Keep exact same exported function signatures and return types<br>
-- Replace simulated delay() with actual fetch() calls<br>
-- Use bearer token auth (import getAccessToken from ./auth)<br>
-- Map TypeScript types to Dataverse column names (prefix: cr_)<br>
-- Handle Dataverse OData response format (@odata.context, value array)<br><br>
-[Paste full ideaService.ts and promptService.ts]"
-</div>
-
-<h3>Prompt 3: Generate Power Automate Flow (Scoring)</h3>
-<div class="formula" style="font-size:8.5pt;">
-"Create a Power Automate cloud flow that triggers when a row is added to<br>
-the IdeaAssessments Dataverse table. The flow should:<br>
-1. Read the 7 dimension values (Low/Medium/High)<br>
-2. Map Low=1, Medium=2, High=3<br>
-3. Calculate ValueScore = Growth*0.20 + Cost*0.20 + Resilience*0.30 + Agility*0.30<br>
-4. Calculate FeasibilityScore = Technical*0.50 + Internal*0.25 + External*0.25<br>
-5. Determine Quadrant: both>=2 Likely Wins, Value>=2 only Calculated Risks,<br>
-   Feasibility>=2 only Marginal Gains, else Avoid<br>
-6. Update the IdeaAssessment row with calculated scores and quadrant<br>
-7. Update the parent Idea status to Prioritized<br>
-Provide step-by-step instructions for building this in Power Automate."
-</div>
-
-<h3>Prompt 4: Copilot Screen Generation (Method A)</h3>
-<div class="formula" style="font-size:8.5pt;">
-"Build a Kanban pipeline screen for my Ideas table. I need 7 columns<br>
-(Submitted, Screening, Assessment, Prioritized, Development, Pilot,<br>
-Deployed). Each column should have a vertical gallery showing idea cards<br>
-filtered by that status. Each card shows Title, AI Capability Area, and<br>
-Submitter Name. Include Advance, Hold, and Reject action buttons on each<br>
-card that update the idea's status using Patch()."
-</div>
-
-<!-- ============================================================ -->
-<!-- SECTION 10 -->
-<!-- ============================================================ -->
-<h1>10. Final Recommendation</h1>
-
-<table class="vs-table">
-    <tr>
-        <td style="width:50%; vertical-align:top; border:2px solid #00338D; padding:12px;">
-            <p style="text-align:center; font-size:12pt;"><span class="tag-a">METHOD A</span></p>
-            <p style="text-align:center; font-size:10pt; color:#555;">AI-Built Canvas App</p>
-            <p style="text-align:center; font-size:16pt; color:#00338D; font-weight:bold;">3-5 Days</p>
-            <p style="font-size:9pt; margin-top:8px;">Best for: Long-term low-code ownership, deepest M365 integration, teams without React developers. Design ~85-90% match. All visuals rebuilt natively with Copilot assistance.</p>
-        </td>
-        <td style="width:50%; vertical-align:top; border:2px solid #483698; padding:12px;">
-            <p style="text-align:center; font-size:12pt;"><span class="tag-b">METHOD B</span></p>
-            <p style="text-align:center; font-size:10pt; color:#555;">React in PCF</p>
-            <p style="text-align:center; font-size:16pt; color:#483698; font-weight:bold;">2-3 Days</p>
-            <p style="font-size:9pt; margin-top:8px;">Best for: Pixel-perfect design (99% match), fastest possible delivery, teams with React developers. AI rewrites only 2 files; everything else untouched.</p>
-        </td>
-    </tr>
-</table>
-
-<div class="note">
-    <b>Both methods leverage AI at every step</b> &mdash; from schema generation to code rewriting to screen scaffolding to flow creation. The days listed assume one developer working with AI assistance throughout. Without AI, these same tasks would take 4-6 weeks.
-</div>
+<br/>
+<p style="text-align:center; font-size:10pt; color:#888888;">&mdash; End of Document &mdash;</p>
 
 </body>
 </html>
