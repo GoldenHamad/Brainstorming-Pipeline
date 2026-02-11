@@ -1,0 +1,113 @@
+{% comment %}
+  ============================================================
+  Advisory AI Ideas — Power Pages Master Layout
+  ============================================================
+  This is the outer shell applied to every page.  It provides
+  the <head>, navigation bar, content slot, and footer.
+  Page-specific templates use {% extends "Layout" %} and
+  override the "main" block.
+{% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ page.title | default: "Advisory AI Ideas" }}</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Lucide Icons (CDN) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Chart.js for analytics pages -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+
+  <!-- Site stylesheet -->
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+
+  <!-- ===== NAVIGATION BAR ===== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="/" class="logo">
+        <span class="logo-icon">
+          <i data-lucide="brain" style="width:28px;height:28px;color:#fff"></i>
+        </span>
+        <span class="logo-text">Advisory AI Ideas</span>
+      </a>
+
+      <nav class="main-nav" id="mainNav">
+        <a href="/ideas" class="nav-link {% if page.url == '/ideas' %}active{% endif %}">
+          <i data-lucide="lightbulb" style="width:16px;height:16px"></i> Ideas
+        </a>
+        <a href="/ideas/pipeline" class="nav-link {% if page.url == '/ideas/pipeline' %}active{% endif %}">
+          <i data-lucide="kanban" style="width:16px;height:16px"></i> Pipeline
+        </a>
+        <a href="/ideas/analytics" class="nav-link {% if page.url == '/ideas/analytics' %}active{% endif %}">
+          <i data-lucide="bar-chart-3" style="width:16px;height:16px"></i> Ideas Analytics
+        </a>
+        <a href="/prompts" class="nav-link {% if page.url == '/prompts' %}active{% endif %}">
+          <i data-lucide="book-open" style="width:16px;height:16px"></i> Prompts
+        </a>
+        <a href="/prompts/analytics" class="nav-link {% if page.url == '/prompts/analytics' %}active{% endif %}">
+          <i data-lucide="trending-up" style="width:16px;height:16px"></i> Prompt Analytics
+        </a>
+
+        {% if user.roles contains 'AI Ideas Admin' %}
+        <a href="/prompts/review" class="nav-link {% if page.url == '/prompts/review' %}active{% endif %}">
+          <i data-lucide="check-circle" style="width:16px;height:16px"></i> Review Queue
+        </a>
+        {% endif %}
+      </nav>
+
+      <div class="header-actions">
+        {% if user %}
+          <span class="user-greeting">{{ user.fullname }}</span>
+          <a href="/Account/Login/LogOff" class="btn btn-ghost btn-sm">Sign Out</a>
+        {% else %}
+          <a href="/SignIn" class="btn btn-primary btn-sm">Sign In</a>
+        {% endif %}
+
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+          <i data-lucide="menu" style="width:24px;height:24px"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== PAGE CONTENT ===== -->
+  <main class="site-main">
+    {% block main %}
+      {{ page.copy }}
+    {% endblock %}
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>{% editable snippets 'Site/Footer' %}</p>
+    </div>
+  </footer>
+
+  <!-- ===== TOAST CONTAINER ===== -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- App JS -->
+  <script src="/app.js"></script>
+
+  <!-- Activate Lucide icons -->
+  <script>lucide.createIcons();</script>
+
+  <!-- Mobile nav toggle -->
+  <script>
+    document.getElementById('mobileToggle')?.addEventListener('click', function () {
+      document.getElementById('mainNav').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

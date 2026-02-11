@@ -1,0 +1,228 @@
+{% extends "Layout" %}
+{% block main %}
+{% comment %}
+  ============================================================
+  Idea Detail + Assessment Panel
+  ============================================================
+{% endcomment %}
+
+<div id="ideaDetailContainer">
+  <div class="empty-state"><p>Loading idea&hellip;</p></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async function () {
+  var params = new URLSearchParams(window.location.search);
+  var ideaId = params.get('id');
+  if (!ideaId) {
+    document.getElementById('ideaDetailContainer').innerHTML =
+      '<div class="empty-state"><p>No idea ID specified. <a href="/ideas">Back to Dashboard</a></p></div>';
+    return;
+  }
+
+  var container = document.getElementById('ideaDetailContainer');
+
+  try {
+    var idea = await AppApi.getIdeaById(ideaId);
+    if (!idea) {
+      container.innerHTML = '<div class="empty-state"><p>Idea not found. <a href="/ideas">Back to Dashboard</a></p></div>';
+      return;
+    }
+
+    // Try to load assessment
+    var assessment = await AppApi.getAssessmentForIdea(ideaId);
+
+    var statusLabel = AppData.getChoiceLabel('IdeaStatus', idea.cr7b4_Status);
+    var statusKey = AppData.getStatusKey(idea.cr7b4_Status);
+    var capLabel = AppData.getChoiceLabel('AICapabilityArea', idea.cr7b4_AICapabilityArea);
+    var funcLabel = AppData.getChoiceLabel('BusinessFunction', idea.cr7b4_BusinessFunction);
+
+    var html = '';
+    // Breadcrumb
+    html += '<nav class="flex items-center gap-sm mb-lg text-sm text-muted">';
+    html += '<a href="/ideas">Ideas Dashboard</a><span>/</span><span>' + AppUI.escapeHtml(idea.cr7b4_Title) + '</span>';
+    html += '</nav>';
+
+    // Header
+    html += '<div class="flex justify-between items-center mb-lg flex-wrap gap-md">';
+    html += '<div>';
+    html += '<h1 style="font-size:var(--font-size-2xl);margin-bottom:var(--space-xs)">' + AppUI.escapeHtml(idea.cr7b4_Title) + '</h1>';
+    html += '<div class="flex gap-sm items-center">';
+    html += '<span class="badge badge-' + statusKey + '">' + statusLabel + '</span>';
+    html += '<span class="text-sm text-muted">' + capLabel + '</span>';
+    html += '<span class="text-sm text-muted">&bull; ' + funcLabel + '</span>';
+    html += '</div></div>';
+    html += '<a href="/ideas" class="btn btn-secondary">Back to Dashboard</a>';
+    html += '</div>';
+
+    // Two-column layout
+    html += '<div class="grid grid-2">';
+
+    // Left column — Details
+    html += '<div class="card"><div class="card-body">';
+    html += '<h3 class="mb-md">Idea Details</h3>';
+    html += '<div class="mb-lg"><label class="form-label">Description</label><p class="text-sm">' + AppUI.escapeHtml(idea.cr7b4_Description) + '</p></div>';
+    html += '<div class="mb-lg"><label class="form-label">Expected Benefits</label><p class="text-sm">' + AppUI.escapeHtml(idea.cr7b4_ExpectedBenefits) + '</p></div>';
+    html += '<div class="grid grid-2">';
+    html += '<div><label class="form-label">Submitter</label><p class="text-sm">' + AppUI.escapeHtml(idea.cr7b4_SubmitterName) + '</p></div>';
+    html += '<div><label class="form-label">Submitted</label><p class="text-sm">' + new Date(idea.cr7b4_CreatedAt).toLocaleDateString() + '</p></div>';
+    html += '</div>';
+    html += '</div></div>';
+
+    // Right column — Assessment
+    html += '<div class="card"><div class="card-body">';
+    if (assessment) {
+      var vs = assessment.cr7b4_ValueScore;
+      var fs = assessment.cr7b4_FeasibilityScore;
+      var qLabel = AppData.getChoiceLabel('Quadrant', assessment.cr7b4_Quadrant);
+      var qKey = AppData.getQuadrantKey(assessment.cr7b4_Quadrant);
+
+      html += '<h3 class="mb-md">Assessment Scorecard</h3>';
+      html += '<div class="flex gap-lg mb-lg">';
+      html += '<div class="kpi-card" style="flex:1"><div class="kpi-value text-primary">' + vs.toFixed(1) + '</div><div class="kpi-label">Value Score</div></div>';
+      html += '<div class="kpi-card" style="flex:1"><div class="kpi-value" style="color:var(--color-accent)">' + fs.toFixed(1) + '</div><div class="kpi-label">Feasibility Score</div></div>';
+      html += '</div>';
+      html += '<div class="text-center mb-lg"><span class="badge badge-' + qKey + '" style="font-size:var(--font-size-sm);padding:6px 16px">' + qLabel + '</span></div>';
+
+      // Value dimensions
+      html += '<h4 class="mb-sm text-sm">Business Value Dimensions</h4>';
+      var valueDims = [
+        { label: 'Business Growth (20%)', field: 'cr7b4_BusinessGrowth' },
+        { label: 'Cost Efficiency (20%)', field: 'cr7b4_CostEfficiency' },
+        { label: 'Business Resilience (30%)', field: 'cr7b4_BusinessResilience' },
+        { label: 'Business Agility (30%)', field: 'cr7b4_BusinessAgility' }
+      ];
+      valueDims.forEach(function (d) {
+        var score = assessment[d.field];
+        var pct = (score / 3 * 100).toFixed(0);
+        html += '<div class="score-bar-wrap"><div class="score-bar-label"><span>' + d.label + '</span><span>' + AppData.getChoiceLabel('ScoreLevel', score) + '</span></div>';
+        html += '<div class="score-bar"><div class="score-bar-fill" style="width:' + pct + '%;background:var(--color-primary)"></div></div></div>';
+      });
+
+      // Feasibility dimensions
+      html += '<h4 class="mb-sm mt-lg text-sm">Feasibility Dimensions</h4>';
+      var feasDims = [
+        { label: 'Technical Feasibility (50%)', field: 'cr7b4_TechnicalFeasibility' },
+        { label: 'Internal Readiness (30%)', field: 'cr7b4_InternalReadiness' },
+        { label: 'External Readiness (20%)', field: 'cr7b4_ExternalReadiness' }
+      ];
+      feasDims.forEach(function (d) {
+        var score = assessment[d.field];
+        var pct = (score / 3 * 100).toFixed(0);
+        html += '<div class="score-bar-wrap"><div class="score-bar-label"><span>' + d.label + '</span><span>' + AppData.getChoiceLabel('ScoreLevel', score) + '</span></div>';
+        html += '<div class="score-bar"><div class="score-bar-fill" style="width:' + pct + '%;background:var(--color-accent)"></div></div></div>';
+      });
+
+      html += '<div class="text-xs text-muted mt-lg">Assessed by ' + AppUI.escapeHtml(assessment.cr7b4_AssessedBy) + ' on ' + new Date(assessment.cr7b4_AssessedAt).toLocaleDateString() + '</div>';
+    } else {
+      // Assessment form (for assessors)
+      html += '<h3 class="mb-md">Submit Assessment</h3>';
+      html += '<p class="text-sm text-muted mb-lg">This idea has not been assessed yet.</p>';
+      html += '<form id="assessmentForm">';
+
+      var scoreDims = [
+        { id: 'businessGrowth', label: 'Business Growth', group: 'value' },
+        { id: 'costEfficiency', label: 'Cost & Efficiency', group: 'value' },
+        { id: 'businessResilience', label: 'Business Resilience', group: 'value' },
+        { id: 'businessAgility', label: 'Business Agility', group: 'value' },
+        { id: 'technicalFeasibility', label: 'Technical Feasibility', group: 'feasibility' },
+        { id: 'internalReadiness', label: 'Internal Readiness', group: 'feasibility' },
+        { id: 'externalReadiness', label: 'External Readiness', group: 'feasibility' }
+      ];
+
+      html += '<h4 class="mb-sm text-sm" style="color:var(--color-primary)">Business Value</h4>';
+      scoreDims.forEach(function (d) {
+        if (d.group === 'feasibility' && d.id === 'technicalFeasibility') {
+          html += '<h4 class="mb-sm mt-lg text-sm" style="color:var(--color-accent)">Feasibility</h4>';
+        }
+        html += '<div class="form-group">';
+        html += '<label class="form-label">' + d.label + '</label>';
+        html += '<select class="form-control" id="score_' + d.id + '" required>';
+        html += '<option value="">Select...</option><option value="1">Low</option><option value="2">Medium</option><option value="3">High</option>';
+        html += '</select></div>';
+      });
+
+      html += '<button type="submit" class="btn btn-primary btn-block mt-lg" id="assessBtn">Submit Assessment</button>';
+      html += '</form>';
+    }
+    html += '</div></div>';
+    html += '</div>'; // close grid
+
+    container.innerHTML = html;
+    lucide.createIcons();
+
+    // Assessment form handler
+    var assessForm = document.getElementById('assessmentForm');
+    if (assessForm) {
+      assessForm.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        var btn = document.getElementById('assessBtn');
+        btn.disabled = true;
+        btn.textContent = 'Saving...';
+
+        var scores = {};
+        var scoreDimIds = ['businessGrowth','costEfficiency','businessResilience','businessAgility','technicalFeasibility','internalReadiness','externalReadiness'];
+        var allFilled = true;
+        scoreDimIds.forEach(function (id) {
+          var val = parseInt(document.getElementById('score_' + id).value);
+          if (!val) allFilled = false;
+          scores[id] = val;
+        });
+
+        if (!allFilled) {
+          AppUI.showToast('Please fill in all score dimensions.', 'error');
+          btn.disabled = false;
+          btn.textContent = 'Submit Assessment';
+          return;
+        }
+
+        var valueScore = scores.businessGrowth * 0.20 + scores.costEfficiency * 0.20
+          + scores.businessResilience * 0.30 + scores.businessAgility * 0.30;
+        var feasScore = scores.technicalFeasibility * 0.50 + scores.internalReadiness * 0.30
+          + scores.externalReadiness * 0.20;
+        var threshold = 2.0;
+        var quadrant;
+        if (valueScore >= threshold && feasScore >= threshold) quadrant = 100000000;
+        else if (valueScore >= threshold && feasScore < threshold) quadrant = 100000001;
+        else if (valueScore < threshold && feasScore >= threshold) quadrant = 100000002;
+        else quadrant = 100000003;
+
+        try {
+          await AppApi.createAssessment({
+            cr7b4_AssessmentId: 'ASMT-' + Date.now(),
+            'cr7b4_IdeaId@odata.bind': '/cr7b4_ai_ideas(' + ideaId + ')',
+            cr7b4_BusinessGrowth: scores.businessGrowth,
+            cr7b4_CostEfficiency: scores.costEfficiency,
+            cr7b4_BusinessResilience: scores.businessResilience,
+            cr7b4_BusinessAgility: scores.businessAgility,
+            cr7b4_TechnicalFeasibility: scores.technicalFeasibility,
+            cr7b4_InternalReadiness: scores.internalReadiness,
+            cr7b4_ExternalReadiness: scores.externalReadiness,
+            cr7b4_ValueScore: Math.round(valueScore * 100) / 100,
+            cr7b4_FeasibilityScore: Math.round(feasScore * 100) / 100,
+            cr7b4_Quadrant: quadrant,
+            cr7b4_AssessedBy: '{{ user.fullname | default: "Assessment Team" }}',
+            cr7b4_AssessedAt: new Date().toISOString()
+          });
+
+          // Update idea status to Assessment
+          await AppApi.updateIdea(ideaId, { cr7b4_Status: 100000002 });
+
+          AppUI.showToast('Assessment saved successfully!', 'success');
+          setTimeout(function () { location.reload(); }, 1000);
+        } catch (err) {
+          console.error('Assessment error:', err);
+          AppUI.showToast('Failed to save assessment.', 'error');
+          btn.disabled = false;
+          btn.textContent = 'Submit Assessment';
+        }
+      });
+    }
+
+  } catch (err) {
+    console.error('Load idea error:', err);
+    container.innerHTML = '<div class="empty-state"><p>Error loading idea. <a href="/ideas">Back to Dashboard</a></p></div>';
+  }
+});
+</script>
+{% endblock %}

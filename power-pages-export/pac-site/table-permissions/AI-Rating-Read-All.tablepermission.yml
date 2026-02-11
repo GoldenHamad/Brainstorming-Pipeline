@@ -1,0 +1,10 @@
+adx_entityname: cr7b4_ai_promptrating
+adx_scope: 756150003
+adx_read: true
+adx_create: false
+adx_write: false
+adx_delete: false
+adx_entitypermission_webrole:
+  - AI Ideas Submitter
+  - AI Ideas Assessor
+  - AI Ideas Admin

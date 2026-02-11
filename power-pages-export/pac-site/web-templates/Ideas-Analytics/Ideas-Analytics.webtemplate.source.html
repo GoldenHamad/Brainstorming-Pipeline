@@ -1,0 +1,180 @@
+{% extends "Layout" %}
+{% block main %}
+{% comment %}
+  ============================================================
+  Ideas Analytics — KPIs, Charts, Breakdowns
+  ============================================================
+{% endcomment %}
+
+<section class="hero">
+  <h1>Ideas Analytics</h1>
+  <p>Insights and metrics across the AI ideas portfolio.</p>
+</section>
+
+<!-- KPI Cards -->
+<section class="section">
+  <div class="grid grid-4">
+    <div class="kpi-card"><div class="kpi-value" id="anTotalIdeas">--</div><div class="kpi-label">Total Ideas</div></div>
+    <div class="kpi-card"><div class="kpi-value" id="anAssessed">--</div><div class="kpi-label">Assessed</div></div>
+    <div class="kpi-card"><div class="kpi-value" id="anLikelyWins">--</div><div class="kpi-label">Likely Wins</div></div>
+    <div class="kpi-card"><div class="kpi-value" id="anCalcRisks">--</div><div class="kpi-label">Calculated Risks</div></div>
+  </div>
+</section>
+
+<!-- Charts Row -->
+<section class="section">
+  <div class="grid grid-2">
+    <!-- Status Distribution -->
+    <div class="card">
+      <div class="card-header">Status Distribution</div>
+      <div class="card-body">
+        <canvas id="chartStatusDist" height="260"></canvas>
+      </div>
+    </div>
+    <!-- Quadrant Distribution -->
+    <div class="card">
+      <div class="card-header">Quadrant Distribution</div>
+      <div class="card-body">
+        <canvas id="chartQuadrantDist" height="260"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Breakdowns -->
+<section class="section">
+  <div class="grid grid-2">
+    <!-- By Business Function -->
+    <div class="card">
+      <div class="card-header">Ideas by Business Function</div>
+      <div class="card-body">
+        <canvas id="chartByFunction" height="260"></canvas>
+      </div>
+    </div>
+    <!-- By AI Capability -->
+    <div class="card">
+      <div class="card-header">Ideas by AI Capability</div>
+      <div class="card-body">
+        <canvas id="chartByCapability" height="260"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Top Ideas Leaderboard -->
+<section class="section">
+  <div class="card">
+    <div class="card-header">Top Ideas by Value Score</div>
+    <div class="card-body">
+      <table class="data-table" id="topIdeasTable">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Title</th>
+            <th>Value Score</th>
+            <th>Feasibility Score</th>
+            <th>Quadrant</th>
+          </tr>
+        </thead>
+        <tbody id="topIdeasBody">
+          <tr><td colspan="5" class="text-center text-muted">Loading&hellip;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', async function () {
+  try {
+    var ideas = await AppApi.getIdeas();
+    ideas = await AppApi.enrichIdeasWithAssessments(ideas);
+    var assessed = ideas.filter(function (i) { return i._assessment; });
+
+    // KPIs
+    document.getElementById('anTotalIdeas').textContent = ideas.length;
+    document.getElementById('anAssessed').textContent = assessed.length;
+    document.getElementById('anLikelyWins').textContent =
+      assessed.filter(function (i) { return i._assessment.cr7b4_Quadrant === 100000000; }).length;
+    document.getElementById('anCalcRisks').textContent =
+      assessed.filter(function (i) { return i._assessment.cr7b4_Quadrant === 100000001; }).length;
+
+    // Status distribution chart
+    var statusCounts = {};
+    AppData.IDEA_STATUSES.forEach(function (s) { statusCounts[s.label] = 0; });
+    ideas.forEach(function (i) {
+      var label = AppData.getChoiceLabel('IdeaStatus', i.cr7b4_Status);
+      statusCounts[label] = (statusCounts[label] || 0) + 1;
+    });
+    new Chart(document.getElementById('chartStatusDist'), {
+      type: 'bar',
+      data: {
+        labels: Object.keys(statusCounts),
+        datasets: [{ label: 'Ideas', data: Object.values(statusCounts),
+          backgroundColor: '#00338D', borderRadius: 6 }]
+      },
+      options: { responsive: true, plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+    });
+
+    // Quadrant distribution chart
+    var quadrantLabels = ['Likely Wins', 'Calculated Risks', 'Marginal Gains', 'Avoid'];
+    var quadrantColors = ['#28A745', '#FFC107', '#6C757D', '#DC3545'];
+    var quadrantCounts = [0, 0, 0, 0];
+    assessed.forEach(function (i) {
+      var idx = i._assessment.cr7b4_Quadrant - 100000000;
+      if (idx >= 0 && idx < 4) quadrantCounts[idx]++;
+    });
+    new Chart(document.getElementById('chartQuadrantDist'), {
+      type: 'doughnut',
+      data: { labels: quadrantLabels, datasets: [{ data: quadrantCounts, backgroundColor: quadrantColors }] },
+      options: { responsive: true }
+    });
+
+    // By business function
+    var funcCounts = {};
+    ideas.forEach(function (i) {
+      var label = AppData.getChoiceLabel('BusinessFunction', i.cr7b4_BusinessFunction);
+      funcCounts[label] = (funcCounts[label] || 0) + 1;
+    });
+    new Chart(document.getElementById('chartByFunction'), {
+      type: 'bar',
+      data: { labels: Object.keys(funcCounts), datasets: [{ label: 'Ideas', data: Object.values(funcCounts), backgroundColor: '#483698', borderRadius: 6 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+    });
+
+    // By AI capability
+    var capCounts = {};
+    ideas.forEach(function (i) {
+      var label = AppData.getChoiceLabel('AICapabilityArea', i.cr7b4_AICapabilityArea);
+      capCounts[label] = (capCounts[label] || 0) + 1;
+    });
+    new Chart(document.getElementById('chartByCapability'), {
+      type: 'bar',
+      data: { labels: Object.keys(capCounts), datasets: [{ label: 'Ideas', data: Object.values(capCounts), backgroundColor: '#00A3A1', borderRadius: 6 }] },
+      options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+    });
+
+    // Top ideas leaderboard
+    var sorted = assessed.slice().sort(function (a, b) {
+      return b._assessment.cr7b4_ValueScore - a._assessment.cr7b4_ValueScore;
+    }).slice(0, 5);
+    document.getElementById('topIdeasBody').innerHTML = sorted.map(function (idea, idx) {
+      var a = idea._assessment;
+      var qLabel = AppData.getChoiceLabel('Quadrant', a.cr7b4_Quadrant);
+      var qKey = AppData.getQuadrantKey(a.cr7b4_Quadrant);
+      return '<tr>' +
+        '<td><strong>' + (idx + 1) + '</strong></td>' +
+        '<td><a href="/ideas/detail?id=' + idea.cr7b4_AI_Ideaid + '">' + AppUI.escapeHtml(idea.cr7b4_Title) + '</a></td>' +
+        '<td>' + a.cr7b4_ValueScore.toFixed(1) + '</td>' +
+        '<td>' + a.cr7b4_FeasibilityScore.toFixed(1) + '</td>' +
+        '<td><span class="badge badge-' + qKey + '">' + qLabel + '</span></td>' +
+        '</tr>';
+    }).join('');
+
+  } catch (err) {
+    console.error('Analytics load error:', err);
+  }
+});
+</script>
+{% endblock %}
