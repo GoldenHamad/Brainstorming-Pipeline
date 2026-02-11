@@ -1,0 +1,252 @@
+{% extends "Layout" %}
+{% block main %}
+{% comment %}
+  ============================================================
+  Submit Prompt Form
+  ============================================================
+{% endcomment %}
+
+<div style="max-width:800px;margin:0 auto">
+  <nav class="flex items-center gap-sm mb-lg text-sm text-muted">
+    <a href="/prompts">Prompt Library</a><span>/</span><span>Submit New Prompt</span>
+  </nav>
+
+  <div class="card">
+    <div class="card-header">
+      <h1 style="font-size:var(--font-size-xl)">
+        <i data-lucide="file-plus" style="width:22px;height:22px;vertical-align:middle"></i>
+        Submit a New Prompt
+      </h1>
+      <p class="text-sm text-muted" style="margin-top:4px">Your prompt will be reviewed before it appears in the library.</p>
+    </div>
+    <div class="card-body">
+      <form id="submitPromptForm" novalidate>
+        <!-- Basic Info -->
+        <h3 class="mb-md">Basic Information</h3>
+
+        <div class="form-group">
+          <label class="form-label" for="promptTitle">Title *</label>
+          <input type="text" id="promptTitle" class="form-control" placeholder="e.g. Executive Summary Generator" maxlength="200" required />
+          <div class="form-error" id="errTitle" style="display:none"></div>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="form-group">
+            <label class="form-label" for="promptCategory">Category *</label>
+            <select id="promptCategory" class="form-control" required>
+              <option value="">Select category...</option>
+            </select>
+            <div class="form-error" id="errCategory" style="display:none"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="promptComplexity">Complexity Level *</label>
+            <select id="promptComplexity" class="form-control" required>
+              <option value="">Select level...</option>
+              <option value="100000000">Beginner</option>
+              <option value="100000001">Intermediate</option>
+              <option value="100000002">Expert</option>
+            </select>
+            <div class="form-error" id="errComplexity" style="display:none"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="promptText">Prompt Text *</label>
+          <textarea id="promptText" class="form-control" rows="8" placeholder="Write the full prompt text here..." maxlength="4000" required></textarea>
+          <div class="form-hint"><span id="promptCharCount">0</span>/4000</div>
+          <div class="form-error" id="errPromptText" style="display:none"></div>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="form-group">
+            <label class="form-label" for="promptOutputFormat">Output Format</label>
+            <select id="promptOutputFormat" class="form-control">
+              <option value="">Select format...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="promptVersion">Version</label>
+            <input type="text" id="promptVersion" class="form-control" value="1.0.0" />
+          </div>
+        </div>
+
+        <hr style="border:none;border-top:1px solid var(--color-border);margin:var(--space-xl) 0" />
+
+        <!-- Best Practices & Metadata -->
+        <h3 class="mb-md">Best Practices & Metadata</h3>
+
+        <div class="form-group">
+          <label class="form-label" for="promptBestPractices">Best Practices</label>
+          <textarea id="promptBestPractices" class="form-control" rows="3" placeholder="Tips for getting the best results..." maxlength="2000"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Recommended AI Tools *</label>
+          <div class="flex flex-wrap gap-md" id="aiToolCheckboxes"></div>
+          <div class="form-error" id="errAITools" style="display:none"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="promptTags">Tags</label>
+          <input type="text" id="promptTags" class="form-control" placeholder="Separate tags with semicolons: strategy;analysis;report" />
+          <div class="form-hint">Use semicolons to separate tags.</div>
+        </div>
+
+        <hr style="border:none;border-top:1px solid var(--color-border);margin:var(--space-xl) 0" />
+
+        <!-- Your Information -->
+        <h3 class="mb-md">Your Information</h3>
+
+        <div class="grid grid-2">
+          <div class="form-group">
+            <label class="form-label" for="promptOwner">Owner / Team *</label>
+            <input type="text" id="promptOwner" class="form-control" placeholder="e.g. Strategy Practice" required />
+            <div class="form-error" id="errOwner" style="display:none"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="promptSubmitterName">Your Name *</label>
+            <input type="text" id="promptSubmitterName" class="form-control" placeholder="Full name" required
+              {% if user %}value="{{ user.fullname }}"{% endif %} />
+            <div class="form-error" id="errSubmitterName" style="display:none"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="promptSubmitterEmail">Your Email *</label>
+          <input type="email" id="promptSubmitterEmail" class="form-control" placeholder="name@company.com" required style="max-width:400px"
+            {% if user %}value="{{ user.emailaddress1 }}"{% endif %} />
+          <div class="form-error" id="errSubmitterEmail" style="display:none"></div>
+        </div>
+
+        <div class="flex justify-between items-center mt-xl">
+          <a href="/prompts" class="btn btn-secondary">Cancel</a>
+          <button type="submit" class="btn btn-primary btn-lg" id="submitPromptBtn">
+            <i data-lucide="send" style="width:16px;height:16px"></i> Submit for Review
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Populate category dropdown
+  var catSelect = document.getElementById('promptCategory');
+  AppData.PROMPT_CATEGORIES.forEach(function (c, idx) {
+    var opt = document.createElement('option');
+    opt.value = 100000000 + idx;
+    opt.textContent = c;
+    catSelect.appendChild(opt);
+  });
+
+  // Output format dropdown
+  var fmtSelect = document.getElementById('promptOutputFormat');
+  AppData.OUTPUT_FORMATS.forEach(function (f, idx) {
+    var opt = document.createElement('option');
+    opt.value = 100000000 + idx;
+    opt.textContent = f;
+    fmtSelect.appendChild(opt);
+  });
+
+  // AI Tool checkboxes
+  var toolsContainer = document.getElementById('aiToolCheckboxes');
+  AppData.AI_TOOLS.forEach(function (tool, idx) {
+    var val = 100000000 + idx;
+    var label = document.createElement('label');
+    label.className = 'flex items-center gap-xs text-sm';
+    label.style.cursor = 'pointer';
+    label.innerHTML = '<input type="checkbox" value="' + val + '" name="aiTool" /> ' + tool;
+    toolsContainer.appendChild(label);
+  });
+
+  // Char counter
+  document.getElementById('promptText').addEventListener('input', function () {
+    document.getElementById('promptCharCount').textContent = this.value.length;
+  });
+
+  // Submit
+  document.getElementById('submitPromptForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    // Validate
+    var valid = true;
+    var required = [
+      { id: 'promptTitle', err: 'errTitle', msg: 'Title is required' },
+      { id: 'promptCategory', err: 'errCategory', msg: 'Category is required' },
+      { id: 'promptComplexity', err: 'errComplexity', msg: 'Complexity is required' },
+      { id: 'promptText', err: 'errPromptText', msg: 'Prompt text is required' },
+      { id: 'promptOwner', err: 'errOwner', msg: 'Owner is required' },
+      { id: 'promptSubmitterName', err: 'errSubmitterName', msg: 'Name is required' },
+      { id: 'promptSubmitterEmail', err: 'errSubmitterEmail', msg: 'Valid email is required' }
+    ];
+    required.forEach(function (f) {
+      var el = document.getElementById(f.id);
+      var errEl = document.getElementById(f.err);
+      var val = el.value.trim();
+      if (!val || (f.id === 'promptSubmitterEmail' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val))) {
+        el.classList.add('error');
+        errEl.textContent = f.msg;
+        errEl.style.display = '';
+        valid = false;
+      } else {
+        el.classList.remove('error');
+        errEl.style.display = 'none';
+      }
+    });
+
+    // AI tools check
+    var checkedTools = document.querySelectorAll('input[name="aiTool"]:checked');
+    var errTools = document.getElementById('errAITools');
+    if (checkedTools.length === 0) {
+      errTools.textContent = 'Select at least one AI tool';
+      errTools.style.display = '';
+      valid = false;
+    } else {
+      errTools.style.display = 'none';
+    }
+
+    if (!valid) return;
+
+    var btn = document.getElementById('submitPromptBtn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+
+    // Build AI tools multi-select value (comma-separated for Dataverse multi-select)
+    var toolValues = Array.from(checkedTools).map(function (cb) { return cb.value; }).join(',');
+
+    try {
+      var promptCount = (await AppApi.getPrompts({})).length + 1;
+      var newId = 'P' + String(promptCount).padStart(3, '0');
+
+      await AppApi.createPrompt({
+        cr7b4_PromptId: newId,
+        cr7b4_Title: document.getElementById('promptTitle').value.trim(),
+        cr7b4_Category: parseInt(document.getElementById('promptCategory').value),
+        cr7b4_PromptText: document.getElementById('promptText').value.trim(),
+        cr7b4_OutputFormat: parseInt(document.getElementById('promptOutputFormat').value) || null,
+        cr7b4_ComplexityLevel: parseInt(document.getElementById('promptComplexity').value),
+        cr7b4_BestPractices: document.getElementById('promptBestPractices').value.trim() || null,
+        cr7b4_OwnerName: document.getElementById('promptOwner').value.trim(),
+        cr7b4_Tags: document.getElementById('promptTags').value.trim() || null,
+        cr7b4_AITools: toolValues,
+        cr7b4_Version: document.getElementById('promptVersion').value.trim() || '1.0.0',
+        cr7b4_UsageCount: 0,
+        cr7b4_Rating: 0,
+        cr7b4_RatingCount: 0,
+        cr7b4_PromptStatus: 100000001, // Pending
+        cr7b4_SubmitterName: document.getElementById('promptSubmitterName').value.trim(),
+        cr7b4_SubmitterEmail: document.getElementById('promptSubmitterEmail').value.trim()
+      });
+
+      AppUI.showToast('Prompt submitted for review!', 'success');
+      setTimeout(function () { window.location.href = '/prompts'; }, 1200);
+    } catch (err) {
+      console.error('Submit prompt error:', err);
+      AppUI.showToast('Failed to submit prompt.', 'error');
+      btn.disabled = false;
+      btn.textContent = 'Submit for Review';
+    }
+  });
+});
+</script>
+{% endblock %}
