@@ -1,0 +1,6 @@
+AssessmentId,IdeaId,BusinessGrowth,CostEfficiency,BusinessResilience,BusinessAgility,TechnicalFeasibility,InternalReadiness,ExternalReadiness,ValueScore,FeasibilityScore,Quadrant,AssessedBy,AssessedAt
+ASMT-001,IDEA-001,medium,high,high,high,high,high,medium,2.6,2.6,Likely Wins,Assessment Team,2026-01-17T14:00:00Z
+ASMT-002,IDEA-002,high,medium,high,high,medium,medium,high,2.7,2.2,Likely Wins,Assessment Team,2026-01-16T10:00:00Z
+ASMT-003,IDEA-003,high,high,medium,high,medium,low,medium,2.6,1.8,Calculated Risks,Assessment Team,2026-01-15T16:30:00Z
+ASMT-004,IDEA-004,low,high,medium,medium,high,high,high,2.0,2.8,Marginal Gains,Assessment Team,2026-01-14T09:15:00Z
+ASMT-005,IDEA-005,high,medium,high,medium,medium,medium,low,2.5,1.8,Calculated Risks,Assessment Team,2026-01-13T11:45:00Z
