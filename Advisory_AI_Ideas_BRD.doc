@@ -25,9 +25,6 @@ xmlns="http://www.w3.org/TR/REC-html40">
     code { font-family: Consolas, monospace; font-size: 9.5pt; background-color: #F0F0F0; padding: 1pt 4pt; }
     .cover-subtitle { font-size: 14pt; color: #483698; margin-bottom: 4pt; }
     .cover-meta { font-size: 10pt; color: #888888; margin-bottom: 2pt; }
-    .tag { display: inline-block; background-color: #E8F0FE; color: #00338D; padding: 2pt 8pt; border-radius: 3pt; font-size: 9pt; font-weight: bold; margin-right: 4pt; }
-    .tag-green { background-color: #E8F5E9; color: #28A745; }
-    .tag-purple { background-color: #F3E8FD; color: #483698; }
 </style>
 </head>
 <body>
@@ -38,16 +35,21 @@ xmlns="http://www.w3.org/TR/REC-html40">
 
 <br/><br/><br/>
 <h1>Business Requirements Document (BRD)</h1>
-<p class="cover-subtitle">Advisory AI Ideas &amp; Prompt Library &mdash; Power Apps Canvas Application</p>
+<p class="cover-subtitle">Advisory AI Ideas &mdash; Power Apps Canvas Application</p>
 <br/>
 
-<table style="width: 60%; border: none;">
-<tr><td style="border: none; padding: 3pt 8pt;"><b>Document Title:</b></td><td style="border: none; padding: 3pt 8pt;">Advisory AI Ideas &mdash; BRD</td></tr>
+<table style="width: 65%; border: none;">
+<tr><td style="border: none; padding: 3pt 8pt; width: 40%;"><b>Document Title:</b></td><td style="border: none; padding: 3pt 8pt;">Advisory AI Ideas &mdash; BRD</td></tr>
 <tr><td style="border: none; padding: 3pt 8pt;"><b>Version:</b></td><td style="border: none; padding: 3pt 8pt;">1.0</td></tr>
-<tr><td style="border: none; padding: 3pt 8pt;"><b>Date:</b></td><td style="border: none; padding: 3pt 8pt;">23 February 2026</td></tr>
-<tr><td style="border: none; padding: 3pt 8pt;"><b>Platform:</b></td><td style="border: none; padding: 3pt 8pt;">Microsoft Power Apps (Canvas App)</td></tr>
+<tr><td style="border: none; padding: 3pt 8pt;"><b>Date:</b></td><td style="border: none; padding: 3pt 8pt;">24 February 2026</td></tr>
+<tr><td style="border: none; padding: 3pt 8pt;"><b>App Display Name:</b></td><td style="border: none; padding: 3pt 8pt;">Advisory AI Ideas</td></tr>
+<tr><td style="border: none; padding: 3pt 8pt;"><b>App Type:</b></td><td style="border: none; padding: 3pt 8pt;">Classic Canvas App (Tablet)</td></tr>
 <tr><td style="border: none; padding: 3pt 8pt;"><b>Backend:</b></td><td style="border: none; padding: 3pt 8pt;">Microsoft Dataverse</td></tr>
-<tr><td style="border: none; padding: 3pt 8pt;"><b>Status:</b></td><td style="border: none; padding: 3pt 8pt;">Published</td></tr>
+<tr><td style="border: none; padding: 3pt 8pt;"><b>Dataverse Instance:</b></td><td style="border: none; padding: 3pt 8pt;">org49a69cf1.crm15.dynamics.com</td></tr>
+<tr><td style="border: none; padding: 3pt 8pt;"><b>Publisher Prefix:</b></td><td style="border: none; padding: 3pt 8pt;">cr39e_</td></tr>
+<tr><td style="border: none; padding: 3pt 8pt;"><b>Last Published:</b></td><td style="border: none; padding: 3pt 8pt;">12 February 2026, 13:28 UTC</td></tr>
+<tr><td style="border: none; padding: 3pt 8pt;"><b>Power Apps Version:</b></td><td style="border: none; padding: 3pt 8pt;">3.26014.7</td></tr>
+<tr><td style="border: none; padding: 3pt 8pt;"><b>Status:</b></td><td style="border: none; padding: 3pt 8pt;">Published (In Development)</td></tr>
 </table>
 
 <br/>
@@ -62,19 +64,14 @@ xmlns="http://www.w3.org/TR/REC-html40">
 <h2>Table of Contents</h2>
 <ol style="font-size: 11pt; line-height: 2.0;">
     <li>Executive Summary</li>
-    <li>Project Background &amp; Objectives</li>
-    <li>Stakeholders &amp; Roles</li>
-    <li>Scope</li>
-    <li>Functional Requirements &mdash; Ideas Module</li>
-    <li>Functional Requirements &mdash; Prompt Library Module</li>
-    <li>Business Rules &amp; Scoring Logic</li>
-    <li>Data Model</li>
-    <li>User Interface Requirements</li>
-    <li>Non-Functional Requirements</li>
-    <li>Integration &amp; Automation Requirements</li>
-    <li>Security &amp; Access Control</li>
+    <li>Application Overview</li>
+    <li>Current Build State</li>
+    <li>Data Model (Dataverse)</li>
+    <li>Screen Inventory &amp; Controls</li>
+    <li>Business Logic &amp; Formulas</li>
+    <li>Choice Value Reference</li>
+    <li>Non-Functional Characteristics</li>
     <li>Assumptions &amp; Constraints</li>
-    <li>Acceptance Criteria</li>
     <li>Glossary</li>
 </ol>
 
@@ -86,645 +83,596 @@ xmlns="http://www.w3.org/TR/REC-html40">
 
 <h2>1. Executive Summary</h2>
 
-<p>The <b>Advisory AI Ideas</b> application is an enterprise Power Apps Canvas App that provides KPMG Advisory with a centralised platform for capturing, assessing, prioritising, and tracking AI use-case ideas, alongside a curated library of reusable AI prompts. The application replaces a prior React/TypeScript single-page application and has been rebuilt natively on the Microsoft Power Platform to leverage Dataverse as the data layer, enabling seamless integration with Microsoft 365, Teams, and Power Automate workflows.</p>
+<p>The <b>Advisory AI Ideas</b> application is a Microsoft Power Apps Canvas App that provides KPMG Advisory with a centralised platform for managing AI use-case ideas and a curated AI prompt library. The app is backed by four Microsoft Dataverse custom tables and is published in Tablet format (1366 &times; 768).</p>
 
-<p>The application serves two core functions:</p>
-<ol>
-    <li><b>AI Ideas Pipeline</b> &mdash; A structured workflow for employees to submit AI use-case ideas, have them assessed against a weighted value/feasibility framework, and track them through an 11-stage lifecycle pipeline from ideation to scaling.</li>
-    <li><b>AI Prompt Library</b> &mdash; A searchable, filterable catalogue of vetted AI prompts across six categories, with rating, usage tracking, community submission, and an admin review queue.</li>
-</ol>
+<p>As of the published export (<b>12 February 2026</b>), the application contains:</p>
+<ul>
+    <li><b>2 screens</b>: a default scaffold screen (<code>Screen1</code>) and a functional Ideas Dashboard (<code>scrIdeasDashboard</code>)</li>
+    <li><b>4 Dataverse tables</b> connected: AI Ideas, AI Idea Assessments, AI Prompts, AI Prompt Ratings</li>
+    <li><b>App-level initialisation</b>: current user context, score threshold variable, and score-mapping collection</li>
+    <li><b>Ideas Dashboard</b>: a searchable, filterable gallery displaying ideas from the AI Ideas table with colour-coded status badges</li>
+</ul>
 
 <div class="callout">
-<b>Key Business Value:</b> Enables KPMG Advisory to systematically identify, evaluate, and prioritise the highest-impact AI opportunities while equipping staff with best-practice AI prompts to improve productivity across all business functions.
+<b>Note:</b> This BRD documents the application exactly as it exists in the exported <code>IdeasAPP_Powerapps.zip</code> package. It reflects only implemented functionality, not planned future screens or features.
 </div>
 
 <!-- ============================================================ -->
-<!-- 2. PROJECT BACKGROUND & OBJECTIVES -->
+<!-- 2. APPLICATION OVERVIEW -->
 <!-- ============================================================ -->
 
-<h2>2. Project Background &amp; Objectives</h2>
+<h2>2. Application Overview</h2>
 
-<h3>2.1 Background</h3>
-<p>KPMG Advisory recognised the need for a structured approach to managing the growing volume of AI use-case ideas generated across business functions. An initial prototype was developed as a React/TypeScript web application using browser localStorage for data persistence. To achieve enterprise-grade data management, governance, and integration with the existing Microsoft 365 ecosystem, the application was migrated to Microsoft Power Apps Canvas App backed by Dataverse.</p>
-
-<h3>2.2 Business Objectives</h3>
+<h3>2.1 Application Metadata</h3>
 <table>
-<tr><th>#</th><th>Objective</th><th>Success Metric</th></tr>
-<tr><td>OBJ-01</td><td>Provide a single entry point for all AI use-case ideas across the firm</td><td>100% of new AI ideas submitted through the platform</td></tr>
-<tr><td>OBJ-02</td><td>Enable objective, quantitative prioritisation of AI initiatives</td><td>All submitted ideas scored using the weighted value/feasibility framework</td></tr>
-<tr><td>OBJ-03</td><td>Provide full lifecycle visibility from ideation to scaling</td><td>Pipeline dashboard reflects real-time status of all ideas</td></tr>
-<tr><td>OBJ-04</td><td>Establish a curated, reusable prompt library to boost AI adoption</td><td>Prompt library used at least 500 times per month within 3 months</td></tr>
-<tr><td>OBJ-05</td><td>Ensure enterprise governance, security, and auditability</td><td>All data stored in Dataverse with role-based access control enforced</td></tr>
-<tr><td>OBJ-06</td><td>Integrate with Microsoft 365 ecosystem (Teams, Outlook, Power Automate)</td><td>App accessible via Teams; automated notifications for key events</td></tr>
+<tr><th>Property</th><th>Value</th></tr>
+<tr><td>Display Name</td><td>Advisory AI Ideas</td></tr>
+<tr><td>App Type</td><td>ClassicCanvasApp</td></tr>
+<tr><td>Form Factor</td><td>Tablet</td></tr>
+<tr><td>Resolution</td><td>1366 &times; 768 px (landscape)</td></tr>
+<tr><td>Scale to Fit</td><td>No</td></tr>
+<tr><td>Maintain Aspect Ratio</td><td>No</td></tr>
+<tr><td>Show Status Bar</td><td>No</td></tr>
+<tr><td>Doc Version</td><td>1.348</td></tr>
+<tr><td>MSApp Structure Version</td><td>2.4.0</td></tr>
+<tr><td>Client Version</td><td>3.26014.7</td></tr>
+<tr><td>Minimum API Version</td><td>2.2.0</td></tr>
+<tr><td>Publish Target</td><td>player</td></tr>
+<tr><td>User Locale</td><td>en-US</td></tr>
+<tr><td>DLP Status</td><td>Compliant</td></tr>
+<tr><td>Connectors Used</td><td>shared_commondataservice (Dataverse)</td></tr>
 </table>
 
-<!-- ============================================================ -->
-<!-- 3. STAKEHOLDERS & ROLES -->
-<!-- ============================================================ -->
-
-<h2>3. Stakeholders &amp; Roles</h2>
-
+<h3>2.2 Data Connections</h3>
+<p>The application connects to a single Dataverse environment (<code>default.cds</code>) and references four custom tables:</p>
 <table>
-<tr><th>Role</th><th>Description</th><th>Key Responsibilities</th></tr>
-<tr><td><b>Submitter</b> (All Staff)</td><td>Any KPMG Advisory employee across all business functions</td><td>Submit AI use-case ideas; submit new prompts; browse &amp; rate prompts; copy prompts for use</td></tr>
-<tr><td><b>Assessor</b></td><td>Senior staff or AI leads responsible for evaluating ideas</td><td>Score ideas across value &amp; feasibility dimensions; submit assessments; update idea status in pipeline</td></tr>
-<tr><td><b>Admin / Reviewer</b></td><td>Platform administrators and prompt review committee</td><td>Approve/reject submitted prompts; manage pipeline statuses; configure security roles; access all analytics</td></tr>
-<tr><td><b>Leadership</b></td><td>Partners and directors overseeing AI strategy</td><td>View analytics dashboards; review prioritised ideas; make investment decisions</td></tr>
+<tr><th>Power Apps Name</th><th>Entity Set Name</th><th>Logical Name</th><th>Writable</th></tr>
+<tr><td>AI Ideas</td><td>cr39e_aiideas</td><td>cr39e_aiidea</td><td>Yes</td></tr>
+<tr><td>AI Idea Assessments</td><td>cr39e_aiideaassessments</td><td>cr39e_aiideaassessment</td><td>Yes</td></tr>
+<tr><td>AI Prompts</td><td>cr39e_aiprompts</td><td>cr39e_aiprompt</td><td>Yes</td></tr>
+<tr><td>AI Prompt Ratings</td><td>cr39e_aipromptratings</td><td>cr39e_aipromptrating</td><td>Yes</td></tr>
 </table>
 
-<!-- ============================================================ -->
-<!-- 4. SCOPE -->
-<!-- ============================================================ -->
-
-<h2>4. Scope</h2>
-
-<h3>4.1 In Scope</h3>
+<p>Two sample/static data sources also exist (auto-generated by Power Apps):</p>
 <table>
-<tr><th>Module</th><th>Capabilities</th></tr>
-<tr>
-    <td><b>Ideas Pipeline</b></td>
-    <td>
-        <ul>
-            <li>Idea submission form (title, description, AI capability area, business function, expected benefits, submitter info)</li>
-            <li>Ideas dashboard with search, status filter, and business function filter</li>
-            <li>Idea detail view with full information display</li>
-            <li>Assessment panel with 7 scoring dropdowns, live score calculation, and quadrant determination</li>
-            <li>Pipeline board view showing ideas across all 11 lifecycle stages</li>
-            <li>Drag-and-drop (or dropdown-based) status transitions between pipeline stages</li>
-            <li>Ideas analytics dashboard (by status, quadrant, business function, AI capability area)</li>
-        </ul>
-    </td>
-</tr>
-<tr>
-    <td><b>Prompt Library</b></td>
-    <td>
-        <ul>
-            <li>Searchable, filterable prompt catalogue (by category, complexity, keyword)</li>
-            <li>Prompt detail view with full text, metadata, and copy-to-clipboard functionality</li>
-            <li>Star-based rating system (1&ndash;5) with optional text feedback</li>
-            <li>Usage count tracking (incremented on copy)</li>
-            <li>Prompt submission form for community contributions</li>
-            <li>Admin review queue with approve/reject workflow</li>
-            <li>Prompt analytics dashboard (category distribution, top prompts, ratings)</li>
-        </ul>
-    </td>
-</tr>
-<tr>
-    <td><b>Platform</b></td>
-    <td>
-        <ul>
-            <li>Dataverse tables for structured data storage</li>
-            <li>Role-based access control (Submitter, Assessor, Admin)</li>
-            <li>Global navigation header across all screens</li>
-            <li>KPMG-branded theme (colour palette, typography)</li>
-            <li>Power Automate flows for notifications and approval workflows</li>
-        </ul>
-    </td>
-</tr>
+<tr><th>Name</th><th>Purpose</th><th>Writable</th></tr>
+<tr><td>DropDownSample</td><td>Default sample data for dropdown controls (values: 1, 2, 3)</td><td>No</td></tr>
+<tr><td>CustomGallerySample</td><td>Default sample data for gallery template (SampleHeading, SampleImage, SampleText)</td><td>No</td></tr>
 </table>
 
-<h3>4.2 Out of Scope</h3>
+<h3>2.3 Enabled Features</h3>
+<p>The following Power Apps preview/feature flags are enabled in the application:</p>
 <ul>
-    <li>Direct integration with external AI services (e.g., calling OpenAI/Azure OpenAI APIs from within the app)</li>
-    <li>Financial budgeting or resource allocation for ideas</li>
-    <li>Custom AI model training or deployment</li>
-    <li>Multi-language / internationalisation support</li>
-    <li>Mobile-specific responsive layout (app is optimised for tablet/desktop at 1366 &times; 768)</li>
-    <li>Advanced priority-matrix scatter-chart visualisation (future enhancement)</li>
+    <li>Performance optimisation enabled</li>
+    <li>Delay-load screens</li>
+    <li>Delay control rendering</li>
+    <li>Formula data prefetch</li>
+    <li>Native CDS experimental connector</li>
+    <li>Dataverse actions enabled</li>
+    <li>Non-blocking OnStart rule</li>
+    <li>Error handling</li>
+    <li>Canvas App runtime Copilot enabled</li>
+    <li>Support column names as identifiers</li>
 </ul>
 
 <!-- ============================================================ -->
-<!-- 5. FUNCTIONAL REQUIREMENTS — IDEAS MODULE -->
+<!-- 3. CURRENT BUILD STATE -->
 <!-- ============================================================ -->
 
-<h2>5. Functional Requirements &mdash; Ideas Module</h2>
+<h2>3. Current Build State</h2>
 
-<h3>FR-100: Idea Submission</h3>
-<table>
-<tr><th>ID</th><th>Requirement</th><th>Priority</th></tr>
-<tr><td>FR-101</td><td>The system shall provide a form for users to submit a new AI use-case idea with the following fields: <b>Title</b> (text, required, max 200 chars), <b>Description</b> (multi-line text, required), <b>AI Capability Area</b> (choice, required), <b>Business Function</b> (choice, required), <b>Expected Benefits</b> (multi-line text, optional), <b>Submitter Name</b> (auto-populated from logged-in user or manual entry), <b>Submitter Email</b> (auto-populated or manual entry).</td><td>Must</td></tr>
-<tr><td>FR-102</td><td>Upon submission, the system shall create a new record in the <code>AI Ideas</code> Dataverse table with Status defaulting to <b>"Submitted"</b> and Created Date set to the current timestamp.</td><td>Must</td></tr>
-<tr><td>FR-103</td><td>The system shall generate a unique Idea ID automatically (Dataverse auto-number or GUID).</td><td>Must</td></tr>
-<tr><td>FR-104</td><td>The system shall display a success notification upon successful submission and reset the form.</td><td>Must</td></tr>
-<tr><td>FR-105</td><td>The system shall validate that all required fields are populated before allowing submission.</td><td>Must</td></tr>
-</table>
+<p>The application is in an <b>early development stage</b>. The Dataverse schema is fully provisioned (4 tables with all columns and choice sets), but the Canvas App UI currently consists of 2 screens. The table below summarises what is implemented versus not yet built:</p>
 
-<h3>FR-200: Ideas Dashboard</h3>
 <table>
-<tr><th>ID</th><th>Requirement</th><th>Priority</th></tr>
-<tr><td>FR-201</td><td>The system shall display all ideas in a scrollable gallery, sorted by creation date (newest first).</td><td>Must</td></tr>
-<tr><td>FR-202</td><td>Each idea card in the gallery shall display: <b>Title</b>, <b>AI Capability Area</b>, <b>Business Function</b>, <b>Status badge</b> (colour-coded), and <b>Created Date</b>.</td><td>Must</td></tr>
-<tr><td>FR-203</td><td>The system shall provide a <b>text search</b> control that filters ideas by Title, AI Capability Area, or Business Function.</td><td>Must</td></tr>
-<tr><td>FR-204</td><td>The system shall provide a <b>Status filter</b> dropdown with options: All, Submitted, Screening, Assessment, Prioritized, Development, Pilot, Deployed, Scaling, On Hold, Rejected, Archived.</td><td>Must</td></tr>
-<tr><td>FR-205</td><td>The system shall provide a <b>Business Function filter</b> dropdown with options: All, Audit, Tax, Advisory, Deal Advisory, IT, Operations, Human Resources, Finance, Marketing, Legal, Risk &amp; Compliance.</td><td>Must</td></tr>
-<tr><td>FR-206</td><td>All three filters (search, status, business function) shall work in combination (AND logic).</td><td>Must</td></tr>
-<tr><td>FR-207</td><td>Selecting an idea from the gallery shall navigate to the Idea Detail screen with the selected idea's data loaded.</td><td>Must</td></tr>
-</table>
-
-<h3>FR-300: Idea Detail &amp; Assessment</h3>
-<table>
-<tr><th>ID</th><th>Requirement</th><th>Priority</th></tr>
-<tr><td>FR-301</td><td>The system shall display the full details of the selected idea: Title, Description, AI Capability Area, Business Function, Expected Benefits, Submitter Name, Submitter Email, Status, and Created Date.</td><td>Must</td></tr>
-<tr><td>FR-302</td><td>The system shall display the idea's current Status as a colour-coded badge.</td><td>Must</td></tr>
-<tr><td>FR-303</td><td>The system shall provide an <b>Assessment Panel</b> with 7 dropdown controls for scoring dimensions: Business Growth, Cost Efficiency, Business Resilience, Business Agility, Technical Feasibility, Internal Readiness, External Readiness. Each dropdown shall offer choices: Low, Medium, High.</td><td>Must</td></tr>
-<tr><td>FR-304</td><td>The system shall <b>calculate Value Score and Feasibility Score in real time</b> as the user selects dropdown values, using the weighted scoring formula defined in Section 7 (Business Rules).</td><td>Must</td></tr>
-<tr><td>FR-305</td><td>The system shall <b>determine and display the Quadrant</b> (Likely Wins, Calculated Risks, Marginal Gains, Avoid) in real time based on the calculated scores.</td><td>Must</td></tr>
-<tr><td>FR-306</td><td>The system shall provide a <b>"Submit Assessment"</b> button that writes the 7 dimension values, Value Score, Feasibility Score, Quadrant, Assessed By (current user), and Assessed Date to the <code>AI Idea Assessments</code> table and updates the idea's status to "Prioritized".</td><td>Must</td></tr>
-<tr><td>FR-307</td><td>The system shall display visual score bars or indicators showing the Value Score and Feasibility Score relative to the maximum possible score (3.0).</td><td>Should</td></tr>
-<tr><td>FR-308</td><td>If an assessment already exists for the idea, the system shall display the existing scores and quadrant (read-only or editable based on role).</td><td>Should</td></tr>
-</table>
-
-<h3>FR-400: Pipeline Board</h3>
-<table>
-<tr><th>ID</th><th>Requirement</th><th>Priority</th></tr>
-<tr><td>FR-401</td><td>The system shall display a <b>Kanban-style pipeline board</b> with one column per active lifecycle stage: Submitted, Screening, Assessment, Prioritized, Development, Pilot, Deployed, Scaling.</td><td>Must</td></tr>
-<tr><td>FR-402</td><td>Each column shall display a header with the stage name and a count of ideas in that stage.</td><td>Must</td></tr>
-<tr><td>FR-403</td><td>Each idea card in the pipeline shall show the Title and a Status dropdown allowing the user to move the idea to a different stage.</td><td>Must</td></tr>
-<tr><td>FR-404</td><td>Changing the status dropdown shall immediately update the idea's Status in the <code>AI Ideas</code> Dataverse table via a Patch operation.</td><td>Must</td></tr>
-<tr><td>FR-405</td><td>The pipeline view shall exclude ideas with terminal statuses (On Hold, Rejected, Archived) from the main board columns.</td><td>Should</td></tr>
-</table>
-
-<h3>FR-500: Ideas Analytics</h3>
-<table>
-<tr><th>ID</th><th>Requirement</th><th>Priority</th></tr>
-<tr><td>FR-501</td><td>The system shall display summary KPI cards: <b>Total Ideas</b>, <b>Assessed Ideas</b>, <b>Likely Wins count</b>, <b>Average Value Score</b>.</td><td>Must</td></tr>
-<tr><td>FR-502</td><td>The system shall display a <b>column chart</b> showing the distribution of ideas by Status.</td><td>Must</td></tr>
-<tr><td>FR-503</td><td>The system shall display a <b>pie chart</b> showing the distribution of assessed ideas by Quadrant.</td><td>Must</td></tr>
-<tr><td>FR-504</td><td>The system shall display a <b>bar chart</b> showing the distribution of ideas by Business Function.</td><td>Must</td></tr>
-<tr><td>FR-505</td><td>The system shall display a <b>bar chart</b> showing the distribution of ideas by AI Capability Area.</td><td>Must</td></tr>
+<tr><th>Component</th><th>Status</th><th>Notes</th></tr>
+<tr><td>Dataverse Table: AI Ideas</td><td style="background-color:#E8F5E9;">Provisioned</td><td>All custom columns and choice sets created</td></tr>
+<tr><td>Dataverse Table: AI Idea Assessments</td><td style="background-color:#E8F5E9;">Provisioned</td><td>All scoring columns, lookup to AI Ideas, quadrant choice</td></tr>
+<tr><td>Dataverse Table: AI Prompts</td><td style="background-color:#E8F5E9;">Provisioned</td><td>All columns including multi-select AI Tools</td></tr>
+<tr><td>Dataverse Table: AI Prompt Ratings</td><td style="background-color:#E8F5E9;">Provisioned</td><td>Lookup to AI Prompts, rating, feedback columns</td></tr>
+<tr><td>App OnStart initialisation</td><td style="background-color:#E8F5E9;">Implemented</td><td>currentUser, scoreThreshold, colScoreMap</td></tr>
+<tr><td>Screen1 (scaffold)</td><td style="background-color:#FFF3CD;">Scaffold only</td><td>Empty Header/Main/Footer auto-layout containers, no controls with data</td></tr>
+<tr><td>scrIdeasDashboard</td><td style="background-color:#E8F5E9;">Implemented</td><td>Gallery with search, status filter, function filter, status badges</td></tr>
+<tr><td>Submit Idea screen</td><td style="background-color:#FFEBEE;">Not built</td><td>&mdash;</td></tr>
+<tr><td>Idea Detail / Assessment screen</td><td style="background-color:#FFEBEE;">Not built</td><td>&mdash;</td></tr>
+<tr><td>Pipeline board screen</td><td style="background-color:#FFEBEE;">Not built</td><td>&mdash;</td></tr>
+<tr><td>Ideas Analytics screen</td><td style="background-color:#FFEBEE;">Not built</td><td>&mdash;</td></tr>
+<tr><td>Prompt Library screen</td><td style="background-color:#FFEBEE;">Not built</td><td>&mdash;</td></tr>
+<tr><td>Prompt Detail screen</td><td style="background-color:#FFEBEE;">Not built</td><td>&mdash;</td></tr>
+<tr><td>Submit Prompt screen</td><td style="background-color:#FFEBEE;">Not built</td><td>&mdash;</td></tr>
+<tr><td>Review Queue screen</td><td style="background-color:#FFEBEE;">Not built</td><td>&mdash;</td></tr>
+<tr><td>Prompt Analytics screen</td><td style="background-color:#FFEBEE;">Not built</td><td>&mdash;</td></tr>
+<tr><td>Navigation header component</td><td style="background-color:#FFEBEE;">Not built</td><td>&mdash;</td></tr>
+<tr><td>Power Automate flows</td><td style="background-color:#FFEBEE;">Not built</td><td>&mdash;</td></tr>
 </table>
 
 <!-- ============================================================ -->
-<!-- 6. FUNCTIONAL REQUIREMENTS — PROMPT LIBRARY MODULE -->
+<!-- 4. DATA MODEL -->
 <!-- ============================================================ -->
 
-<h2>6. Functional Requirements &mdash; Prompt Library Module</h2>
+<h2>4. Data Model (Dataverse)</h2>
 
-<h3>FR-600: Prompt Library Browse &amp; Search</h3>
+<p>All four custom tables use the publisher prefix <code>cr39e_</code>. The columns below are extracted directly from the application package metadata.</p>
+
+<h3>4.1 AI Ideas (<code>cr39e_aiidea</code>)</h3>
 <table>
-<tr><th>ID</th><th>Requirement</th><th>Priority</th></tr>
-<tr><td>FR-601</td><td>The system shall display all <b>Approved</b> prompts in a searchable, scrollable gallery.</td><td>Must</td></tr>
-<tr><td>FR-602</td><td>Each prompt card shall display: <b>Title</b>, <b>Category badge</b> (colour-coded), <b>Rating</b> (numeric or stars), <b>Usage Count</b>, and <b>Complexity Level</b>.</td><td>Must</td></tr>
-<tr><td>FR-603</td><td>The system shall provide a <b>text search</b> control that filters prompts by Title, Prompt Text, or Tags.</td><td>Must</td></tr>
-<tr><td>FR-604</td><td>The system shall provide a <b>Category filter</b> dropdown with options: All, Client Deliverables, Internal Productivity, Research &amp; Analysis, Data &amp; Finance, Creative &amp; Marketing, Technical.</td><td>Must</td></tr>
-<tr><td>FR-605</td><td>The system shall provide a <b>Complexity filter</b> dropdown with options: All, Beginner, Intermediate, Expert.</td><td>Must</td></tr>
-<tr><td>FR-606</td><td>All filters shall work in combination (AND logic).</td><td>Must</td></tr>
-<tr><td>FR-607</td><td>Selecting a prompt from the gallery shall navigate to the Prompt Detail screen.</td><td>Must</td></tr>
+<tr><th>Display Name</th><th>Logical Name</th><th>Type</th><th>Notes</th></tr>
+<tr><td>AI Idea (PK)</td><td>cr39e_aiideaid</td><td>Unique Identifier</td><td>Primary key (GUID)</td></tr>
+<tr><td>Name</td><td>cr39e_name</td><td>Single line of text</td><td>Primary name column (auto-generated)</td></tr>
+<tr><td>Title</td><td>cr39e_title</td><td>Single line of text</td><td>Idea title</td></tr>
+<tr><td>Description</td><td>cr39e_description</td><td>Multiple lines of text</td><td>Idea description</td></tr>
+<tr><td>AI Capability Area</td><td>cr39e_aicapabilityarea</td><td>Choice</td><td>8 values (see Section 7)</td></tr>
+<tr><td>Business Function</td><td>cr39e_businessfunction</td><td>Choice</td><td>11 values (see Section 7)</td></tr>
+<tr><td>Expected Benefits</td><td>cr39e_expectedbenefits</td><td>Multiple lines of text</td><td></td></tr>
+<tr><td>Submitter Name</td><td>cr39e_submittername</td><td>Single line of text</td><td></td></tr>
+<tr><td>Submitter Email</td><td>cr39e_submitteremail</td><td>Single line of text</td><td></td></tr>
+<tr><td>Status</td><td>cr39e_status</td><td>Choice</td><td>11 values (see Section 7)</td></tr>
+<tr style="background-color:#F0F0F0;"><td colspan="4"><i>System columns: statecode (Active/Inactive), statuscode (Active/Inactive), createdon, modifiedon, modifiedby, owningteam, versionnumber</i></td></tr>
+</table>
+<p><b>Relationship:</b> One-to-many &rarr; AI Idea Assessments (via <code>cr39e_Idea</code> lookup)</p>
+
+<h3>4.2 AI Idea Assessments (<code>cr39e_aiideaassessment</code>)</h3>
+<table>
+<tr><th>Display Name</th><th>Logical Name</th><th>Type</th><th>Notes</th></tr>
+<tr><td>AI Idea Assessment (PK)</td><td>cr39e_aiideaassessmentid</td><td>Unique Identifier</td><td>Primary key (GUID)</td></tr>
+<tr><td>Name</td><td>cr39e_name</td><td>Single line of text</td><td>Primary name column</td></tr>
+<tr><td>Idea</td><td>cr39e_Idea</td><td>Lookup &rarr; AI Ideas</td><td>Many-to-one relationship</td></tr>
+<tr><td>Business Growth</td><td>cr39e_businessgrowth</td><td>Choice</td><td>Low (535620000), Medium (535620001), High (535620002)</td></tr>
+<tr><td>Cost Efficiency</td><td>cr39e_costefficiency</td><td>Choice</td><td>Low, Medium, High</td></tr>
+<tr><td>Business Resilience</td><td>cr39e_businessresilience</td><td>Choice</td><td>Low, Medium, High</td></tr>
+<tr><td>Business Agility</td><td>cr39e_businessagility</td><td>Choice</td><td>Low, Medium, High</td></tr>
+<tr><td>Technical Feasibility</td><td>cr39e_technicalfeasibility</td><td>Choice</td><td>Low, Medium, High</td></tr>
+<tr><td>Internal Readiness</td><td>cr39e_internalreadiness</td><td>Choice</td><td>Low, Medium, High</td></tr>
+<tr><td>External Readiness</td><td>cr39e_externalreadiness</td><td>Choice</td><td>Low, Medium, High</td></tr>
+<tr><td>Value Score</td><td>cr39e_valuescore</td><td>Decimal number</td><td>Calculated weighted score (1.0 &ndash; 3.0)</td></tr>
+<tr><td>Feasibility Score</td><td>cr39e_feasibilityscore</td><td>Decimal number</td><td>Calculated weighted score (1.0 &ndash; 3.0)</td></tr>
+<tr><td>Quadrant</td><td>cr39e_quadrant</td><td>Choice</td><td>Likely Wins (535620000), Calculated Risks (535620001), Marginal Gains (535620002), Avoid (535620003)</td></tr>
+<tr><td>Assessed By</td><td>cr39e_assessedby</td><td>Single line of text</td><td></td></tr>
+<tr style="background-color:#F0F0F0;"><td colspan="4"><i>System columns: statecode, statuscode, createdon, modifiedon, modifiedby, owningteam, versionnumber</i></td></tr>
 </table>
 
-<h3>FR-700: Prompt Detail &amp; Interaction</h3>
+<h3>4.3 AI Prompts (<code>cr39e_aiprompt</code>)</h3>
 <table>
-<tr><th>ID</th><th>Requirement</th><th>Priority</th></tr>
-<tr><td>FR-701</td><td>The system shall display the full prompt record: Title, Category, Prompt Text, Output Format, Complexity Level, Best Practices, Owner, Tags, AI Tools, Version, Usage Count, Rating, and Status.</td><td>Must</td></tr>
-<tr><td>FR-702</td><td>The system shall provide a <b>"Copy to Clipboard"</b> button that copies the Prompt Text to the user's clipboard and increments the Usage Count by 1 in Dataverse.</td><td>Must</td></tr>
-<tr><td>FR-703</td><td>The system shall display a confirmation notification upon successful copy.</td><td>Must</td></tr>
-<tr><td>FR-704</td><td>The system shall provide a <b>5-star rating widget</b> (5 clickable star icons) allowing the user to rate the prompt from 1 to 5.</td><td>Must</td></tr>
-<tr><td>FR-705</td><td>The system shall provide a <b>text input</b> for optional rating feedback.</td><td>Should</td></tr>
-<tr><td>FR-706</td><td>The system shall provide a <b>"Submit Rating"</b> button that creates a new record in the <code>AI Prompt Ratings</code> table and updates the prompt's running average rating and rating count.</td><td>Must</td></tr>
+<tr><th>Display Name</th><th>Logical Name</th><th>Type</th><th>Notes</th></tr>
+<tr><td>AI Prompt (PK)</td><td>cr39e_aipromptid</td><td>Unique Identifier</td><td>Primary key (GUID)</td></tr>
+<tr><td>Name</td><td>cr39e_name</td><td>Single line of text</td><td>Primary name column</td></tr>
+<tr><td>Title</td><td>cr39e_title</td><td>Single line of text</td><td></td></tr>
+<tr><td>Category</td><td>cr39e_category</td><td>Choice</td><td>6 values (see Section 7)</td></tr>
+<tr><td>Prompt Text</td><td>cr39e_prompttext</td><td>Multiple lines of text</td><td></td></tr>
+<tr><td>Output Format</td><td>cr39e_outputformat</td><td>Choice</td><td>7 values (see Section 7)</td></tr>
+<tr><td>Complexity Level</td><td>cr39e_complexitylevel</td><td>Choice</td><td>Beginner (535620000), Intermediate (535620001), Expert (535620002)</td></tr>
+<tr><td>Best Practices</td><td>cr39e_bestpractices</td><td>Multiple lines of text</td><td></td></tr>
+<tr><td>Owner</td><td>cr39e_owner</td><td>Single line of text</td><td></td></tr>
+<tr><td>Tags</td><td>cr39e_tags</td><td>Single line of text</td><td>Semicolon-separated</td></tr>
+<tr><td>AI Tools</td><td>cr39e_aitools</td><td>Choice (multi-select)</td><td>5 values (see Section 7)</td></tr>
+<tr><td>Version</td><td>cr39e_version</td><td>Single line of text</td><td></td></tr>
+<tr><td>Usage Count</td><td>cr39e_usagecount</td><td>Whole number</td><td></td></tr>
+<tr><td>Rating</td><td>cr39e_rating</td><td>Decimal number</td><td>Running average (0 &ndash; 5)</td></tr>
+<tr><td>Rating Count</td><td>cr39e_ratingcount</td><td>Whole number</td><td></td></tr>
+<tr><td>Status</td><td>cr39e_status</td><td>Choice</td><td>5 values (see Section 7)</td></tr>
+<tr style="background-color:#F0F0F0;"><td colspan="4"><i>System columns: statecode, statuscode, createdon, modifiedon, modifiedby, owningteam, versionnumber</i></td></tr>
+</table>
+<p><b>Relationship:</b> One-to-many &rarr; AI Prompt Ratings (via <code>cr39e_Prompt</code> lookup)</p>
+
+<h3>4.4 AI Prompt Ratings (<code>cr39e_aipromptrating</code>)</h3>
+<table>
+<tr><th>Display Name</th><th>Logical Name</th><th>Type</th><th>Notes</th></tr>
+<tr><td>AI Prompt Rating (PK)</td><td>cr39e_aipromptratingid</td><td>Unique Identifier</td><td>Primary key (GUID)</td></tr>
+<tr><td>Name</td><td>cr39e_name</td><td>Single line of text</td><td>Primary name column</td></tr>
+<tr><td>Prompt</td><td>cr39e_Prompt</td><td>Lookup &rarr; AI Prompts</td><td>Many-to-one relationship</td></tr>
+<tr><td>Rating</td><td>cr39e_rating</td><td>Whole number</td><td>1 &ndash; 5</td></tr>
+<tr><td>Feedback</td><td>cr39e_feedback</td><td>Multiple lines of text</td><td>Optional</td></tr>
+<tr style="background-color:#F0F0F0;"><td colspan="4"><i>System columns: statecode, statuscode, createdon, modifiedon, modifiedby, owningteam, versionnumber</i></td></tr>
 </table>
 
-<h3>FR-800: Prompt Submission</h3>
-<table>
-<tr><th>ID</th><th>Requirement</th><th>Priority</th></tr>
-<tr><td>FR-801</td><td>The system shall provide a form for users to submit a new prompt with the following fields: <b>Title</b> (text, required), <b>Prompt Text</b> (multi-line text, required), <b>Category</b> (choice, required), <b>Output Format</b> (choice, required), <b>Complexity Level</b> (choice, required), <b>Best Practices</b> (multi-line text, optional), <b>Owner</b> (text, optional), <b>Tags</b> (text, semicolon-separated, optional), <b>AI Tools</b> (multi-select choice, optional).</td><td>Must</td></tr>
-<tr><td>FR-802</td><td>Upon submission, the system shall create a new record in the <code>AI Prompts</code> table with Status defaulting to <b>"Pending"</b>, Version "1.0.0", Usage Count 0, Rating 0, and Rating Count 0.</td><td>Must</td></tr>
-<tr><td>FR-803</td><td>The system shall display a success notification and reset the form after submission.</td><td>Must</td></tr>
-</table>
-
-<h3>FR-900: Admin Review Queue</h3>
-<table>
-<tr><th>ID</th><th>Requirement</th><th>Priority</th></tr>
-<tr><td>FR-901</td><td>The system shall display a gallery of all prompts with Status = <b>"Pending"</b>.</td><td>Must</td></tr>
-<tr><td>FR-902</td><td>Each item in the review queue shall display the Title, Category, Owner/Submitter, and Prompt Text preview.</td><td>Must</td></tr>
-<tr><td>FR-903</td><td>Each item shall have an <b>"Approve"</b> button that updates the prompt's Status to "Approved".</td><td>Must</td></tr>
-<tr><td>FR-904</td><td>Each item shall have a <b>"Reject"</b> button that updates the prompt's Status to "Rejected".</td><td>Must</td></tr>
-<tr><td>FR-905</td><td>The review queue shall only be accessible to users with the Admin role.</td><td>Must</td></tr>
-</table>
-
-<h3>FR-1000: Prompt Analytics</h3>
-<table>
-<tr><th>ID</th><th>Requirement</th><th>Priority</th></tr>
-<tr><td>FR-1001</td><td>The system shall display summary KPI cards: <b>Total Prompts</b>, <b>Total Copies</b> (sum of Usage Count), <b>Average Rating</b>, <b>Total Ratings</b>.</td><td>Must</td></tr>
-<tr><td>FR-1002</td><td>The system shall display a chart showing the distribution of prompts by Category.</td><td>Must</td></tr>
-<tr><td>FR-1003</td><td>The system shall display a ranked list of Top Prompts by Usage Count.</td><td>Should</td></tr>
-<tr><td>FR-1004</td><td>The system shall display a chart showing the distribution of prompts by Complexity Level.</td><td>Should</td></tr>
-</table>
-
-<!-- ============================================================ -->
-<!-- 7. BUSINESS RULES & SCORING LOGIC -->
-<!-- ============================================================ -->
-
-<h2>7. Business Rules &amp; Scoring Logic</h2>
-
-<h3>7.1 Score Mapping</h3>
-<p>All seven assessment dimensions use a three-level ordinal scale mapped to numeric values:</p>
-<table>
-<tr><th>Choice Label</th><th>Numeric Value</th></tr>
-<tr><td>Low</td><td>1</td></tr>
-<tr><td>Medium</td><td>2</td></tr>
-<tr><td>High</td><td>3</td></tr>
-</table>
-
-<h3>7.2 Value Score Calculation</h3>
-<p>The Value Score is a weighted average of four business-value dimensions. The score ranges from 1.0 (all Low) to 3.0 (all High).</p>
-
-<div class="callout-purple">
-<b>Value Score</b> = (Business Growth &times; <b>0.20</b>) + (Cost Efficiency &times; <b>0.20</b>) + (Business Resilience &times; <b>0.30</b>) + (Business Agility &times; <b>0.30</b>)
-</div>
-
-<table>
-<tr><th>Dimension</th><th>Weight</th><th>Description</th></tr>
-<tr><td>Business Growth</td><td>0.20 (20%)</td><td>Potential to support market expansion, new products/services, and customer experience enhancements</td></tr>
-<tr><td>Cost &amp; Operational Efficiency</td><td>0.20 (20%)</td><td>Potential to realise cost optimisation, process automation, and reduced activity times across business and IT</td></tr>
-<tr><td>Business Resilience</td><td>0.30 (30%)</td><td>Potential to enable organisational and IT resilience, cyber security, and regulatory compliance</td></tr>
-<tr><td>Business Agility</td><td>0.30 (30%)</td><td>Potential to adapt, transform, and execute at pace in response to changes in strategy and opportunities</td></tr>
-</table>
-
-<h3>7.3 Feasibility Score Calculation</h3>
-<p>The Feasibility Score is a weighted average of three implementation-readiness dimensions. The score ranges from 1.0 (all Low) to 3.0 (all High).</p>
-
-<div class="callout-purple">
-<b>Feasibility Score</b> = (Technical Feasibility &times; <b>0.50</b>) + (Internal Readiness &times; <b>0.30</b>) + (External Readiness &times; <b>0.20</b>)
-</div>
-
-<table>
-<tr><th>Dimension</th><th>Weight</th><th>Description</th></tr>
-<tr><td>Technical Feasibility</td><td>0.50 (50%)</td><td>Maturity and availability of AI capabilities, infrastructure, and integration technologies</td></tr>
-<tr><td>Internal Readiness</td><td>0.30 (30%)</td><td>Organisational AI literacy, data readiness, and willingness to adopt AI-driven solutions</td></tr>
-<tr><td>External Readiness</td><td>0.20 (20%)</td><td>Alignment with legal, regulatory requirements, and market/vendor ecosystem maturity</td></tr>
-</table>
-
-<h3>7.4 Quadrant Determination</h3>
-<p>Ideas are classified into one of four strategic quadrants based on a threshold of <b>2.0</b> applied to both scores:</p>
-
-<table>
-<tr><th>Quadrant</th><th>Condition</th><th>Strategic Interpretation</th><th>Colour</th></tr>
-<tr><td><b>Likely Wins</b></td><td>Value &ge; 2.0 <b>AND</b> Feasibility &ge; 2.0</td><td>High value with high feasibility &mdash; prioritise these for immediate investment</td><td style="background-color:#28A745; color:white;">#28A745</td></tr>
-<tr><td><b>Calculated Risks</b></td><td>Value &ge; 2.0 <b>AND</b> Feasibility &lt; 2.0</td><td>High value but low feasibility &mdash; strategic bets requiring de-risking</td><td style="background-color:#FFC107; color:black;">#FFC107</td></tr>
-<tr><td><b>Marginal Gains</b></td><td>Value &lt; 2.0 <b>AND</b> Feasibility &ge; 2.0</td><td>Easy to implement but limited business impact &mdash; pursue only if low effort</td><td style="background-color:#17A2B8; color:white;">#17A2B8</td></tr>
-<tr><td><b>Avoid</b></td><td>Value &lt; 2.0 <b>AND</b> Feasibility &lt; 2.0</td><td>Low value and hard to implement &mdash; deprioritise</td><td style="background-color:#DC3545; color:white;">#DC3545</td></tr>
-</table>
-
-<h3>7.5 Rounding</h3>
-<p>Scores are rounded to <b>1 decimal place</b> for display using <code>Round(score, 1)</code> in Power Fx. The quadrant determination uses the rounded value.</p>
-
-<h3>7.6 Idea Lifecycle Stages</h3>
-<p>Each idea progresses through a defined 11-stage lifecycle. The first 8 stages form the active pipeline; the final 3 are terminal states:</p>
-<table>
-<tr><th>Order</th><th>Stage</th><th>Badge Colour</th><th>Description</th></tr>
-<tr><td>1</td><td>Submitted</td><td style="background-color:#6C757D; color:white;">#6C757D</td><td>Raw idea captured, awaiting initial review</td></tr>
-<tr><td>2</td><td>Screening</td><td style="background-color:#17A2B8; color:white;">#17A2B8</td><td>Initial review for strategic alignment and viability</td></tr>
-<tr><td>3</td><td>Assessment</td><td style="background-color:#483698; color:white;">#483698</td><td>Detailed value and feasibility scoring in progress</td></tr>
-<tr><td>4</td><td>Prioritized</td><td style="background-color:#00A3A1; color:white;">#00A3A1</td><td>Ranked and selected for implementation</td></tr>
-<tr><td>5</td><td>Development</td><td style="background-color:#FFC107; color:black;">#FFC107</td><td>Building MVP or prototype solution</td></tr>
-<tr><td>6</td><td>Pilot</td><td style="background-color:#FF6B35; color:white;">#FF6B35</td><td>Testing with limited users to validate</td></tr>
-<tr><td>7</td><td>Deployed</td><td style="background-color:#28A745; color:white;">#28A745</td><td>Full production rollout complete</td></tr>
-<tr><td>8</td><td>Scaling</td><td style="background-color:#00338D; color:white;">#00338D</td><td>Optimisation and organisational expansion</td></tr>
-<tr><td>&mdash;</td><td>On Hold</td><td style="background-color:#ADB5BD; color:black;">#ADB5BD</td><td>Paused due to resources or timing</td></tr>
-<tr><td>&mdash;</td><td>Rejected</td><td style="background-color:#DC3545; color:white;">#DC3545</td><td>Did not pass a stage gate</td></tr>
-<tr><td>&mdash;</td><td>Archived</td><td style="background-color:#343A40; color:white;">#343A40</td><td>Completed lifecycle or deprecated</td></tr>
-</table>
-
-<h3>7.7 Prompt Lifecycle States</h3>
-<table>
-<tr><th>Status</th><th>Description</th></tr>
-<tr><td>Draft</td><td>Prompt is being authored (not yet submitted)</td></tr>
-<tr><td>Pending</td><td>Submitted for review; visible only in the admin review queue</td></tr>
-<tr><td>Approved</td><td>Reviewed and approved; visible in the public prompt library</td></tr>
-<tr><td>Rejected</td><td>Reviewed and rejected; not visible in the library</td></tr>
-<tr><td>Archived</td><td>Previously approved but now retired from active use</td></tr>
-</table>
-
-<h3>7.8 Rating Calculation</h3>
-<p>When a user submits a rating, the prompt's running average and count are updated:</p>
-<div class="callout">
-<b>New Average</b> = ((Current Rating &times; Rating Count) + New Rating) / (Rating Count + 1)<br/>
-<b>New Count</b> = Rating Count + 1
-</div>
-
-<!-- ============================================================ -->
-<!-- 8. DATA MODEL -->
-<!-- ============================================================ -->
-
-<h2>8. Data Model</h2>
-
-<p>The application uses <b>4 Dataverse tables</b> with the publisher prefix <code>cr39e_</code>.</p>
-
-<h3>8.1 AI Ideas (<code>cr39e_aiidea</code>)</h3>
-<table>
-<tr><th>Column Display Name</th><th>Logical Name</th><th>Data Type</th><th>Required</th><th>Notes</th></tr>
-<tr><td>Title</td><td>cr39e_title</td><td>Single line of text (200)</td><td>Yes</td><td>Primary name column</td></tr>
-<tr><td>Description</td><td>cr39e_description</td><td>Multiple lines of text</td><td>Yes</td><td></td></tr>
-<tr><td>AI Capability Area</td><td>cr39e_aicapabilityarea</td><td>Choice</td><td>Yes</td><td>8 values (see Section 8.5)</td></tr>
-<tr><td>Business Function</td><td>cr39e_businessfunction</td><td>Choice</td><td>Yes</td><td>11 values (see Section 8.5)</td></tr>
-<tr><td>Expected Benefits</td><td>cr39e_expectedbenefits</td><td>Multiple lines of text</td><td>No</td><td></td></tr>
-<tr><td>Submitter Name</td><td>cr39e_submittername</td><td>Single line of text (100)</td><td>No</td><td></td></tr>
-<tr><td>Submitter Email</td><td>cr39e_submitteremail</td><td>Single line of text (200)</td><td>No</td><td>Format: Email</td></tr>
-<tr><td>Status</td><td>cr39e_status</td><td>Choice</td><td>Yes</td><td>11 values (see Section 7.6). Default: Submitted</td></tr>
-<tr><td>Created On</td><td>createdon</td><td>Date and Time</td><td>Auto</td><td>System-managed</td></tr>
-</table>
-
-<h3>8.2 AI Idea Assessments (<code>cr39e_aiideaassessment</code>)</h3>
-<table>
-<tr><th>Column Display Name</th><th>Logical Name</th><th>Data Type</th><th>Required</th><th>Notes</th></tr>
-<tr><td>Idea</td><td>cr39e_idea</td><td>Lookup &rarr; AI Ideas</td><td>Yes</td><td>Many-to-one relationship</td></tr>
-<tr><td>Business Growth</td><td>cr39e_businessgrowth</td><td>Choice (Low, Medium, High)</td><td>Yes</td><td></td></tr>
-<tr><td>Cost Efficiency</td><td>cr39e_costefficiency</td><td>Choice (Low, Medium, High)</td><td>Yes</td><td></td></tr>
-<tr><td>Business Resilience</td><td>cr39e_businessresilience</td><td>Choice (Low, Medium, High)</td><td>Yes</td><td></td></tr>
-<tr><td>Business Agility</td><td>cr39e_businessagility</td><td>Choice (Low, Medium, High)</td><td>Yes</td><td></td></tr>
-<tr><td>Technical Feasibility</td><td>cr39e_technicalfeasibility</td><td>Choice (Low, Medium, High)</td><td>Yes</td><td></td></tr>
-<tr><td>Internal Readiness</td><td>cr39e_internalreadiness</td><td>Choice (Low, Medium, High)</td><td>Yes</td><td></td></tr>
-<tr><td>External Readiness</td><td>cr39e_externalreadiness</td><td>Choice (Low, Medium, High)</td><td>Yes</td><td></td></tr>
-<tr><td>Value Score</td><td>cr39e_valuescore</td><td>Decimal number</td><td>Yes</td><td>Min: 0, Max: 3, Precision: 1</td></tr>
-<tr><td>Feasibility Score</td><td>cr39e_feasibilityscore</td><td>Decimal number</td><td>Yes</td><td>Min: 0, Max: 3, Precision: 1</td></tr>
-<tr><td>Quadrant</td><td>cr39e_quadrant</td><td>Choice</td><td>Yes</td><td>4 values: Likely Wins, Calculated Risks, Marginal Gains, Avoid</td></tr>
-<tr><td>Assessed By</td><td>cr39e_assessedby</td><td>Single line of text</td><td>No</td><td></td></tr>
-<tr><td>Assessed On</td><td>createdon</td><td>Date and Time</td><td>Auto</td><td>System-managed</td></tr>
-</table>
-
-<h3>8.3 AI Prompts (<code>cr39e_aiprompt</code>)</h3>
-<table>
-<tr><th>Column Display Name</th><th>Logical Name</th><th>Data Type</th><th>Required</th><th>Notes</th></tr>
-<tr><td>Title</td><td>cr39e_title</td><td>Single line of text (200)</td><td>Yes</td><td>Primary name column</td></tr>
-<tr><td>Category</td><td>cr39e_category</td><td>Choice</td><td>Yes</td><td>6 values (see Section 8.5)</td></tr>
-<tr><td>Prompt Text</td><td>cr39e_prompttext</td><td>Multiple lines of text</td><td>Yes</td><td></td></tr>
-<tr><td>Output Format</td><td>cr39e_outputformat</td><td>Choice</td><td>Yes</td><td>7 values (see Section 8.5)</td></tr>
-<tr><td>Complexity Level</td><td>cr39e_complexitylevel</td><td>Choice</td><td>Yes</td><td>3 values: Beginner, Intermediate, Expert</td></tr>
-<tr><td>Best Practices</td><td>cr39e_bestpractices</td><td>Multiple lines of text</td><td>No</td><td></td></tr>
-<tr><td>Owner</td><td>cr39e_owner</td><td>Single line of text</td><td>No</td><td></td></tr>
-<tr><td>Tags</td><td>cr39e_tags</td><td>Single line of text (500)</td><td>No</td><td>Semicolon-separated values</td></tr>
-<tr><td>AI Tools</td><td>cr39e_aitools</td><td>Choices (multi-select)</td><td>No</td><td>5 values: ChatGPT, Microsoft Copilot, Google Gemini, Claude, Internal AI</td></tr>
-<tr><td>Version</td><td>cr39e_version</td><td>Single line of text (10)</td><td>No</td><td></td></tr>
-<tr><td>Usage Count</td><td>cr39e_usagecount</td><td>Whole number</td><td>No</td><td>Default: 0</td></tr>
-<tr><td>Rating</td><td>cr39e_rating</td><td>Decimal number</td><td>No</td><td>Default: 0, Min: 0, Max: 5</td></tr>
-<tr><td>Rating Count</td><td>cr39e_ratingcount</td><td>Whole number</td><td>No</td><td>Default: 0</td></tr>
-<tr><td>Status</td><td>cr39e_status</td><td>Choice</td><td>Yes</td><td>5 values: Draft, Pending, Approved, Rejected, Archived. Default: Draft</td></tr>
-</table>
-
-<h3>8.4 AI Prompt Ratings (<code>cr39e_aipromptrating</code>)</h3>
-<table>
-<tr><th>Column Display Name</th><th>Logical Name</th><th>Data Type</th><th>Required</th><th>Notes</th></tr>
-<tr><td>Prompt</td><td>cr39e_prompt</td><td>Lookup &rarr; AI Prompts</td><td>Yes</td><td>Many-to-one relationship</td></tr>
-<tr><td>Rating</td><td>cr39e_rating</td><td>Whole number</td><td>Yes</td><td>Min: 1, Max: 5</td></tr>
-<tr><td>Feedback</td><td>cr39e_feedback</td><td>Multiple lines of text</td><td>No</td><td></td></tr>
-<tr><td>Created On</td><td>createdon</td><td>Date and Time</td><td>Auto</td><td>System-managed</td></tr>
-</table>
-
-<h3>8.5 Choice Value Reference</h3>
-<table>
-<tr><th>Choice Column</th><th>Values</th></tr>
-<tr><td>AI Capability Area</td><td>Generative AI, Machine Learning, Natural Language Processing, Computer Vision, Robotic Process Automation, Predictive Analytics, Conversational AI, Document Intelligence</td></tr>
-<tr><td>Business Function</td><td>Audit, Tax, Advisory, Deal Advisory, IT, Operations, Human Resources, Finance, Marketing, Legal, Risk &amp; Compliance</td></tr>
-<tr><td>Idea Status</td><td>Submitted, Screening, Assessment, Prioritized, Development, Pilot, Deployed, Scaling, On Hold, Rejected, Archived</td></tr>
-<tr><td>Score Level</td><td>Low, Medium, High</td></tr>
-<tr><td>Quadrant</td><td>Likely Wins, Calculated Risks, Marginal Gains, Avoid</td></tr>
-<tr><td>Prompt Category</td><td>Client Deliverables, Internal Productivity, Research &amp; Analysis, Data &amp; Finance, Creative &amp; Marketing, Technical</td></tr>
-<tr><td>Complexity Level</td><td>Beginner, Intermediate, Expert</td></tr>
-<tr><td>Output Format</td><td>Bullet points, Table, Narrative, Structured narrative with bullet points, Code, JSON, Markdown</td></tr>
-<tr><td>AI Tools</td><td>ChatGPT, Microsoft Copilot, Google Gemini, Claude, Internal AI</td></tr>
-<tr><td>Prompt Status</td><td>Draft, Pending, Approved, Rejected, Archived</td></tr>
-</table>
-
-<h3>8.6 Entity Relationship Diagram</h3>
+<h3>4.5 Entity Relationships</h3>
 <div class="callout">
 <pre style="font-family: Consolas, monospace; font-size: 10pt; margin: 0;">
  ┌──────────────────┐         ┌────────────────────────┐
  │    AI Ideas      │ 1 ── * │  AI Idea Assessments   │
  │ (cr39e_aiidea)   │         │ (cr39e_aiideaassessment)│
  └──────────────────┘         └────────────────────────┘
+       via cr39e_Idea lookup
 
  ┌──────────────────┐         ┌────────────────────────┐
  │   AI Prompts     │ 1 ── * │  AI Prompt Ratings     │
  │ (cr39e_aiprompt) │         │ (cr39e_aipromptrating) │
  └──────────────────┘         └────────────────────────┘
+       via cr39e_Prompt lookup
 </pre>
-<p style="margin-top: 6pt; font-size: 10pt;">Each AI Idea can have multiple Assessments (typically one). Each AI Prompt can have multiple Ratings (one per user interaction).</p>
+</div>
+
+<h3>4.6 Dataverse Views</h3>
+<p>The following standard views exist for each table (auto-generated by Dataverse):</p>
+<table>
+<tr><th>Table</th><th>Views</th></tr>
+<tr><td>AI Ideas</td><td>Active AI Ideas, Inactive AI Ideas, AI Idea Associated View, AI Idea Lookup View, AI Idea Advanced Find View</td></tr>
+<tr><td>AI Idea Assessments</td><td>Active AI Idea Assessments, Inactive AI Idea Assessments, Associated View, Lookup View, Advanced Find View</td></tr>
+<tr><td>AI Prompts</td><td>Active AI Prompts, Inactive AI Prompts, Associated View, Lookup View, Advanced Find View</td></tr>
+<tr><td>AI Prompt Ratings</td><td>Active AI Prompt Ratings, Inactive AI Prompt Ratings, Associated View, Lookup View, Advanced Find View</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<!-- 5. SCREEN INVENTORY & CONTROLS -->
+<!-- ============================================================ -->
+
+<h2>5. Screen Inventory &amp; Controls</h2>
+
+<h3>5.1 Screens Order</h3>
+<table>
+<tr><th>#</th><th>Screen Name</th><th>Status</th><th>Purpose</th></tr>
+<tr><td>1</td><td><code>Screen1</code></td><td>Scaffold</td><td>Default screen with empty auto-layout containers (Header, Main, Footer)</td></tr>
+<tr><td>2</td><td><code>scrIdeasDashboard</code></td><td>Functional</td><td>Ideas browse screen with gallery, search, and filter controls</td></tr>
+</table>
+
+<h3>5.2 Screen1 (Scaffold)</h3>
+<p>A blank screen created by the Power Apps template. Contains a vertical auto-layout root container (<code>ScreenContainer1</code>) with three child containers:</p>
+<table>
+<tr><th>Control Name</th><th>Control Type</th><th>Properties</th></tr>
+<tr><td>ScreenContainer1</td><td>GroupContainer (AutoLayout)</td><td>Direction: Vertical, Gap: 16px, Padding: 16px all sides, Fill: RGBA(245,245,245,1)</td></tr>
+<tr><td>&nbsp;&nbsp;HeaderContainer1</td><td>GroupContainer (AutoLayout)</td><td>Direction: Horizontal, Height: 75px, Fill: White, Border-radius: 8px</td></tr>
+<tr><td>&nbsp;&nbsp;MainContainer1</td><td>GroupContainer (AutoLayout)</td><td>Direction: Vertical, Fill: White, Border-radius: 8px (flexible height)</td></tr>
+<tr><td>&nbsp;&nbsp;FooterContainer1</td><td>GroupContainer (AutoLayout)</td><td>Direction: Horizontal, Height: 75px, Fill: White, Border-radius: 8px</td></tr>
+</table>
+<div class="callout-yellow">
+<b>Observation:</b> All three containers are empty &mdash; no labels, buttons, or data-bound controls have been added to this screen.
+</div>
+
+<h3>5.3 scrIdeasDashboard (Implemented)</h3>
+<p>The Ideas Dashboard is the primary functional screen. It contains 4 top-level controls:</p>
+
+<h4>5.3.1 txtIdeasSearch</h4>
+<table>
+<tr><th>Property</th><th>Value</th></tr>
+<tr><td>Control Type</td><td>Classic/TextInput@2.3.2</td></tr>
+<tr><td>Position</td><td>X: 40, Y: 40</td></tr>
+<tr><td>Default Text</td><td>"Search ideas..."</td></tr>
+<tr><td>Font</td><td>Segoe UI</td></tr>
+<tr><td>Border Colour</td><td>RGBA(245, 245, 245, 1)</td></tr>
+<tr><td>Hover Border</td><td>RGBA(16, 110, 190, 1) &mdash; blue highlight on hover</td></tr>
+</table>
+
+<h4>5.3.2 ddStatusFilter</h4>
+<table>
+<tr><th>Property</th><th>Value</th></tr>
+<tr><td>Control Type</td><td>Classic/DropDown@2.3.1</td></tr>
+<tr><td>Position</td><td>X: 60, Y: 91</td></tr>
+<tr><td>Items</td><td><code>["All","Submitted","Screening","Assessment","Prioritized","Development","Pilot","Deployed","Scaling","On Hold","Rejected","Archived"]</code></td></tr>
+<tr><td>Selection Colour</td><td>White on Blue (RGBA 0,120,212)</td></tr>
+</table>
+
+<h4>5.3.3 ddFunctionFilter</h4>
+<table>
+<tr><th>Property</th><th>Value</th></tr>
+<tr><td>Control Type</td><td>Classic/DropDown@2.3.1</td></tr>
+<tr><td>Position</td><td>X: 60, Y: 142</td></tr>
+<tr><td>Items</td><td><code>["All","Audit","Tax","Advisory","Deal Advisory","IT","Operations","Human Resources","Finance","Marketing","Legal","Risk &amp; Compliance"]</code></td></tr>
+</table>
+
+<h4>5.3.4 galIdeas</h4>
+<table>
+<tr><th>Property</th><th>Value</th></tr>
+<tr><td>Control Type</td><td>Gallery@2.15.0</td></tr>
+<tr><td>Variant</td><td>BrowseLayout_Vertical_TwoTextOneImageVariant_ver5.0</td></tr>
+<tr><td>Position</td><td>X: 537, Y: 162</td></tr>
+<tr><td>Data Source</td><td>AI_Idea (Dataverse: <code>cr39e_aiidea</code>)</td></tr>
+<tr><td>Sort</td><td>CreatedAt descending (newest first)</td></tr>
+</table>
+
+<p><b>Gallery Items Formula:</b></p>
+<div class="callout">
+<code style="white-space: pre-wrap; font-size: 9pt;">SortByColumns(
+    Filter(
+        AI_Idea,
+        // Search filter
+        Or(
+            IsBlank(txtIdeasSearch.Text),
+            txtIdeasSearch.Text = "",
+            Title in txtIdeasSearch.Text,
+            Text(AICapabilityArea) in txtIdeasSearch.Text,
+            Text(BusinessFunction) in txtIdeasSearch.Text
+        ),
+        // Status filter
+        Or(
+            IsBlank(ddStatusFilter.Selected.Value),
+            ddStatusFilter.Selected.Value = "All",
+            Text(Status) = ddStatusFilter.Selected.Value
+        ),
+        // Business Function filter
+        Or(
+            IsBlank(ddFunctionFilter.Selected.Value),
+            ddFunctionFilter.Selected.Value = "All",
+            Text(BusinessFunction) = ddFunctionFilter.Selected.Value
+        )
+    ),
+    "CreatedAt",
+    SortOrder.Descending
+)</code>
+</div>
+
+<p><b>Gallery Template Controls:</b></p>
+<table>
+<tr><th>Control Name</th><th>Type</th><th>Bound To</th><th>Details</th></tr>
+<tr><td>Image1</td><td>Image@2.2.3</td><td>(no image set)</td><td>72 &times; 72 px, border-radius: 8px, vertically centred</td></tr>
+<tr><td>Title1</td><td>Label@2.5.1</td><td><code>ThisItem.SampleHeading</code></td><td>Size 14, Segoe UI, semibold when selected. <b>Note:</b> Still bound to gallery sample data, not <code>ThisItem.Title</code></td></tr>
+<tr><td>Subtitle1</td><td>Label@2.5.1</td><td><code>ThisItem.SampleText</code></td><td>Size 12, grey text. <b>Note:</b> Still bound to gallery sample data</td></tr>
+<tr><td>Title</td><td>Label@2.5.1</td><td><code>ThisItem.Title</code></td><td>Custom label bound to actual idea Title</td></tr>
+<tr><td>CapabilityArea</td><td>Label@2.5.1</td><td><code>Text(ThisItem.AICapabilityArea)</code></td><td>Displays the AI Capability Area choice value as text</td></tr>
+<tr><td>Label3</td><td>Label@2.5.1</td><td>(no text set)</td><td>Empty label at position (40, 40)</td></tr>
+<tr><td>StatusBadge</td><td>Classic/Button@2.2.0</td><td><code>Text(ThisItem.Status)</code></td><td>Colour-coded via Switch formula (see Section 6.2)</td></tr>
+<tr><td>NextArrow1</td><td>Classic/Icon@2.5.0</td><td>&mdash;</td><td>ChevronRight icon, 50 &times; 50 px, tooltip: "View item details"</td></tr>
+<tr><td>Separator1</td><td>Rectangle@2.3.0</td><td>&mdash;</td><td>White bar (8px height) between gallery items</td></tr>
+<tr><td>Rectangle1</td><td>Rectangle@2.3.0</td><td>&mdash;</td><td>Blue selection indicator (4px wide), visible only when <code>ThisItem.IsSelected</code></td></tr>
+</table>
+
+<div class="callout-yellow">
+<b>Observation:</b> The gallery template's <code>Title1</code> and <code>Subtitle1</code> labels are still bound to the default sample data properties (<code>ThisItem.SampleHeading</code>, <code>ThisItem.SampleText</code>) rather than to actual Dataverse columns. The custom <code>Title</code> and <code>CapabilityArea</code> labels were added separately and are correctly bound to real data.
 </div>
 
 <!-- ============================================================ -->
-<!-- 9. USER INTERFACE REQUIREMENTS -->
+<!-- 6. BUSINESS LOGIC & FORMULAS -->
 <!-- ============================================================ -->
 
-<h2>9. User Interface Requirements</h2>
+<h2>6. Business Logic &amp; Formulas</h2>
 
-<h3>9.1 Application Layout</h3>
+<h3>6.1 App OnStart (App.StartScreen)</h3>
+<p>The following initialisation logic runs when the app starts:</p>
+<div class="callout">
+<code style="white-space: pre-wrap; font-size: 9.5pt;">// Initialize app-level variables
+Set(currentUser, User());
+Set(scoreThreshold, 2);
+
+// Score mapping table (used in assessment calculations)
+ClearCollect(
+    colScoreMap,
+    {Level: "low", Value: 1},
+    {Level: "medium", Value: 2},
+    {Level: "high", Value: 3}
+);</code>
+</div>
+
+<table>
+<tr><th>Variable / Collection</th><th>Type</th><th>Value</th><th>Purpose</th></tr>
+<tr><td><code>currentUser</code></td><td>Variable (Record)</td><td><code>User()</code></td><td>Stores the current logged-in user&rsquo;s profile (display name, email, image)</td></tr>
+<tr><td><code>scoreThreshold</code></td><td>Variable (Number)</td><td><code>2</code></td><td>The threshold value used for quadrant determination (&ge; 2 = High)</td></tr>
+<tr><td><code>colScoreMap</code></td><td>Collection (Table)</td><td>3 rows: low=1, medium=2, high=3</td><td>Lookup table mapping score level text to numeric values for assessment calculations</td></tr>
+</table>
+
+<div class="callout-yellow">
+<b>Observation:</b> The <code>colScoreMap</code> collection uses <b>lowercase</b> level names ("low", "medium", "high"), but the Dataverse Choice values for the assessment dimensions store <b>capitalised</b> labels ("Low", "Medium", "High"). Any formula using <code>colScoreMap</code> for lookups will need to account for this case mismatch (e.g., use <code>Lower()</code> or update the collection to use capitalised values).
+</div>
+
+<h3>6.2 Status Badge Colour Logic</h3>
+<p>The <code>StatusBadge</code> button in the gallery uses a Switch formula to apply a unique colour to each of the 11 idea lifecycle statuses:</p>
+<div class="callout">
+<code style="white-space: pre-wrap; font-size: 9.5pt;">Switch(
+    Text(ThisItem.Status),
+    "Submitted",    ColorValue("#6C757D"),
+    "Screening",    ColorValue("#17A2B8"),
+    "Assessment",   ColorValue("#483698"),
+    "Prioritized",  ColorValue("#00A3A1"),
+    "Development",  ColorValue("#FFC107"),
+    "Pilot",        ColorValue("#FF6B35"),
+    "Deployed",     ColorValue("#28A745"),
+    "Scaling",      ColorValue("#00338D"),
+    "On Hold",      ColorValue("#ADB5BD"),
+    "Rejected",     ColorValue("#DC3545"),
+    "Archived",     ColorValue("#343A40"),
+    ColorValue("#6C757D")  // fallback
+)</code>
+</div>
+
+<table>
+<tr><th>Status</th><th>Colour</th><th>Swatch</th></tr>
+<tr><td>Submitted</td><td>#6C757D</td><td style="background-color:#6C757D; color:white; text-align:center;">Grey</td></tr>
+<tr><td>Screening</td><td>#17A2B8</td><td style="background-color:#17A2B8; color:white; text-align:center;">Teal</td></tr>
+<tr><td>Assessment</td><td>#483698</td><td style="background-color:#483698; color:white; text-align:center;">Purple</td></tr>
+<tr><td>Prioritized</td><td>#00A3A1</td><td style="background-color:#00A3A1; color:white; text-align:center;">KPMG Teal</td></tr>
+<tr><td>Development</td><td>#FFC107</td><td style="background-color:#FFC107; color:black; text-align:center;">Amber</td></tr>
+<tr><td>Pilot</td><td>#FF6B35</td><td style="background-color:#FF6B35; color:white; text-align:center;">Orange</td></tr>
+<tr><td>Deployed</td><td>#28A745</td><td style="background-color:#28A745; color:white; text-align:center;">Green</td></tr>
+<tr><td>Scaling</td><td>#00338D</td><td style="background-color:#00338D; color:white; text-align:center;">KPMG Blue</td></tr>
+<tr><td>On Hold</td><td>#ADB5BD</td><td style="background-color:#ADB5BD; color:black; text-align:center;">Light Grey</td></tr>
+<tr><td>Rejected</td><td>#DC3545</td><td style="background-color:#DC3545; color:white; text-align:center;">Red</td></tr>
+<tr><td>Archived</td><td>#343A40</td><td style="background-color:#343A40; color:white; text-align:center;">Dark Grey</td></tr>
+</table>
+
+<h3>6.3 Gallery Filtering Logic</h3>
+<p>The <code>galIdeas.Items</code> formula applies three filters in combination (AND logic):</p>
+<ol>
+    <li><b>Search filter</b>: If <code>txtIdeasSearch</code> has text, matches against Title, AI Capability Area, or Business Function using the <code>in</code> operator</li>
+    <li><b>Status filter</b>: If <code>ddStatusFilter</code> is not "All", matches the idea&rsquo;s Status text exactly</li>
+    <li><b>Function filter</b>: If <code>ddFunctionFilter</code> is not "All", matches the idea&rsquo;s Business Function text exactly</li>
+</ol>
+<p>Results are sorted by <code>CreatedAt</code> descending (newest ideas first).</p>
+
+<div class="callout-yellow">
+<b>Delegation Note:</b> The <code>in</code> operator used for search is <b>non-delegable</b> in Dataverse. This means the search filter will only operate on the first 2,000 records (or the configured delegation limit). If the AI Ideas table grows beyond this limit, a delegable alternative (e.g., <code>StartsWith</code> or Dataverse views) should be considered.
+</div>
+
+<!-- ============================================================ -->
+<!-- 7. CHOICE VALUE REFERENCE -->
+<!-- ============================================================ -->
+
+<h2>7. Choice Value Reference</h2>
+
+<p>All choice columns below are <b>local (non-global)</b> option sets, scoped to their respective tables. Integer values are the Dataverse option-set keys.</p>
+
+<h3>7.1 AI Capability Area (AI Ideas)</h3>
+<table>
+<tr><th>Value</th><th>Label</th></tr>
+<tr><td>535620000</td><td>Generative AI</td></tr>
+<tr><td>535620001</td><td>Machine Learning</td></tr>
+<tr><td>535620002</td><td>Natural Language Processing</td></tr>
+<tr><td>535620003</td><td>Computer Vision</td></tr>
+<tr><td>535620004</td><td>Robotic Process Automation</td></tr>
+<tr><td>535620005</td><td>Predictive Analytics</td></tr>
+<tr><td>535620006</td><td>Conversational AI</td></tr>
+<tr><td>535620007</td><td>Document Intelligence</td></tr>
+</table>
+
+<h3>7.2 Business Function (AI Ideas)</h3>
+<table>
+<tr><th>Value</th><th>Label</th></tr>
+<tr><td>535620000</td><td>Audit</td></tr>
+<tr><td>535620001</td><td>Tax</td></tr>
+<tr><td>535620002</td><td>Advisory</td></tr>
+<tr><td>535620003</td><td>Deal Advisory</td></tr>
+<tr><td>535620004</td><td>IT</td></tr>
+<tr><td>535620005</td><td>Operations</td></tr>
+<tr><td>535620006</td><td>Human Resources</td></tr>
+<tr><td>535620007</td><td>Finance</td></tr>
+<tr><td>535620008</td><td>Marketing</td></tr>
+<tr><td>535620009</td><td>Legal</td></tr>
+<tr><td>535620010</td><td>Risk &amp; Compliance</td></tr>
+</table>
+
+<h3>7.3 Idea Status (AI Ideas)</h3>
+<table>
+<tr><th>Value</th><th>Label</th></tr>
+<tr><td>535620000</td><td>Submitted</td></tr>
+<tr><td>535620001</td><td>Screening</td></tr>
+<tr><td>535620002</td><td>Assessment</td></tr>
+<tr><td>535620003</td><td>Prioritized</td></tr>
+<tr><td>535620004</td><td>Development</td></tr>
+<tr><td>535620005</td><td>Pilot</td></tr>
+<tr><td>535620006</td><td>Deployed</td></tr>
+<tr><td>535620007</td><td>Scaling</td></tr>
+<tr><td>535620008</td><td>On Hold</td></tr>
+<tr><td>535620009</td><td>Rejected</td></tr>
+<tr><td>535620010</td><td>Archived</td></tr>
+</table>
+
+<h3>7.4 Score Level (AI Idea Assessments &mdash; all 7 dimensions)</h3>
+<table>
+<tr><th>Value</th><th>Label</th></tr>
+<tr><td>535620000</td><td>Low</td></tr>
+<tr><td>535620001</td><td>Medium</td></tr>
+<tr><td>535620002</td><td>High</td></tr>
+</table>
+
+<h3>7.5 Quadrant (AI Idea Assessments)</h3>
+<table>
+<tr><th>Value</th><th>Label</th></tr>
+<tr><td>535620000</td><td>Likely Wins</td></tr>
+<tr><td>535620001</td><td>Calculated Risks</td></tr>
+<tr><td>535620002</td><td>Marginal Gains</td></tr>
+<tr><td>535620003</td><td>Avoid</td></tr>
+</table>
+
+<h3>7.6 Prompt Category (AI Prompts)</h3>
+<table>
+<tr><th>Value</th><th>Label</th></tr>
+<tr><td>535620000</td><td>Client Deliverables</td></tr>
+<tr><td>535620001</td><td>Internal Productivity</td></tr>
+<tr><td>535620002</td><td>Research &amp; Analysis</td></tr>
+<tr><td>535620003</td><td>Data &amp; Finance</td></tr>
+<tr><td>535620004</td><td>Creative &amp; Marketing</td></tr>
+<tr><td>535620005</td><td>Technical</td></tr>
+</table>
+
+<h3>7.7 Output Format (AI Prompts)</h3>
+<table>
+<tr><th>Value</th><th>Label</th></tr>
+<tr><td>535620000</td><td>Bullet points</td></tr>
+<tr><td>535620001</td><td>Table</td></tr>
+<tr><td>535620002</td><td>Narrative</td></tr>
+<tr><td>535620003</td><td>Structured narrative with bullet points</td></tr>
+<tr><td>535620004</td><td>Code</td></tr>
+<tr><td>535620005</td><td>JSON</td></tr>
+<tr><td>535620006</td><td>Markdown</td></tr>
+</table>
+
+<h3>7.8 AI Tools (AI Prompts &mdash; multi-select)</h3>
+<table>
+<tr><th>Value</th><th>Label</th></tr>
+<tr><td>535620000</td><td>ChatGPT</td></tr>
+<tr><td>535620001</td><td>Microsoft Copilot</td></tr>
+<tr><td>535620002</td><td>Google Gemini</td></tr>
+<tr><td>535620003</td><td>Claude</td></tr>
+<tr><td>535620004</td><td>Internal AI</td></tr>
+</table>
+
+<h3>7.9 Prompt Status (AI Prompts)</h3>
+<table>
+<tr><th>Value</th><th>Label</th></tr>
+<tr><td>535620000</td><td>Draft</td></tr>
+<tr><td>535620001</td><td>Pending</td></tr>
+<tr><td>535620002</td><td>Approved</td></tr>
+<tr><td>535620003</td><td>Rejected</td></tr>
+<tr><td>535620004</td><td>Archived</td></tr>
+</table>
+
+<h3>7.10 Complexity Level (AI Prompts)</h3>
+<table>
+<tr><th>Value</th><th>Label</th></tr>
+<tr><td>535620000</td><td>Beginner</td></tr>
+<tr><td>535620001</td><td>Intermediate</td></tr>
+<tr><td>535620002</td><td>Expert</td></tr>
+</table>
+
+<!-- ============================================================ -->
+<!-- 8. NON-FUNCTIONAL CHARACTERISTICS -->
+<!-- ============================================================ -->
+
+<h2>8. Non-Functional Characteristics</h2>
+
 <table>
 <tr><th>Property</th><th>Value</th></tr>
-<tr><td>App Type</td><td>Canvas App (Classic)</td></tr>
-<tr><td>Layout</td><td>Tablet / Landscape</td></tr>
-<tr><td>Resolution</td><td>1366 &times; 768 px</td></tr>
-<tr><td>Primary Font</td><td>Segoe UI</td></tr>
-</table>
-
-<h3>9.2 Screen Inventory</h3>
-<table>
-<tr><th>#</th><th>Screen Name</th><th>Purpose</th><th>Module</th></tr>
-<tr><td>1</td><td>scrIdeasDashboard</td><td>Browse, search, and filter all AI ideas</td><td>Ideas</td></tr>
-<tr><td>2</td><td>scrSubmitIdea</td><td>Submit a new AI use-case idea</td><td>Ideas</td></tr>
-<tr><td>3</td><td>scrIdeaDetail</td><td>View idea details and submit assessment</td><td>Ideas</td></tr>
-<tr><td>4</td><td>scrPipeline</td><td>Kanban board for idea lifecycle management</td><td>Ideas</td></tr>
-<tr><td>5</td><td>scrIdeasAnalytics</td><td>Charts and KPIs for idea portfolio</td><td>Ideas</td></tr>
-<tr><td>6</td><td>scrPromptLibrary</td><td>Browse, search, and filter prompts</td><td>Prompts</td></tr>
-<tr><td>7</td><td>scrPromptDetail</td><td>View prompt details, copy, and rate</td><td>Prompts</td></tr>
-<tr><td>8</td><td>scrSubmitPrompt</td><td>Submit a new community prompt</td><td>Prompts</td></tr>
-<tr><td>9</td><td>scrReviewQueue</td><td>Admin approve/reject pending prompts</td><td>Prompts</td></tr>
-<tr><td>10</td><td>scrPromptAnalytics</td><td>Charts and KPIs for prompt library</td><td>Prompts</td></tr>
-</table>
-
-<h3>9.3 KPMG Brand Colour Palette</h3>
-<table>
-<tr><th>Colour Name</th><th>Hex Code</th><th>Usage</th></tr>
-<tr><td style="background-color:#00338D; color:white;">KPMG Blue</td><td>#00338D</td><td>Primary: headers, navigation, primary buttons</td></tr>
-<tr><td style="background-color:#483698; color:white;">KPMG Purple</td><td>#483698</td><td>Secondary: section headings, accent elements</td></tr>
-<tr><td style="background-color:#00A3A1; color:white;">KPMG Teal</td><td>#00A3A1</td><td>Highlights: active navigation, selected states</td></tr>
-<tr><td style="background-color:#F5F7FA;">Light Grey</td><td>#F5F7FA</td><td>Screen backgrounds</td></tr>
-<tr><td style="background-color:#333333; color:white;">Dark Text</td><td>#333333</td><td>Body text</td></tr>
-<tr><td style="background-color:#FFFFFF; border:1px solid #CCC;">White</td><td>#FFFFFF</td><td>Card backgrounds, content areas</td></tr>
-</table>
-
-<h3>9.4 Navigation</h3>
-<p>A persistent navigation header shall appear at the top of every screen, containing:</p>
-<ul>
-    <li>Application logo/title: "Advisory AI Ideas" (white text on KPMG Blue background)</li>
-    <li>Navigation buttons for: Ideas, Pipeline, Analytics, Prompts, Review</li>
-    <li>Active screen button highlighted in Teal (#00A3A1)</li>
-</ul>
-
-<!-- ============================================================ -->
-<!-- 10. NON-FUNCTIONAL REQUIREMENTS -->
-<!-- ============================================================ -->
-
-<h2>10. Non-Functional Requirements</h2>
-
-<table>
-<tr><th>ID</th><th>Category</th><th>Requirement</th></tr>
-<tr><td>NFR-01</td><td>Performance</td><td>Screens shall load within 3 seconds on a standard corporate network. Gallery filtering shall respond within 1 second.</td></tr>
-<tr><td>NFR-02</td><td>Availability</td><td>The application shall be available during standard business hours (99.5% uptime), aligned with the Microsoft Power Platform SLA.</td></tr>
-<tr><td>NFR-03</td><td>Scalability</td><td>The application shall support up to 500 concurrent users and store up to 10,000 idea records and 5,000 prompt records without performance degradation.</td></tr>
-<tr><td>NFR-04</td><td>Usability</td><td>The application shall be usable by non-technical staff with no training. UI elements shall follow standard Power Apps conventions and KPMG brand guidelines.</td></tr>
-<tr><td>NFR-05</td><td>Data Retention</td><td>All data shall be retained in Dataverse indefinitely. Archived records shall remain accessible for audit purposes.</td></tr>
-<tr><td>NFR-06</td><td>Compatibility</td><td>The application shall function in Microsoft Edge and Google Chrome (latest versions). It shall also be accessible via the Power Apps mobile app on iOS and Android (tablet form factor).</td></tr>
-<tr><td>NFR-07</td><td>Accessibility</td><td>The application should follow WCAG 2.1 Level AA guidelines where feasible within Power Apps Canvas App constraints.</td></tr>
-<tr><td>NFR-08</td><td>Maintainability</td><td>All Dataverse tables, columns, and app screens shall use descriptive naming conventions. Formulas shall include comments for complex logic.</td></tr>
+<tr><td>Authentication</td><td>Azure AD / Entra ID (inherited from Power Platform environment)</td></tr>
+<tr><td>Data at Rest</td><td>Encrypted by Dataverse (Microsoft-managed)</td></tr>
+<tr><td>Data in Transit</td><td>TLS 1.2+</td></tr>
+<tr><td>DLP Compliance</td><td>Compliant (evaluated 12 Feb 2026)</td></tr>
+<tr><td>Delegation Limit</td><td>Default 2,000 rows (configurable to 100,000 in app settings)</td></tr>
+<tr><td>Teams Integration</td><td>Not yet configured (supportsPortrait: true, isTeamsOnly: false)</td></tr>
+<tr><td>Offline Mode</td><td>Not enabled</td></tr>
+<tr><td>Components / Libraries</td><td>None (hasComponent: false)</td></tr>
+<tr><td>Custom Connectors</td><td>None (Dataverse only)</td></tr>
+<tr><td>Modern Runtime</td><td>Disabled (enableModernRuntimeMode: false)</td></tr>
 </table>
 
 <!-- ============================================================ -->
-<!-- 11. INTEGRATION & AUTOMATION REQUIREMENTS -->
+<!-- 9. ASSUMPTIONS & CONSTRAINTS -->
 <!-- ============================================================ -->
 
-<h2>11. Integration &amp; Automation Requirements</h2>
+<h2>9. Assumptions &amp; Constraints</h2>
 
-<h3>11.1 Power Automate Flows</h3>
-<table>
-<tr><th>Flow Name</th><th>Trigger</th><th>Actions</th><th>Priority</th></tr>
-<tr>
-    <td><b>New Idea Notification</b></td>
-    <td>When a row is added to <code>AI Ideas</code></td>
-    <td>
-        <ol>
-            <li>Send confirmation email to submitter</li>
-            <li>Post notification to Teams review channel</li>
-            <li>Update idea status from Submitted &rarr; Screening</li>
-        </ol>
-    </td>
-    <td>Should</td>
-</tr>
-<tr>
-    <td><b>Prompt Approval Workflow</b></td>
-    <td>When a row is added/modified in <code>AI Prompts</code> with Status = Pending</td>
-    <td>
-        <ol>
-            <li>Start approval request to designated reviewer(s)</li>
-            <li>If approved: Update status to Approved &rarr; notify submitter</li>
-            <li>If rejected: Update status to Rejected &rarr; notify submitter with feedback</li>
-        </ol>
-    </td>
-    <td>Should</td>
-</tr>
-</table>
-
-<h3>11.2 Microsoft 365 Integration</h3>
-<table>
-<tr><th>Integration</th><th>Description</th><th>Priority</th></tr>
-<tr><td>Microsoft Teams</td><td>App pinned as a Teams tab; notifications posted to designated channels</td><td>Should</td></tr>
-<tr><td>Outlook</td><td>Email notifications triggered by Power Automate for idea submissions and prompt approvals</td><td>Should</td></tr>
-<tr><td>Azure AD / Entra ID</td><td>User authentication and identity via Azure AD SSO (inherited from Power Platform)</td><td>Must</td></tr>
-</table>
-
-<!-- ============================================================ -->
-<!-- 12. SECURITY & ACCESS CONTROL -->
-<!-- ============================================================ -->
-
-<h2>12. Security &amp; Access Control</h2>
-
-<h3>12.1 Authentication</h3>
-<p>Users authenticate via <b>Azure Active Directory (Entra ID)</b> single sign-on, inherited from the Power Platform environment. No separate login is required.</p>
-
-<h3>12.2 Role-Based Access Control</h3>
-<table>
-<tr><th>Role</th><th>AI Ideas</th><th>AI Idea Assessments</th><th>AI Prompts</th><th>AI Prompt Ratings</th></tr>
-<tr><td><b>Submitter</b></td><td>Create, Read (own + all)</td><td>Read</td><td>Read (Approved only), Create (Status defaults to Pending)</td><td>Create, Read</td></tr>
-<tr><td><b>Assessor</b></td><td>Create, Read, Update (status)</td><td>Create, Read, Update</td><td>Read, Create</td><td>Create, Read</td></tr>
-<tr><td><b>Admin</b></td><td>Full CRUD</td><td>Full CRUD</td><td>Full CRUD (incl. Approve/Reject)</td><td>Full CRUD</td></tr>
-</table>
-
-<h3>12.3 Data Security</h3>
-<ul>
-    <li>All data at rest is encrypted by Dataverse (Microsoft-managed encryption)</li>
-    <li>All data in transit is encrypted via TLS 1.2+</li>
-    <li>Dataverse audit logging is enabled for all tables to track create/update/delete operations</li>
-    <li>Environment-level DLP (Data Loss Prevention) policies apply to the app's connectors</li>
-</ul>
-
-<!-- ============================================================ -->
-<!-- 13. ASSUMPTIONS & CONSTRAINTS -->
-<!-- ============================================================ -->
-
-<h2>13. Assumptions &amp; Constraints</h2>
-
-<h3>13.1 Assumptions</h3>
+<h3>9.1 Assumptions</h3>
 <ol>
-    <li>All users have Microsoft 365 E3/E5 licenses with Power Apps included.</li>
-    <li>A Dataverse environment has been provisioned and is accessible to the development team.</li>
-    <li>Users have standard corporate network access to make.powerapps.com and the Power Apps runtime.</li>
-    <li>The KPMG brand guidelines and colour codes used in this document are approved for internal application use.</li>
-    <li>The weighted scoring framework (weights, thresholds, quadrant definitions) has been agreed upon by Advisory leadership and is not subject to change during initial rollout.</li>
-    <li>The Prompt Library categories and AI Tools list may evolve over time; the Choice columns in Dataverse can be extended by an Admin without code changes.</li>
+    <li>Users have Microsoft 365 licences with Power Apps access and connectivity to the Dataverse environment at <code>org49a69cf1.crm15.dynamics.com</code>.</li>
+    <li>The Dataverse tables and their columns/choice-sets are considered stable and will not change structurally during the remaining build phase.</li>
+    <li>The application will remain a Canvas App (not converted to a Model-driven app).</li>
 </ol>
 
-<h3>13.2 Constraints</h3>
+<h3>9.2 Constraints</h3>
 <ol>
-    <li><b>Platform:</b> The application is built as a Power Apps Canvas App and is subject to the platform's delegation limits (default 2,000 rows), control library, and formula language capabilities.</li>
-    <li><b>Layout:</b> Canvas Apps have fixed-layout design; responsive behaviour across drastically different screen sizes is limited.</li>
-    <li><b>Offline:</b> The application requires an active network connection to read/write Dataverse data. No offline mode is supported in the initial release.</li>
-    <li><b>Delegation:</b> Certain filter operations (e.g., <code>in</code> operator for search) are non-delegable. For datasets exceeding 2,000 rows, additional optimisation (e.g., Dataverse views, indexed columns) may be required.</li>
-    <li><b>Concurrent Editing:</b> Dataverse uses last-write-wins for record updates. No explicit record locking or conflict resolution is implemented.</li>
+    <li><b>Non-delegable search:</b> The <code>in</code> operator in the gallery Items formula is not delegable to Dataverse, limiting search to the first 2,000 records.</li>
+    <li><b>Case mismatch:</b> The <code>colScoreMap</code> collection uses lowercase level names ("low") while Dataverse stores capitalised labels ("Low"). This must be resolved before the assessment screen is built.</li>
+    <li><b>Gallery template bindings:</b> Two labels (<code>Title1</code>, <code>Subtitle1</code>) still reference gallery sample data (<code>SampleHeading</code>, <code>SampleText</code>) and need to be rebound to actual Dataverse columns.</li>
+    <li><b>Fixed layout:</b> The app is designed for 1366 &times; 768 tablet form factor. No responsive behaviour is configured.</li>
 </ol>
 
 <!-- ============================================================ -->
-<!-- 14. ACCEPTANCE CRITERIA -->
+<!-- 10. GLOSSARY -->
 <!-- ============================================================ -->
 
-<h2>14. Acceptance Criteria</h2>
-
-<h3>14.1 Ideas Module</h3>
-<table>
-<tr><th>ID</th><th>Criterion</th></tr>
-<tr><td>AC-01</td><td>A user can submit a new idea with all required fields, and it appears in the Ideas Dashboard with Status = "Submitted".</td></tr>
-<tr><td>AC-02</td><td>The Ideas Dashboard correctly filters ideas by search text, status, and business function (individually and in combination).</td></tr>
-<tr><td>AC-03</td><td>Selecting an idea navigates to the detail screen showing all idea fields.</td></tr>
-<tr><td>AC-04</td><td>An assessor can select Low/Medium/High for all 7 dimensions and see the Value Score, Feasibility Score, and Quadrant update in real time.</td></tr>
-<tr><td>AC-05</td><td>Given inputs of Business Growth = Medium, Cost Efficiency = High, Business Resilience = High, Business Agility = High, the Value Score displays <b>2.8</b>.</td></tr>
-<tr><td>AC-06</td><td>Given inputs of Technical Feasibility = High, Internal Readiness = High, External Readiness = Medium, the Feasibility Score displays <b>2.8</b>.</td></tr>
-<tr><td>AC-07</td><td>Given Value Score &ge; 2 and Feasibility Score &ge; 2, the Quadrant displays "Likely Wins".</td></tr>
-<tr><td>AC-08</td><td>Submitting an assessment creates a record in AI Idea Assessments and updates the idea's status to "Prioritized".</td></tr>
-<tr><td>AC-09</td><td>The Pipeline board displays ideas in the correct status columns, and changing status via dropdown immediately updates the record.</td></tr>
-<tr><td>AC-10</td><td>The Ideas Analytics screen displays accurate counts and charts reflecting current data.</td></tr>
-</table>
-
-<h3>14.2 Prompt Library Module</h3>
-<table>
-<tr><th>ID</th><th>Criterion</th></tr>
-<tr><td>AC-11</td><td>The Prompt Library displays only Approved prompts, correctly filtered by search, category, and complexity.</td></tr>
-<tr><td>AC-12</td><td>Clicking "Copy to Clipboard" copies the Prompt Text and increments the Usage Count by 1.</td></tr>
-<tr><td>AC-13</td><td>A user can rate a prompt (1&ndash;5 stars), and the prompt's running average and count update correctly.</td></tr>
-<tr><td>AC-14</td><td>A user can submit a new prompt, and it appears in the Review Queue with Status = "Pending".</td></tr>
-<tr><td>AC-15</td><td>An Admin can approve or reject a pending prompt, and the status updates accordingly.</td></tr>
-<tr><td>AC-16</td><td>The Prompt Analytics screen displays accurate KPIs and charts.</td></tr>
-</table>
-
-<h3>14.3 Platform</h3>
-<table>
-<tr><th>ID</th><th>Criterion</th></tr>
-<tr><td>AC-17</td><td>The global navigation header appears on all 10 screens and correctly navigates between them.</td></tr>
-<tr><td>AC-18</td><td>The app can be accessed from Microsoft Teams as a pinned tab.</td></tr>
-<tr><td>AC-19</td><td>Role-based access control restricts the Review Queue to Admin users only.</td></tr>
-<tr><td>AC-20</td><td>The app loads within 3 seconds on a standard corporate network.</td></tr>
-</table>
-
-<!-- ============================================================ -->
-<!-- 15. GLOSSARY -->
-<!-- ============================================================ -->
-
-<h2>15. Glossary</h2>
+<h2>10. Glossary</h2>
 
 <table>
 <tr><th>Term</th><th>Definition</th></tr>
-<tr><td><b>BRD</b></td><td>Business Requirements Document &mdash; a formal document describing the business needs and expectations for a system.</td></tr>
-<tr><td><b>Canvas App</b></td><td>A type of Power Apps application where the maker has full control over the layout, design, and formula logic of every screen and control.</td></tr>
-<tr><td><b>Dataverse</b></td><td>Microsoft's cloud-native data platform built on Azure SQL, providing structured data storage, role-based security, and business logic for Power Platform applications.</td></tr>
-<tr><td><b>Delegation</b></td><td>The process by which Power Apps pushes filter/sort operations to the data source (Dataverse) rather than processing locally. Non-delegable operations are limited to the first 2,000 rows.</td></tr>
-<tr><td><b>Power Fx</b></td><td>The low-code formula language used in Power Apps Canvas Apps, inspired by Excel formulas.</td></tr>
-<tr><td><b>Power Automate</b></td><td>Microsoft's workflow automation platform for creating automated business processes (flows).</td></tr>
-<tr><td><b>Quadrant</b></td><td>A classification of an assessed AI idea based on its Value Score and Feasibility Score relative to the 2.0 threshold.</td></tr>
-<tr><td><b>Value Score</b></td><td>A weighted composite score (1.0&ndash;3.0) measuring the business value potential of an AI idea across four dimensions.</td></tr>
-<tr><td><b>Feasibility Score</b></td><td>A weighted composite score (1.0&ndash;3.0) measuring the implementation readiness of an AI idea across three dimensions.</td></tr>
-<tr><td><b>Pipeline</b></td><td>The 11-stage lifecycle through which an AI idea progresses from initial submission to scaling or archival.</td></tr>
+<tr><td><b>BRD</b></td><td>Business Requirements Document &mdash; describes the business needs and current state of a system.</td></tr>
+<tr><td><b>Canvas App</b></td><td>A Power Apps application type where the maker controls every pixel of the layout and formula logic.</td></tr>
+<tr><td><b>Dataverse</b></td><td>Microsoft&rsquo;s cloud data platform providing structured storage, role-based security, and business logic for Power Platform apps.</td></tr>
+<tr><td><b>Delegation</b></td><td>The mechanism by which Power Apps offloads filter/sort operations to Dataverse server-side. Non-delegable operations process only the first N rows locally.</td></tr>
+<tr><td><b>Power Fx</b></td><td>The low-code formula language used in Power Apps, inspired by Excel formulas.</td></tr>
+<tr><td><b>Option Set</b></td><td>A Dataverse column type that presents a fixed list of choices (also called Choice/Choices).</td></tr>
+<tr><td><b>Publisher Prefix</b></td><td>A short string (e.g., <code>cr39e_</code>) prepended to all custom table and column logical names, identifying the solution publisher.</td></tr>
+<tr><td><b>Quadrant</b></td><td>One of four strategic classifications (Likely Wins, Calculated Risks, Marginal Gains, Avoid) based on Value and Feasibility score thresholds.</td></tr>
+<tr><td><b>colScoreMap</b></td><td>An in-memory Power Fx collection mapping score level labels (low/medium/high) to numeric values (1/2/3) for assessment calculations.</td></tr>
 </table>
 
 <br/><br/>
 <p style="text-align:center; font-size:10pt; color:#888888;">&mdash; End of Document &mdash;</p>
-<p style="text-align:center; font-size:9pt; color:#AAAAAA;">Advisory AI Ideas BRD v1.0 &nbsp;|&nbsp; KPMG Advisory &nbsp;|&nbsp; February 2026</p>
+<p style="text-align:center; font-size:9pt; color:#AAAAAA;">Advisory AI Ideas BRD v1.0 &nbsp;|&nbsp; Based on IdeasAPP_Powerapps.zip export &nbsp;|&nbsp; February 2026</p>
 
 </body>
 </html>
